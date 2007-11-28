@@ -1,0 +1,7 @@
+[Activity]
+name = PlayGo
+service_name = org.laptop.Playg
+class = activity.PlayGo
+icon = activity-go
+activity_version = 1
+show_launcher = yes
