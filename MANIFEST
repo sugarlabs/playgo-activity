@@ -2,7 +2,6 @@ activity.py
 boardwidget.py
 buddiespanel.py
 game.py
-gridwidget.py
 infopanel.py
 activity/activity-go.svg
 activity/activity.info
@@ -14,10 +13,6 @@ images/bw.gif
 images/w.gif
 images/white.gif
 images/WsTurn.gif
-locale/ar
-locale/de
-locale/el
-locale/es
 po/ar.po
 po/Connect.pot
 po/de.po
