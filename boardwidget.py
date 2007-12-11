@@ -165,9 +165,9 @@ class BoardWidget(gtk.EventBox):
         y = y + 1
         ct = gtk.gdk.CairoContext(ctx)
         if  color == 0 : 
-            ct.set_source_pixbuf(self.pixBlackSized, unit*x - unit/2, unit*y - unit/2, )
+            ct.set_source_pixbuf(self.pixBlackSized, unit*x - unit/2, unit*y - unit/2 )
         else :
-            ct.set_source_pixbuf(self.pixWhiteSized, unit*x - unit/2, unit*y - unit/2, )
+            ct.set_source_pixbuf(self.pixWhiteSized, unit*x - unit/2, unit*y - unit/2 )
             
         ctx.paint()
         
@@ -197,29 +197,32 @@ class BoardWidget(gtk.EventBox):
         if dat == self.lastDat :
             return
         
-        ctx = self.myWidget.window.cairo_create()
-        ctx.save()
-        
-        unit, x0, y0 = self.get_coordinates(self.get_allocation())
-        ctx.translate( x0, y0 )
+        if self.lastX :
+            self.myWidget.window.clear_area( int(self.lastX - self.lastUnit/2), int(self.lastY - self.lastUnit/2), int(self.lastUnit), int(self.lastUnit) )
+            
+        if self.myBoard.status.has_key( (x,y) ) :
+            self.lastX = 0
+            return
 
+        x += 1
+        y += 1
+        dat = self.lastDat
+        ctx = self.myWidget.window.cairo_create()
         
-        #ctx.set_source_rgba(0, 0, 0, 0 )
-        #ctx.arc( self.lastX, self.lastY, 16, 0, -1e-10)
-        #self.myWidget.window.clear_area( self.lastX + ( unit ), self.lastY, unit, unit )
-        #if self.lastCmap :
-        #    self.myWidget.window.draw_image( ctx, self.lastCmap, 0, 0, self.lastX, self.lastY, unit, unit )
+
+        if ( ( self.myGame is None ) and ( self.lastColor == 2 ) ) or \
+           ( self.myGame  and not self.myGame.is_initiator ) :
+            ctx.set_source_rgba(0, 0, 0, .5 )
+        else :
+            ctx.set_source_rgba(0xff, 0xff, 0xff, .5 )
+            
         
-        #self.myWidget.window.clear_area( int(self.lastX), int(self.lastY), int(unit), int(unit) )
-        
-        
-        ctx.set_source_rgba(0, 0, 0, .5 )
-        self.lastX =unit * x 
-        self.lastY =unit * y 
-        #ctx.arc( self.lastX, self.lastY, 16, 0, -1e-10)
-        #ctx.fill_preserve()
-        #ctx.stroke()
-        ctx.restore()
+        self.lastX = self.lastUnit * x
+        self.lastY = self.lastUnit * y 
+        ctx.arc( self.lastX, self.lastY, 16, 0, -1e-10)
+        ctx.fill_preserve()
+        ctx.stroke()
+        del ctx
 
     def button_release_cb(self, event):
 
@@ -235,7 +238,8 @@ class BoardWidget(gtk.EventBox):
                 else :
                     dat = dat | 0x20000
                     self.lastColor = 1;
-                
+                    
+            self.lastX = 0;    
             self.insert( dat, 1 )
             
         else:
@@ -245,7 +249,8 @@ class BoardWidget(gtk.EventBox):
                     dat = dat | 0x10000
                 else :
                     dat = dat | 0x20000
-                
+                    
+            self.lastX = 0;    
             self.emit('insert-requested', dat )
 
         logger.debug( 'mouse up button event x=%d   y=%d     row=%d col=%d   value=%x', event.x, event.y, x, y, dat )
@@ -311,13 +316,8 @@ class BoardWidget(gtk.EventBox):
 #                self.pixBoard = self.pixBoard.scaleSimple( bx, by, gtk.gdk.INTERP_BILINEAR ) 
         
         ctx.translate( x0, y0 )
-        #self.draw_background( rect, unit, ctx )
-        #self.draw_lines( rect, unit, ctx )
         self.draw_stones( ctx )       
-        
-        self.myWidget.window.set_cursor( gtk.gdk.Cursor(gtk.gdk.CIRCLE) ) 
-        #ctx.restore()
-
+    
 
     def expose_cb(self, widget, event):
 
