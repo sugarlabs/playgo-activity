@@ -12,7 +12,7 @@ from sugar.presence import presenceservice
 import sugar.logger
 
 import boardwidget
-from game import SERVICE, GoBoard, GoGame
+from game import SERVICE, abstractBoard, GoGame
 
 from sugar.presence.tubeconn import TubeConnection
 from buddiespanel import BuddiesPanel
@@ -28,7 +28,7 @@ class PlayGo(Activity):
 
         logger.debug('Starting Playgo activity...')
 
-        board = GoBoard( 19 )
+        board = abstractBoard( 19 )
         self.boardWidget = boardwidget.BoardWidget( board )
 
         self.buddies_panel = BuddiesPanel()

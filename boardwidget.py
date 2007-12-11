@@ -173,16 +173,12 @@ class BoardWidget(gtk.EventBox):
         
 
     def draw_stones( self, ctx ):
-            
-        for x in xrange(self.rows):
-            for y in xrange(self.columns):
-                
-                point =  self.myBoard.getPoint( x, y )
-                
-                if ( point == 1 ) :
-                    self.draw_stone( x, y, 1, self.lastUnit, ctx )
-                elif ( point == 2 ) :
-                    self.draw_stone( x, y, 0, self.lastUnit, ctx )
+
+        for x in self.myBoard.status.keys() :
+            if self.myBoard.status[x] == 'B' :
+                self.draw_stone( x[0], x[1], 1, self.lastUnit, ctx )
+            else :
+                self.draw_stone( x[0], x[1], 0, self.lastUnit, ctx )
                     
         ctx.stroke()
 
@@ -253,14 +249,7 @@ class BoardWidget(gtk.EventBox):
             self.emit('insert-requested', dat )
 
         logger.debug( 'mouse up button event x=%d   y=%d     row=%d col=%d   value=%x', event.x, event.y, x, y, dat )
-        
-        
-#        self.myBoard.setPointi( col, row, self.lastColor )
-#        if  self.lastColor == 1:
-#            self.lastColor = 2
-#        else :
-#            self.lastColor = 1
-#            
+            
         self.window.invalidate_rect(self.get_allocation(), True)
 
     def queue_draw(self):

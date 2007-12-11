@@ -34,52 +34,145 @@ def dump_grid(seq):
                 row_str += '%d|' % col
         grid = '%s%s\n' % (grid, row_str)
     _logger.debug('Grid state is now:\n%s', grid)
+    
 
-class GoBoard( object ) :
-    
-    def __init__( self, size ):
-        
-        self.size = size    
-        self.board = zeros( [ size, size ], Int )
-        self.playNumber = 0;
-        
-        
-    def getPoint( self, x, y ):
-        
-        assert( x < self.size )
-        assert( y < self.size )
-        return self.board[x][y]
-    
-    def setPoint( self, x, y, value ):
-        
-        if value is 'Empty' :
-            n = 0;
-        elif value is 'White' :
-            n = 1;
-        elif value is 'Black' :
-            n = 2;
-        elif value is 'WhiteKo' :
-            n = 3;
-        elif value is 'BlackKo' :
-            n = 4;
-            
-        self.board[x][y] = n
-        
-    def setPointi( self, x, y, value ):
-        self.board[x][y] = value
-        
+##   This abstractBoard is part of Kombilo, a go database program
+##   It contains a class implementing an abstract go board 
+##   Copyright (C) 2001-3 Ulrich Goertz (u@g0ertz.de)
+
+class abstractBoard:
+    """ This class administrates a go board.
+        It keeps track of the stones currently on the board in the dictionary self.status,
+        and of the moves played so far in self.undostack
+
+        It has methods to clear the board, play a stone, undo a move. """
+
+    def __init__(self, boardSize = 19):
+        self.size = boardSize    #TODO: get rid of this
+        self.status = {}
+        self.undostack = []
+        self.boardSize = boardSize
+
+    def neighbors(self,x):
+        """ Returns the coordinates of the 4 (resp. 3 resp. 2 at the side / in the corner) intersections
+            adjacent to the given one. """
+        if   x[0]== 1              :     l0 = [2]
+        elif x[0]== self.boardSize :     l0 = [self.boardSize-1]
+        else:                            l0 = [x[0]-1, x[0]+1]
+
+        if   x[1]== 1              :     l1 = [2]
+        elif x[1]== self.boardSize :     l1 = [self.boardSize-1]
+        else:                            l1 = [x[1]-1, x[1]+1]
+
+        l = []
+        for i in l0: l.append((i,x[1]))
+        for j in l1: l.append((x[0],j))
+
+        return l
+
     def clear(self):
-        for x in range( self.size ):
-            for y in range( self.size ):
-                self.board[x][y] = 0
+        """ Clear the board """
+        self.status = {}
+        self.undostack=[]        
+
+    def play(self,pos,color):
+        """ This plays a color=black/white stone at pos, if that is a legal move
+            (disregarding ko), and deletes stones captured by that move.
+            It returns 1 if the move has been played, 0 if not. """
+
+        if self.status.has_key(pos):                # check if empty
+            return 0
+
+        l = self.legal(pos,color)
+        if l:                                       # legal move?
+            captures = l[1]
+            for x in captures: del self.status[x]   # remove captured stones, if any
+            self.undostack.append((pos,color,captures))   # remember move + captured stones for easy undo
+            return 1
+        else: return 0
+
+    def legal(self, pos, color):
+        """ Check if a play by color at pos would be a legal move. """
+        c = [] # captured stones
+        for x in self.neighbors(pos):
+            if self.status.has_key(x) and self.status[x]==self.invert(color):
+                c = c + self.hasNoLibExcP(x, pos)        
+
+        self.status[pos]=color
+
+        if c:
+            captures = []
+            for x in c:
+                if not x in captures: captures.append(x)
+            return (1, captures)
+
+        if self.hasNoLibExcP(pos):
+            del self.status[pos]
+            return 0
+        else: return (1, [])
+
+    def hasNoLibExcP(self, pos, exc = None):
+        """ This function checks if the string (=solidly connected) of stones containing
+            the stone at pos has a liberty (resp. has a liberty besides that at exc).
+            If no liberties are found, a list of all stones in the string is returned.
+
+            The algorithm is a non-recursive  implementation of a simple flood-filling:
+            starting from the stone at pos, the main while-loop looks at the intersections
+            directly adjacent to the stones found so far, for liberties or other stones that belong
+            to the string. Then it looks at the neighbors of those newly found stones, and so
+            on, until it finds a liberty, or until it doesn't find any new stones belonging
+            to the string, which means that there are no liberties.
+            Once a liberty is found, the function returns immediately. """
+            
+        st = []            # in the end, this list will contain all stones solidly connected to the
+                           # one at pos, if this string has no liberties
+        newlyFound = [pos] # in the while loop, we will look at the neighbors of stones in newlyFound
+        foundNew = 1
         
-    def CopyBoard( self ) :
-        copy = GoBoard( self.size )
-        copy.board = self.board
-        copy.playNumber = self.playNumber
-        return copy
-    
+        while foundNew:
+            foundNew = 0
+            n = []         # this will contain the stones found in this iteration of the loop
+            for x in newlyFound:
+                for y in self.neighbors(x):
+                    if not self.status.has_key(y) and y != exc:    # found a liberty
+                        return []
+                    elif self.status.has_key(y) and self.status[y]==self.status[x] \
+                         and not y in st and not y in newlyFound: # found another stone of same color
+                        n.append(y)
+                        foundNew = 1
+
+            st[:0] = newlyFound
+            newlyFound = n
+
+        return st     # no liberties found, return list of all stones connected to the original one
+
+    def undo(self, no=1):
+        """ Undo the last no moves. """
+        for i in range(no):
+            if self.undostack:
+                pos, color, captures = self.undostack.pop()
+                del self.status[pos]
+                for p in captures: self.status[p] = self.invert(color)
+
+    def remove(self, pos):
+        """ Remove a stone form the board, and store this action in undostack. """
         
+        self.undostack.append(((-1,-1), self.invert(self.status[pos]), [pos]))
+        del self.status[pos]
+
+    def invert(self,color):
+        if color == 'B': return 'W'
+        else: return 'B'
+
+    def setPointi( self, x, y, value ):
+        
+        color = 'W'
+        if value == 1 : color = 'B'
+        
+        return self.play( (x,y), color ) 
+
+
+      
 
 class GoGame(ExportedGObject):
 
@@ -207,7 +300,7 @@ class GoGame(ExportedGObject):
         _logger.debug('Bus names are now: %r', self.ordered_bus_names)
         _logger.debug('Welcoming newcomer and sending them the game state')
         
-        self.tube.get_object(sender, PATH).Welcome(self.boardWidget.myBoard.board,
+        self.tube.get_object(sender, PATH).Welcome(self.boardWidget.myBoard.status,
                                                    self.ordered_bus_names,
                                                    dbus_interface=IFACE)
         
@@ -229,7 +322,7 @@ class GoGame(ExportedGObject):
         except ValueError:
             return
 
-        dump_grid(self.boardWidget.myBoard.board)
+        dump_grid(self.boardWidget.myBoard.status)
 
         if winner is not None:
             _logger.debug('Player with handle %d wins', handle)
@@ -287,7 +380,7 @@ class GoGame(ExportedGObject):
         if winner == -1:
             return
     
-        dump_grid(grid.myBoard.board)
+        dump_grid(grid.myBoard.status)
         redraw(grid)
         self.Insert(col)
     

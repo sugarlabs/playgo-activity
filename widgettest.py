@@ -9,7 +9,7 @@ import boardwidget
 #from buddiespanel import BuddiesPanel
 from infopanel import InfoPanel
 
-board = game.GoBoard( 19 )
+board = game.abstractBoard( 19 )
 
 logger = logging.getLogger('PlayGO')
 
@@ -23,18 +23,18 @@ def key_press_cb(window, event, grid, player):
 
     if key in ('Left',):
         for x in range( 19 ):
-            board.setPoint(x, 3, 'Black' )
+            board.play( (x, 3), 'W' )
         redraw(grid)
         
     elif key in ('Right',):
         for x in range( 19 ):
-            board.setPoint(x, 3, 'Empty' )
+            board.play( ( x, 3 ), 'B' )
         redraw(grid)
 
     elif key in ( 'r', ):
         for x in range( 19 ):
             for y in range( 19 ):
-                board.setPointi(x, y, random.randint( 0, 3 ) ) 
+                board.play( ( x, y ), random.randint( 0, 3 ) ) 
                 
         redraw(grid)
        
@@ -50,7 +50,7 @@ def main():
     logger.setLevel( logging.DEBUG )
     
     for x in range( 19 ):
-        board.setPoint(x, 0, 'White' )
+        board.play( ( x, 0 ), 'W' )
         
     window = gtk.Window()
     window.resize( 1200, 850 )
