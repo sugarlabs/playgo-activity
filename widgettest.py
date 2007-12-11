@@ -1,11 +1,17 @@
-
+import logging
 import gtk
 import random
-
+import hippo
+import dbus
 import game
 import boardwidget
 
+#from buddiespanel import BuddiesPanel
+from infopanel import InfoPanel
+
 board = game.GoBoard( 19 )
+
+logger = logging.getLogger('PlayGO')
 
 def redraw(grid):
     """Utility function to force a redraw of a Gtk widget."""
@@ -40,17 +46,50 @@ def key_press_cb(window, event, grid, player):
         gtk.main_quit()
 
 def main():
-        
+    
+    logger.setLevel( logging.DEBUG )
+    
     for x in range( 19 ):
         board.setPoint(x, 0, 'White' )
         
-    grid = boardwidget.BoardWidget( board )
-    
     window = gtk.Window()
-    window.connect('destroy', gtk.main_quit)
-    window.connect('key-press-event', key_press_cb, grid, [1])
-    window.add(grid)
+    window.resize( 1200, 850 )
+    boardWidget = boardwidget.BoardWidget( board )
+    
+    info_panels = InfoPanel()
+    info_panels.show( " hello there I am the side layout test ")
+
+    info_panel = InfoPanel()
+    info_panel.show( " hello there I am the lower layout test ")
+
+    vbox = hippo.CanvasBox(spacing=4,
+        orientation=hippo.ORIENTATION_VERTICAL)
+
+    hbox = hippo.CanvasBox(spacing=4,
+        orientation=hippo.ORIENTATION_HORIZONTAL)
+
+    hbox.append(hippo.CanvasWidget(widget=boardWidget), hippo.PACK_EXPAND )
+    hbox.append(info_panels)
+    
+    vbox.append(hbox, hippo.PACK_EXPAND)
+    vbox.append(info_panel, hippo.PACK_END)
+
+    canvas = hippo.Canvas()
+    canvas.set_root(vbox)
+
+    window.add( canvas )
     window.show_all()
+    window.connect('key-press-event', key_press_cb, boardWidget, [1])
+   
+
+# simple single window test
+#
+#    window = gtk.Window()
+#    window.resize( 800, 800 )
+#    window.connect('destroy', gtk.main_quit)
+#    window.connect('key-press-event', key_press_cb, boardWidget, [1])
+#    window.add(boardWidget)
+#    window.show_all()
 
     try:
         gtk.main()

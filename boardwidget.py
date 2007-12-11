@@ -2,11 +2,12 @@ import logging
 import cairo
 import gobject
 import gtk
+import random
 
 import game
 
 
-logger = logging.getLogger('PlayGo-activity.gridwidget')
+logger = logging.getLogger('PlayGo.boardwidget')
 
 
 class BoardWidget(gtk.EventBox):
@@ -33,17 +34,22 @@ class BoardWidget(gtk.EventBox):
         self.columns = aBoard.size
         self.rows = aBoard.size
         self.lastUnit = 0
+        self.lastDat = 0
+        self.lastX = 0 
+        self.lastY = 0
+        self.lastCmap = None
         self.myBoard = aBoard
+        self.myGame = None
         
         self.lastColor = 1 
 
         # get the bitmap for genuine simulated wooden board
-        input = open("./images/board.gif")
-        imagebuf = input.read()
-        pixbufloader = gtk.gdk.PixbufLoader()
-        pixbufloader.write(imagebuf)
-        pixbufloader.close()
-        self.pixBoard = pixbufloader.get_pixbuf()
+#        input = open("./images/board.gif")
+#        imagebuf = input.read()
+#        pixbufloader = gtk.gdk.PixbufLoader()
+#        pixbufloader.write(imagebuf)
+#        pixbufloader.close()
+#        self.pixBoard = pixbufloader.get_pixbuf()
 
         # get the bitmap for genuine simulated white stone
         input = open("./images/white.gif")
@@ -60,24 +66,53 @@ class BoardWidget(gtk.EventBox):
         pixbufloader.write(imagebuf)
         pixbufloader.close()
         self.pixBlack = pixbufloader.get_pixbuf()
+        
+        logger.debug( "baord widget starts" )
+        
+#        for x in range( 19 ):
+#            for y in range( 19 ):
+#                self.myBoard.setPointi(x, y, random.randint( 0, 3 ) ) 
+                
+
             
     def check_coord (self, i, j):
         return i >= 0 and i < self.rows and j >= 0 and j < self.columns
 
-    def insert(self, column, value):
+    def insert(self, dat, value):
         """Return:
             None : no winner
             0, 1: player 0/1 wins the game
         """
-        discs = [row[column] for row in self.grid]
+        color = dat >> 16
+        y = dat & 0xff
+        x = ( dat >> 8 ) & 0xff
+        
+        logger.debug( 'stone event x=%d y=%d col=%d value=%d', x,y, dat, color )
+        
+        assert x < self.myBoard.size
+        assert y < self.myBoard.size
+        
+        self.myBoard.setPointi( x, y, color )
 
-        if -1 not in discs:
-            raise ValueError('Column is full')
 
-        row = self.rows - list(reversed(discs)).index(-1) - 1
-        self.grid[row][column] = value
+        return None
 
-        return self.check_winner(row, column, value)
+
+    def remove(self, column, value):
+        """Return:
+            None : no winner
+            0, 1: player 0/1 wins the game
+        """
+        y = column & 0xff
+        x = column >> 8
+        
+        logger.debug( 'remove stone event x=%d y=%d col=%d value=%d', x,y,column, value )
+        
+        assert x < self.myBoard.size
+        assert y < self.myBoard.size
+        
+        self.myBoard.setPointi( x, y, 0 )
+        return None
 
 
     def draw_background(self, rect, unit, ctx):
@@ -122,9 +157,7 @@ class BoardWidget(gtk.EventBox):
             for y in seq :
                 ctx.arc( unit * x, unit * y, 3, 0, -1e-10)
                 ctx.fill_preserve()
-                ctx.stroke()
-
-            
+                ctx.stroke()     
 
     def draw_stone(self, x, y, color, unit, ctx):
         
@@ -137,6 +170,7 @@ class BoardWidget(gtk.EventBox):
             ct.set_source_pixbuf(self.pixWhiteSized, unit*x - unit/2, unit*y - unit/2, )
             
         ctx.paint()
+        
 
     def draw_stones( self, ctx ):
             
@@ -155,27 +189,79 @@ class BoardWidget(gtk.EventBox):
     def get_mouse_event_col(self, event):
         
         unit, x0, y0 = self.get_coordinates(self.get_allocation())
-        col = ( event.x - x0 ) / unit
-        row = ( event.y - y0 ) / unit
+        col = ( ( event.x - x0 ) / unit ) - 0.5
+        row = ( ( event.y - y0 ) / unit ) - 0.5
         return int(row), int(col)
 
     def motion_cb(self, event):
 
-        col = self.get_mouse_event_col(event)
+        y, x = self.get_mouse_event_col(event)
+        dat = ( y << 8 ) + x
+        
+        if dat == self.lastDat :
+            return
+        
+        ctx = self.myWidget.window.cairo_create()
+        ctx.save()
+        
+        unit, x0, y0 = self.get_coordinates(self.get_allocation())
+        ctx.translate( x0, y0 )
+
+        
+        #ctx.set_source_rgba(0, 0, 0, 0 )
+        #ctx.arc( self.lastX, self.lastY, 16, 0, -1e-10)
+        #self.myWidget.window.clear_area( self.lastX + ( unit ), self.lastY, unit, unit )
+        #if self.lastCmap :
+        #    self.myWidget.window.draw_image( ctx, self.lastCmap, 0, 0, self.lastX, self.lastY, unit, unit )
+        
+        #self.myWidget.window.clear_area( int(self.lastX), int(self.lastY), int(unit), int(unit) )
+        
+        
+        ctx.set_source_rgba(0, 0, 0, .5 )
+        self.lastX =unit * x 
+        self.lastY =unit * y 
+        #ctx.arc( self.lastX, self.lastY, 16, 0, -1e-10)
+        #ctx.fill_preserve()
+        #ctx.stroke()
+        ctx.restore()
 
     def button_release_cb(self, event):
 
-        self.motion_cb(event)
-        row, col = self.get_mouse_event_col(event)
+        x, y = self.get_mouse_event_col(event)
+        dat = ( y << 8 ) + x
         
-        self.myBoard.setPointi( col, row, self.lastColor )
-        if  self.lastColor == 1:
-            self.lastColor = 2
-        else :
-            self.lastColor = 1
+        if self.myGame is None :
             
+            if event.button != 3 :
+                if self.lastColor is 1:
+                    dat = dat | 0x10000
+                    self.lastColor = 2;
+                else :
+                    dat = dat | 0x20000
+                    self.lastColor = 1;
+                
+            self.insert( dat, 1 )
+            
+        else:
+            
+            if event.button != 3 :
+                if self.myGame.is_initiator : 
+                    dat = dat | 0x10000
+                else :
+                    dat = dat | 0x20000
+                
+            self.emit('insert-requested', dat )
+
+        logger.debug( 'mouse up button event x=%d   y=%d     row=%d col=%d   value=%x', event.x, event.y, x, y, dat )
+        
+        
+#        self.myBoard.setPointi( col, row, self.lastColor )
+#        if  self.lastColor == 1:
+#            self.lastColor = 2
+#        else :
+#            self.lastColor = 1
+#            
         self.window.invalidate_rect(self.get_allocation(), True)
-        #self.emit('insert-requested', col)
 
     def queue_draw(self):
         self.output.queue_draw()
@@ -184,6 +270,8 @@ class BoardWidget(gtk.EventBox):
         """Returns tuple (unit size, origin x, origin y) suitable for drawing
         a grid within @rect."""
 
+        rect = self.get_allocation()
+        
         if rect.height / float(self.rows) < rect.width / float(self.columns):
             # wide
             unit = rect.height / float(self.rows)
@@ -195,37 +283,65 @@ class BoardWidget(gtk.EventBox):
             x0 = rect.x
             y0 = rect.y + (rect.height - self.rows * unit) / 2.0
          
-        # now shrink the size for a 1 unit boarder   
+        # now shrink the size for a 1 unit border   
         unit = unit - unit / self.rows
 
-        return unit, x0, y0
-
-    def draw(self, rect, ctx):
-        """Draw a grid using the cairo context @ctx within the rectangle
+        #return unit, x0, y0
+        return unit, 0, 0
+    
+    def draw(self, rect, ctx, win):
+        """Draw a board using the cairo context @ctx within the rectangle
         @rect."""
 
-        ctx.save()
+        #ctx.save()
         ctx.set_line_cap(cairo.LINE_CAP_ROUND)
         unit, x0, y0 = self.get_coordinates(rect)
         
         # I could not find the resize event so...
         if self.lastUnit != unit :
+            
+            pixbuf = gtk.gdk.pixbuf_new_from_file_at_size("./images/board.gif", rect.width, rect.height )
+            pixmap, mask = pixbuf.render_pixmap_and_mask()
+            del pixbuf
+            
+            pctx = pixmap.cairo_create()
+            self.draw_lines( rect, unit, pctx )
+            win.set_back_pixmap(pixmap, False )
+            del pixmap
+            del pctx
+            
+            # now resize the stones
             self.pixBlackSized = self.pixBlack.scale_simple( int(unit), int(unit), gtk.gdk.INTERP_BILINEAR )
             self.pixWhiteSized = self.pixWhite.scale_simple( int(unit), int(unit), gtk.gdk.INTERP_BILINEAR )
             self.lastUnit = unit
+
+            # redraw it all
+            win.invalidate_rect( rect, False )
 #            bx, by = self.pixBoard.get_size()
 #            if rect.height > by :
 #                self.pixBoard = self.pixBoard.scaleSimple( bx, by, gtk.gdk.INTERP_BILINEAR ) 
         
         ctx.translate( x0, y0 )
-        self.draw_background( rect, unit, ctx )
-        self.draw_lines( rect, unit, ctx )
-        self.draw_stones( ctx )        
-        ctx.restore()
+        #self.draw_background( rect, unit, ctx )
+        #self.draw_lines( rect, unit, ctx )
+        self.draw_stones( ctx )       
+        
+        self.myWidget.window.set_cursor( gtk.gdk.Cursor(gtk.gdk.CIRCLE) ) 
+        #ctx.restore()
 
 
     def expose_cb(self, widget, event):
 
-        ctx = widget.window.cairo_create()
         rect = self.get_allocation()
-        self.draw(rect, ctx)
+        if rect.height != rect.width :
+            if rect.height > rect.width :
+                widget.window.resize( rect.width, rect.width )
+            else :
+                widget.window.resize( rect.height, rect.height )
+#                
+        self.myWidget = widget
+        ctx = widget.window.cairo_create()
+        ctx.save()
+        rect = self.get_allocation()
+        self.draw(rect, ctx, widget.window )
+        ctx.restore()

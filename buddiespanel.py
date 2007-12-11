@@ -79,11 +79,11 @@ class BuddiesPanel(hippo.CanvasBox):
         vbox = self._create_buddy_vbox(buddy)
         hbox.append(vbox)
 
-        count_font = style.FONT_BOLD.get_pango_desc()
-        count_font.set_size(30000)
-        count = hippo.CanvasText(text="0", color=style.COLOR_WHITE.get_int(),
-                font_desc=count_font)
-        hbox.append(count)
+#        count_font = style.FONT_BOLD.get_pango_desc()
+#        count_font.set_size(30000)
+#        count = hippo.CanvasText(text="0", color=style.COLOR_WHITE.get_int(),
+#                font_desc=count_font)
+#        hbox.append(count)
 
         self.players_box.append(hbox)
 

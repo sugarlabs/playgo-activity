@@ -1,3 +1,9 @@
+21
+* board graphics and stone graphics complete
+* can now play using the board just like any physical board, 
+* at connect initiator is always white turn phrases at bottom do not work
+* remove stones with right click for now
+
 20
 * morph Connect into Go most of the boardwidget is complete, 
 * you can click play on a single machine (sortof)

@@ -1,6 +1,6 @@
 [Activity]
 name = PlayGo
-service_name = org.laptop.Playg
+service_name = org.laptop.PlayGo
 class = activity.PlayGo
 icon = activity-go
 activity_version = 1

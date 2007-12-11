@@ -12,24 +12,24 @@ from sugar.presence import presenceservice
 import sugar.logger
 
 import boardwidget
-import game
+from game import SERVICE, GoBoard, GoGame
 
 from sugar.presence.tubeconn import TubeConnection
 from buddiespanel import BuddiesPanel
 from infopanel import InfoPanel
 
 
-logger = logging.getLogger('connect-activity')
+logger = logging.getLogger('PlayGO')
 
 
 class PlayGo(Activity):
     def __init__(self, handle):
         Activity.__init__(self, handle)
 
-        logger.debug('Starting Connect activity...')
+        logger.debug('Starting Playgo activity...')
 
-        board = game.GoBoard( 19 )
-        self.grid = boardwidget.BoardWidget( board )
+        board = GoBoard( 19 )
+        self.boardWidget = boardwidget.BoardWidget( board )
 
         self.buddies_panel = BuddiesPanel()
 
@@ -41,8 +41,8 @@ class PlayGo(Activity):
         hbox = hippo.CanvasBox(spacing=4,
             orientation=hippo.ORIENTATION_HORIZONTAL)
 
+        hbox.append(hippo.CanvasWidget(widget=self.boardWidget), hippo.PACK_EXPAND )
         hbox.append(self.buddies_panel)
-        hbox.append(hippo.CanvasWidget(widget=self.grid), hippo.PACK_EXPAND)
         
         vbox.append(hbox, hippo.PACK_EXPAND)
         vbox.append(self.info_panel, hippo.PACK_END)
@@ -59,6 +59,7 @@ class PlayGo(Activity):
         self.pservice = presenceservice.get_instance()
         owner = self.pservice.get_owner()
         self.owner = owner
+        self.shared = False
 
         # This displays the buddies_panel even if we fail to connect:
         self.buddies_panel.add_watcher(owner)
@@ -120,6 +121,7 @@ class PlayGo(Activity):
 
     def _shared_cb(self, activity):
         logger.debug('My Connect activity was shared')
+        self.shared = True
         self.initiating = True
         self._setup()
 
@@ -186,7 +188,7 @@ class PlayGo(Activity):
             tube_conn = TubeConnection(self.conn,
                 self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
                 id, group_iface=self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP])
-            self.game = GoGame(tube_conn, self.grid, self.initiating,
+            self.game = GoGame(tube_conn, self.boardWidget, self.initiating,
                 self.buddies_panel, self.info_panel, self.owner,
                 self._get_buddy, self)
 

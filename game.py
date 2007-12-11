@@ -83,11 +83,13 @@ class GoBoard( object ) :
 
 class GoGame(ExportedGObject):
 
-    def __init__(self, tube, grid, is_initiator, buddies_panel, info_panel,
+    def __init__(self, tube, boardwidget, is_initiator, buddies_panel, info_panel,
             owner, get_buddy, activity):
+        
         super(GoGame, self).__init__(tube, PATH)
+        
         self.tube = tube
-        self.grid = grid
+        self.boardWidget = boardwidget
         self.is_initiator = is_initiator
         self.entered = False
         self.player_id = None
@@ -96,6 +98,8 @@ class GoGame(ExportedGObject):
         self.owner = owner
         self._get_buddy = get_buddy
         self.activity = activity
+        
+        boardwidget.myGame = self
 
         # list indexed by player ID
         # 0, 1 are players 0, 1
@@ -103,7 +107,7 @@ class GoGame(ExportedGObject):
         self.ordered_bus_names = []
 
         self.tube.watch_participants(self.participant_change_cb)
-        self.grid.connect('insert-requested', self.insert_requested_cb)
+        self.boardWidget.connect('insert-requested', self.insert_requested_cb)
 
     def participant_change_cb(self, added, removed):
         # Initiator is player 0, other player is player 1.
@@ -149,7 +153,7 @@ class GoGame(ExportedGObject):
         """
 
     @method(dbus_interface=IFACE, in_signature='aanas', out_signature='')
-    def Welcome(self, grid, bus_names):
+    def Welcome(self, aBoard, bus_names):
         """To be called on the incoming player by the other players to
         inform them of the game state.
 
@@ -159,10 +163,9 @@ class GoGame(ExportedGObject):
         cheating/bugs
         """
         if self.player_id is None:
-            _logger.debug('Welcomed to the game. Player bus names are %r',
-                          bus_names)
-            self.grid.grid = grid
-            dump_grid(grid)
+            _logger.debug('Welcomed to the game. Player bus names are %r', bus_names)
+            self.boardWidget.myBoard.board = aBoard
+            dump_grid( aBoard )
             self.ordered_bus_names = bus_names
             self.player_id = bus_names.index(self.tube.get_unique_name())
             # OK, now I'm synched with the game, I can welcome others
@@ -177,7 +180,7 @@ class GoGame(ExportedGObject):
                 _logger.debug("It's my turn already!")
                 self.change_turn()
 
-            redraw(self.grid)
+            redraw( self.boardWidget )
         else:
             _logger.debug("I've already been welcomed, doing nothing")
 
@@ -185,27 +188,31 @@ class GoGame(ExportedGObject):
         self.tube.add_signal_receiver(self.hello_cb, 'Hello', IFACE,
             path=PATH, sender_keyword='sender')
 
-    @signal(dbus_interface=IFACE, signature='n')
+    @signal(dbus_interface=IFACE, signature='i')
     def Insert(self, column):
         """Signal that the local player has placed a disc."""
-        assert column >= 0
-        assert column < 7
+        #assert column >= self.boardWidget.myBoard.size
+        #assert column < self.boardWidget.myBoard.size
 
     def hello_cb(self, sender=None):
+        
         """Tell the newcomer what's going on."""
         _logger.debug('Newcomer %s has joined', sender)
         self.ordered_bus_names.append(sender)
+        
         if len(self.ordered_bus_names) == 2:
             buddy = self._get_buddy(self.tube.bus_name_to_handle[sender])
             self.buddies_panel.add_player(buddy)
+        
         _logger.debug('Bus names are now: %r', self.ordered_bus_names)
         _logger.debug('Welcoming newcomer and sending them the game state')
-        self.tube.get_object(sender, PATH).Welcome(self.grid.grid,
+        
+        self.tube.get_object(sender, PATH).Welcome(self.boardWidget.myBoard.board,
                                                    self.ordered_bus_names,
                                                    dbus_interface=IFACE)
+        
         if (self.player_id == 0 and len(self.ordered_bus_names) == 2):
-            _logger.debug("This is my game and an opponent has joined. "
-                          "I go first")
+            _logger.debug("This is my game and an opponent has joined. I go first")
             self.change_turn()
 
     def insert_cb(self, column, sender=None):
@@ -218,16 +225,16 @@ class GoGame(ExportedGObject):
             return
 
         try:
-            winner = self.grid.insert(column, self.get_active_player())
+            winner = self.boardWidget.insert(column, self.get_active_player())
         except ValueError:
             return
 
-        dump_grid(self.grid.grid)
+        dump_grid(self.boardWidget.myBoard.board)
 
         if winner is not None:
             _logger.debug('Player with handle %d wins', handle)
             self.info_panel.show(_('The other player wins!'))
-            redraw(self.grid)
+            redraw(self.boardWidget)
             return
 
         self.change_turn()
@@ -244,60 +251,48 @@ class GoGame(ExportedGObject):
         if self.get_active_player() == self.player_id:
             _logger.debug('It\'s my turn now')
             self.info_panel.show(_('Your turn'))
-            self.grid.selected_column = 3
             self.activity.grab_focus()
         else:
             _logger.debug('It\'s not my turn')
-            self.grid.selected_column = None
+            self.boardWidget.selected_column = None
 
-        redraw(self.grid)
+        redraw(self.boardWidget)
 
     def get_active_player(self):
-        count = {}
-
-        for row in self.grid.grid:
-            for player in row:
-                if player > -1:
-                    count[player] = count.get(player, 0) + 1
-
-        if count.get(0, 0) > count.get(1, 0):
+        
             return 1
-        else:
-            return 0
 
     def key_press_event(self, widget, event):
-        if self.grid.selected_column is None:
-            _logger.debug('Ignoring keypress - not my turn')
-            return
-
+        
         _logger.debug('Keypress: keyval %s', event.keyval)
 
         if event.keyval in (gtk.keysyms.Left,):
             _logger.debug('<--')
-            if self.grid.selected_column > 0:
-                self.grid.selected_column -= 1
-                redraw(self.grid)
+            if self.boardWidget.selected_column > 0:
+                self.boardWidget.selected_column -= 1
+                redraw(self.boardWidget)
         elif event.keyval in (gtk.keysyms.Right,):
             _logger.debug('-->')
-            if self.grid.selected_column < 6:
-                self.grid.selected_column += 1
-                redraw(self.grid)
+            if self.boardWidget.selected_column < 6:
+                self.boardWidget.selected_column += 1
+                redraw(self.boardWidget)
         elif event.keyval in (gtk.keysyms.Down, gtk.keysyms.space):
             _logger.debug('v')
-            self.insert_requested_cb(self.grid, self.grid.selected_column)
+            self.insert_requested_cb(self.boardWidget, self.boardWidget.selected_column)
 
     def insert_requested_cb(self, grid, col):
+ 
+        _logger.debug('Inserting at %d', col)      
         winner = grid.insert(col, self.player_id)
         if winner == -1:
             return
-
-        _logger.debug('Inserting at %d', col)
-        dump_grid(grid.grid)
+    
+        dump_grid(grid.myBoard.board)
         redraw(grid)
         self.Insert(col)
-
+    
         self.change_turn()
-
+    
         if winner is not None:
             _logger.debug("I win")
             self.info_panel.show(_('You win!'))
