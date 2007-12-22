@@ -18,6 +18,12 @@ class BoardWidget(gtk.EventBox):
         }
 
     def __init__( self, aBoard ):
+        """
+        Startup the board widget
+          1. setup our signals: expose, insert, button and mouse movement
+          2. initialize the tracking variables
+          3. read in the stone source bitmaps 
+        """
         
         gtk.EventBox.__init__( self )
 
@@ -29,27 +35,20 @@ class BoardWidget(gtk.EventBox):
         
         self.connect('button-release-event', self.__class__.button_release_cb)
         self.connect('motion-notify-event', self.__class__.motion_cb)
+        #self.connect('size-request', self.__class__.sizeRequest_cb)
 
         self.drawCoords = 1
-        self.columns = aBoard.size
-        self.rows = aBoard.size
+        self.size = aBoard.size
         self.lastUnit = 0
-        self.lastDat = 0
+        self.lastDat = -1
         self.lastX = 0 
         self.lastY = 0
-        self.lastCmap = None
         self.myBoard = aBoard
         self.myGame = None
         
-        self.lastColor = 1 
-
-        # get the bitmap for genuine simulated wooden board
-#        input = open("./images/board.gif")
-#        imagebuf = input.read()
-#        pixbufloader = gtk.gdk.PixbufLoader()
-#        pixbufloader.write(imagebuf)
-#        pixbufloader.close()
-#        self.pixBoard = pixbufloader.get_pixbuf()
+        self.lastColor = 2
+        
+        logger.setLevel( logging.DEBUG )
 
         # get the bitmap for genuine simulated white stone
         input = open("./images/white.gif")
@@ -68,15 +67,16 @@ class BoardWidget(gtk.EventBox):
         self.pixBlack = pixbufloader.get_pixbuf()
         
         logger.debug( "baord widget starts" )
-        
-#        for x in range( 19 ):
-#            for y in range( 19 ):
-#                self.myBoard.setPointi(x, y, random.randint( 0, 3 ) ) 
-                
 
+    def sizeRequest_cb(self, requistion ):
+        requistion.width = 8
+        requistion.height = 8
             
-    def check_coord (self, i, j):
-        return i >= 0 and i < self.rows and j >= 0 and j < self.columns
+    def check_coord (self, x, y):
+        """
+        check to see if x and y are within the board grid
+        """
+        return x >= 0 and x < self.size and y >= 0 and y < self.size
 
     def insert(self, dat, value):
         """Return:
@@ -84,8 +84,8 @@ class BoardWidget(gtk.EventBox):
             0, 1: player 0/1 wins the game
         """
         color = dat >> 16
-        y = dat & 0xff
-        x = ( dat >> 8 ) & 0xff
+        x = dat & 0xff
+        y = ( dat >> 8 ) & 0xff
         
         logger.debug( 'stone event x=%d y=%d col=%d value=%d', x,y, dat, color )
         
@@ -93,8 +93,6 @@ class BoardWidget(gtk.EventBox):
         assert y < self.myBoard.size
         
         self.myBoard.setPointi( x, y, color )
-
-
         return None
 
 
@@ -116,6 +114,9 @@ class BoardWidget(gtk.EventBox):
 
 
     def draw_background(self, rect, unit, ctx):
+        """
+        set the board windows background to the board image
+        """
 
         ct = gtk.gdk.CairoContext(ctx)
         ct.set_source_pixbuf(self.pixBoard,0,0)
@@ -124,27 +125,30 @@ class BoardWidget(gtk.EventBox):
                 
 
     def draw_lines(self, rect, unit, ctx):
+        """
+        draw the grid and star points on the board bitmap
+        """
         
         # single width balck lines
         ctx.set_line_width(1)
         ctx.set_source_rgba(0, 0, 0, 1)
 
-        for i in xrange(self.rows + 1):
+        for i in xrange(self.size + 1):
             ctx.move_to( unit, i * unit)
-            ctx.line_to(self.columns * unit, i * unit )
+            ctx.line_to(self.size * unit, i * unit )
 
-        for i in xrange(self.columns + 1):
+        for i in xrange(self.size + 1):
             ctx.move_to(i * unit, unit )
-            ctx.line_to(i * unit, self.rows * unit)
+            ctx.line_to(i * unit, self.size * unit)
 
         ctx.stroke()
         
         # star point coords per board size
-        if self.columns == 19 :
+        if self.size == 19 :
             seq = [ 4, 10, 16 ]
-        elif self.columns == 13 :
+        elif self.size == 13 :
             seq = [ 4, 7, 10 ]
-        elif self.columns == 9 :
+        elif self.size == 9 :
             seq = [ 3, 7 ]
             # set the middle singleton
             ctx.arc( unit * 5, unit * 5, 3, 0, -1e-10)
@@ -160,7 +164,9 @@ class BoardWidget(gtk.EventBox):
                 ctx.stroke()     
 
     def draw_stone(self, x, y, color, unit, ctx):
-        
+        """
+        paint a single stone on a point
+        """
         x = x + 1
         y = y + 1
         ct = gtk.gdk.CairoContext(ctx)
@@ -173,6 +179,9 @@ class BoardWidget(gtk.EventBox):
         
 
     def draw_stones( self, ctx ):
+        """
+        paint all the stones on the board
+        """
 
         for x in self.myBoard.status.keys() :
             if self.myBoard.status[x] == 'B' :
@@ -183,65 +192,92 @@ class BoardWidget(gtk.EventBox):
         ctx.stroke()
 
     def get_mouse_event_col(self, event):
+        """
+        calculate the x and y position on the board given pixel address
+        """
         
         unit, x0, y0 = self.get_coordinates(self.get_allocation())
-        col = ( ( event.x - x0 ) / unit ) - 0.5
-        row = ( ( event.y - y0 ) / unit ) - 0.5
-        return int(row), int(col)
+        x = ( ( event.x - x0 ) / unit ) - 0.5
+        y = ( ( event.y - y0 ) / unit ) - 0.5
+        return int(x), int(y)
+
 
     def motion_cb(self, event):
+        """
+        When the mouse moves, find out if it is a legal point
+        if it is a legal point place the transparent stone on 
+        the point and erase the previously placed transparent 
+        stone
+        """
 
-        y, x = self.get_mouse_event_col(event)
+        x, y = self.get_mouse_event_col(event)
         dat = ( y << 8 ) + x
         
+        if  not self.check_coord( x, y ) :
+            return
+
         if dat == self.lastDat :
             return
         
-        if self.lastX :
+        if self.lastX is not -1 :
             self.myWidget.window.clear_area( int(self.lastX - self.lastUnit/2), int(self.lastY - self.lastUnit/2), int(self.lastUnit), int(self.lastUnit) )
             
         if self.myBoard.status.has_key( (x,y) ) :
-            self.lastX = 0
+            self.lastX = -1
             return
 
+        # the board is zero based and there is a 1 unit border so bump x&y
         x += 1
         y += 1
-        dat = self.lastDat
+        
+        # we need a cario context for drawing on top of the board bitmap
         ctx = self.myWidget.window.cairo_create()
         
-
+        # decide whether black or white and set transparent
         if ( ( self.myGame is None ) and ( self.lastColor == 2 ) ) or \
            ( self.myGame  and not self.myGame.is_initiator ) :
             ctx.set_source_rgba(0, 0, 0, .5 )
         else :
             ctx.set_source_rgba(0xff, 0xff, 0xff, .5 )
             
-        
+        # rember our state 
+        self.lastDat = dat
         self.lastX = self.lastUnit * x
-        self.lastY = self.lastUnit * y 
-        ctx.arc( self.lastX, self.lastY, 16, 0, -1e-10)
+        self.lastY = self.lastUnit * y
+        
+        #  now draw a transparent stone a 4 pixels smaller than the unit 
+        ctx.arc( self.lastX, self.lastY, self.lastUnit/2 -4, 0, -1e-10)
         ctx.fill_preserve()
         ctx.stroke()
         del ctx
 
+
     def button_release_cb(self, event):
+        """
+        When the mouse button is released drop a stone on the board
+        """
 
         x, y = self.get_mouse_event_col(event)
         dat = ( y << 8 ) + x
         
+        logger.debug( 'Button release event x=%d y=%d, pixx=%d pixy=%d', x,y, event.x, event.y )
+        
         if self.myGame is None :
             
-            if event.button != 3 :
-                if self.lastColor is 1:
-                    dat = dat | 0x10000
-                    self.lastColor = 2;
+            if ( event.button != 3 ) :
+                if  self.myBoard.status.has_key( (x,y) ) :
+                    return
                 else :
-                    dat = dat | 0x20000
-                    self.lastColor = 1;
+                    if self.lastColor is 1:
+                        dat = dat | 0x10000
+                        self.lastColor = 2;
+                    else :
+                        dat = dat | 0x20000
+                        self.lastColor = 1;
+                        
+                    self.lastX = 0;    
+                    self.insert( dat, 1 )
                     
-            self.lastX = 0;    
-            self.insert( dat, 1 )
-            
         else:
             
             if event.button != 3 :
@@ -250,11 +286,9 @@ class BoardWidget(gtk.EventBox):
                 else :
                     dat = dat | 0x20000
                     
-            self.lastX = 0;    
+            self.lastX = -1;    
             self.emit('insert-requested', dat )
 
-        logger.debug( 'mouse up button event x=%d   y=%d     row=%d col=%d   value=%x', event.x, event.y, x, y, dat )
-            
         self.window.invalidate_rect(self.get_allocation(), True)
 
     def queue_draw(self):
@@ -265,20 +299,24 @@ class BoardWidget(gtk.EventBox):
         a grid within @rect."""
 
         rect = self.get_allocation()
+
+        unit = rect.height / float(self.size )
+        x0 = rect.x + (rect.width - self.size * unit) / 2.0
+        y0 = rect.y
         
-        if rect.height / float(self.rows) < rect.width / float(self.columns):
-            # wide
-            unit = rect.height / float(self.rows)
-            x0 = rect.x + (rect.width - self.columns * unit) / 2.0
-            y0 = rect.y
-        else:
-            # narrow
-            unit = rect.width / float(self.columns)
-            x0 = rect.x
-            y0 = rect.y + (rect.height - self.rows * unit) / 2.0
-         
+#        if rect.height / float(self.rows) < rect.width / float(self.size):
+#            # wide
+#            unit = rect.height / float(self.rows)
+#            x0 = rect.x + (rect.width - self.size * unit) / 2.0
+#            y0 = rect.y
+#        else:
+#            # narrow
+#            unit = rect.width / float(self.size)
+#            x0 = rect.x
+#            y0 = rect.y + (rect.height - self.rows * unit) / 2.0
+#         
         # now shrink the size for a 1 unit border   
-        unit = unit - unit / self.rows
+        unit = unit - unit / self.size
 
         #return unit, x0, y0
         return unit, 0, 0
@@ -322,7 +360,10 @@ class BoardWidget(gtk.EventBox):
     def expose_cb(self, widget, event):
 
         rect = self.get_allocation()
-        if rect.height != rect.width :
+        unit, x0, y0 = self.get_coordinates(rect)
+        if self.lastUnit != unit :
+            logger.debug( 'resizing the window to %d', rect.height )
+            self.lastUnit = -1
             if rect.height > rect.width :
                 widget.window.resize( rect.width, rect.width )
             else :

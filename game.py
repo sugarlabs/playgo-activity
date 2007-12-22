@@ -15,7 +15,7 @@ IFACE = SERVICE
 PATH = "/org/freedesktop/Telepathy/Tube/Connect"
 
 
-_logger = logging.getLogger('PlayGo.game')
+_logger = logging.getLogger('PlayGo')
 
 
 def redraw(grid):
@@ -52,6 +52,8 @@ class abstractBoard:
         self.status = {}
         self.undostack = []
         self.boardSize = boardSize
+        _logger.setLevel( logging.DEBUG )
+        _logger.debug( "init baord size %d", boardSize )
 
     def neighbors(self,x):
         """ Returns the coordinates of the 4 (resp. 3 resp. 2 at the side / in the corner) intersections
@@ -169,6 +171,8 @@ class abstractBoard:
         color = 'W'
         if value == 1 : color = 'B'
         
+        _logger.debug( "Setting Point %d, %d to color %s", x, y, color )
+        
         return self.play( (x,y), color ) 
 
 
@@ -258,7 +262,7 @@ class GoGame(ExportedGObject):
         if self.player_id is None:
             _logger.debug('Welcomed to the game. Player bus names are %r', bus_names)
             self.boardWidget.myBoard.board = aBoard
-            dump_grid( aBoard )
+            dump_grid( self.boardWidget.myBoard.status )
             self.ordered_bus_names = bus_names
             self.player_id = bus_names.index(self.tube.get_unique_name())
             # OK, now I'm synched with the game, I can welcome others
@@ -298,7 +302,8 @@ class GoGame(ExportedGObject):
             self.buddies_panel.add_player(buddy)
         
         _logger.debug('Bus names are now: %r', self.ordered_bus_names)
-        _logger.debug('Welcoming newcomer and sending them the game state')
+        _logger.debug('Welcoming newcomer and sending them the game state:')
+        dump_grid( self.boardWidget.myBoard.status )
         
         self.tube.get_object(sender, PATH).Welcome(self.boardWidget.myBoard.status,
                                                    self.ordered_bus_names,
@@ -309,7 +314,7 @@ class GoGame(ExportedGObject):
             self.change_turn()
 
     def insert_cb(self, column, sender=None):
-        # Someone placed a disc
+        # Someone placed a stone
         handle = self.tube.bus_name_to_handle[sender]
         _logger.debug('Insert(%d) from %s', column, sender)
 

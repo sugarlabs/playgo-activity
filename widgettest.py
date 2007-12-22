@@ -37,6 +37,9 @@ def key_press_cb(window, event, grid, player):
                 board.play( ( x, y ), random.randint( 0, 3 ) ) 
                 
         redraw(grid)
+        
+    elif key in ( 'd' ):
+        game.dump_grid( board.status )
        
     elif key in ( 'c', ):
         board.clear()
@@ -47,13 +50,17 @@ def key_press_cb(window, event, grid, player):
 
 def main():
     
+    console = logging.StreamHandler()
+    logging.getLogger('').addHandler(console)
     logger.setLevel( logging.DEBUG )
+    logger.debug( "Start widget test" )
     
     for x in range( 19 ):
         board.play( ( x, 0 ), 'W' )
         
     window = gtk.Window()
     window.resize( 1200, 850 )
+    
     boardWidget = boardwidget.BoardWidget( board )
     
     info_panels = InfoPanel()

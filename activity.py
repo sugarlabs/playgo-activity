@@ -30,9 +30,7 @@ class PlayGo(Activity):
 
         board = abstractBoard( 19 )
         self.boardWidget = boardwidget.BoardWidget( board )
-
         self.buddies_panel = BuddiesPanel()
-
         self.info_panel = InfoPanel()
 
         vbox = hippo.CanvasBox(spacing=4,
@@ -42,11 +40,14 @@ class PlayGo(Activity):
             orientation=hippo.ORIENTATION_HORIZONTAL)
 
         hbox.append(hippo.CanvasWidget(widget=self.boardWidget), hippo.PACK_EXPAND )
-        hbox.append(self.buddies_panel)
+        #hbox.append(self.buddies_panel)
         
         vbox.append(hbox, hippo.PACK_EXPAND)
         vbox.append(self.info_panel, hippo.PACK_END)
-
+        info_panels = InfoPanel()
+        info_panels.show( " hello there I am the side layout test ")
+        #hbox.append(info_panels)
+        
         canvas = hippo.Canvas()
         canvas.set_root(vbox)
         self.set_canvas(canvas)

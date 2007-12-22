@@ -1,3 +1,9 @@
+22
+* first test on XO works local no buddy panel
+* got rid of a stone placement bugs
+* improved performance of the ghost stone
+
+
 21
 * board graphics and stone graphics complete
 * can now play using the board just like any physical board, 
