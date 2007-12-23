@@ -56,14 +56,14 @@ class abstractBoard:
         _logger.debug( "init baord size %d", boardSize )
 
     def neighbors(self,x):
-        """ Returns the coordinates of the 4 (resp. 3 resp. 2 at the side / in the corner) intersections
+        """ Returns the coordinates of the 4 (resp. 3 resp. 2 at the side 1 in the corner) intersections
             adjacent to the given one. """
-        if   x[0]== 1              :     l0 = [2]
-        elif x[0]== self.boardSize :     l0 = [self.boardSize-1]
+        if   x[0]== 0                :     l0 = [1]
+        elif x[0]== self.boardSize-1 :     l0 = [self.boardSize-2]
         else:                            l0 = [x[0]-1, x[0]+1]
 
-        if   x[1]== 1              :     l1 = [2]
-        elif x[1]== self.boardSize :     l1 = [self.boardSize-1]
+        if   x[1]== 0                :     l1 = [1]
+        elif x[1]== self.boardSize-1 :     l1 = [self.boardSize-2]
         else:                            l1 = [x[1]-1, x[1]+1]
 
         l = []
@@ -205,6 +205,7 @@ class GoGame(ExportedGObject):
 
         self.tube.watch_participants(self.participant_change_cb)
         self.boardWidget.connect('insert-requested', self.insert_requested_cb)
+
 
     def participant_change_cb(self, added, removed):
         # Initiator is player 0, other player is player 1.

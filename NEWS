@@ -1,3 +1,9 @@
+23
+* edge prisoners are recognized & removed
+* allow any board size
+* info panel reflects whose move
+* renamed pot file
+
 22
 * first test on XO works local no buddy panel
 * got rid of a stone placement bugs

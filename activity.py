@@ -23,13 +23,23 @@ logger = logging.getLogger('PlayGO')
 
 
 class PlayGo(Activity):
+    """
+    Enter the PlayGo activity.
+        1. intialize our parent object
+        2. create an empty abstract board
+        3. create the graphic objects, boardWidget, buddyPanel, InfoPanel
+        4. group them in layout containers
+        5. open a channel to the presence server
+        6.1 if creating the game, make me the only player and go into local play mode
+        6.2 if connecting to a neighborhood game, call the activity connection methods
+    """
     def __init__(self, handle):
         Activity.__init__(self, handle)
 
         logger.debug('Starting Playgo activity...')
 
         board = abstractBoard( 19 )
-        self.boardWidget = boardwidget.BoardWidget( board )
+        self.boardWidget = boardwidget.BoardWidget( board, self )
         self.buddies_panel = BuddiesPanel()
         self.info_panel = InfoPanel()
 
@@ -64,7 +74,7 @@ class PlayGo(Activity):
 
         # This displays the buddies_panel even if we fail to connect:
         self.buddies_panel.add_watcher(owner)
-        self.info_panel.show(_('To play, share or invite someone.'))
+        self.info_panel.show(_('Place a black stone to play locally. You may share or invite to play remotely'))
 
         self.initiating = None
 
@@ -189,6 +199,7 @@ class PlayGo(Activity):
             tube_conn = TubeConnection(self.conn,
                 self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
                 id, group_iface=self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP])
+            
             self.game = GoGame(tube_conn, self.boardWidget, self.initiating,
                 self.buddies_panel, self.info_panel, self.owner,
                 self._get_buddy, self)

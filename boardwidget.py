@@ -1,4 +1,5 @@
 import logging
+from gettext import gettext as _
 import cairo
 import gobject
 import gtk
@@ -17,7 +18,7 @@ class BoardWidget(gtk.EventBox):
             'insert-requested': (gobject.SIGNAL_RUN_FIRST, None, [int]),
         }
 
-    def __init__( self, aBoard ):
+    def __init__( self, aBoard, activity ):
         """
         Startup the board widget
           1. setup our signals: expose, insert, button and mouse movement
@@ -37,6 +38,7 @@ class BoardWidget(gtk.EventBox):
         self.connect('motion-notify-event', self.__class__.motion_cb)
         #self.connect('size-request', self.__class__.sizeRequest_cb)
 
+        self.activity = activity
         self.drawCoords = 1
         self.size = aBoard.size
         self.lastUnit = 0
@@ -66,11 +68,13 @@ class BoardWidget(gtk.EventBox):
         pixbufloader.close()
         self.pixBlack = pixbufloader.get_pixbuf()
         
-        logger.debug( "baord widget starts" )
+        logger.debug( "baord widget started" )
+
 
     def sizeRequest_cb(self, requistion ):
         requistion.width = 8
         requistion.height = 8
+
             
     def check_coord (self, x, y):
         """
@@ -78,10 +82,12 @@ class BoardWidget(gtk.EventBox):
         """
         return x >= 0 and x < self.size and y >= 0 and y < self.size
 
+
     def insert(self, dat, value):
-        """Return:
-            None : no winner
-            0, 1: player 0/1 wins the game
+        """
+        Perform a Stone placement, this is called directly from self
+        when playing a local game  or from the tube to a remote player
+        managed in game.py
         """
         color = dat >> 16
         x = dat & 0xff
@@ -96,26 +102,26 @@ class BoardWidget(gtk.EventBox):
         return None
 
 
-    def remove(self, column, value):
-        """Return:
-            None : no winner
-            0, 1: player 0/1 wins the game
-        """
-        y = column & 0xff
-        x = column >> 8
-        
-        logger.debug( 'remove stone event x=%d y=%d col=%d value=%d', x,y,column, value )
-        
-        assert x < self.myBoard.size
-        assert y < self.myBoard.size
-        
-        self.myBoard.setPointi( x, y, 0 )
-        return None
+#    def remove(self, column, value):
+#        """Return:
+#            None : no winner
+#            0, 1: player 0/1 wins the game
+#        """
+#        y = column & 0xff
+#        x = column >> 8
+#        
+#        logger.debug( 'remove stone event x=%d y=%d col=%d value=%d', x,y,column, value )
+#        
+#        assert x < self.myBoard.size
+#        assert y < self.myBoard.size
+#        
+#        self.myBoard.setPointi( x, y, 0 )
+#        return None
 
 
     def draw_background(self, rect, unit, ctx):
         """
-        set the board windows background to the board image
+        set the board window's background to the board image
         """
 
         ct = gtk.gdk.CairoContext(ctx)
@@ -126,7 +132,7 @@ class BoardWidget(gtk.EventBox):
 
     def draw_lines(self, rect, unit, ctx):
         """
-        draw the grid and star points on the board bitmap
+        draw the grid and star points onto the board bitmap
         """
         
         # single width balck lines
@@ -154,6 +160,8 @@ class BoardWidget(gtk.EventBox):
             ctx.arc( unit * 5, unit * 5, 3, 0, -1e-10)
             ctx.fill_preserve()
             ctx.stroke()
+        else :
+            seq = []
         
         # stroke in the star points
         #TODO: adjust size for teeny boards
@@ -201,6 +209,23 @@ class BoardWidget(gtk.EventBox):
         y = ( ( event.y - y0 ) / unit ) - 0.5
         return int(x), int(y)
 
+
+    def legal(self, x, y ):
+        """
+        boolean check if the stone play is legal
+        """
+        if  self.myBoard.status.has_key( (x,y) ) :
+            return False
+        
+        c = 'W'
+        if self.lastColor is 1 :
+            c = 'B'
+            
+#        if  not self.myBoard.legal( (x,y), c ) :
+#            return False
+        
+        logger.debug( " returning legal ")
+        return True
 
     def motion_cb(self, event):
         """
@@ -263,17 +288,20 @@ class BoardWidget(gtk.EventBox):
         logger.debug( 'Button release event x=%d y=%d, pixx=%d pixy=%d', x,y, event.x, event.y )
         
         if self.myGame is None :
-            
+                            
             if ( event.button != 3 ) :
-                if  self.myBoard.status.has_key( (x,y) ) :
+                #if  self.myBoard.status.has_key( (x,y) ):
+                if not self.legal( x, y ) :
                     return
                 else :
                     if self.lastColor is 1:
                         dat = dat | 0x10000
                         self.lastColor = 2;
+                        self.activity.info_panel.show(_("Black's turn "))
                     else :
                         dat = dat | 0x20000
                         self.lastColor = 1;
+                        self.activity.info_panel.show(_("White's turn "))
                         
                     self.lastX = 0;    
                     self.insert( dat, 1 )
