@@ -12,7 +12,7 @@ class InfoPanel(hippo.CanvasBox):
 
     def show(self, text):
         textwidget = hippo.CanvasText(text=text,
-            font_desc=pango.FontDescription('Sans 16'),
+            font_desc=pango.FontDescription('Sans 10'),
             color=style.COLOR_WHITE.get_int(),
             xalign=hippo.ALIGNMENT_CENTER)
         self.status_box.remove_all()

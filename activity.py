@@ -29,9 +29,10 @@ class PlayGo(Activity):
         2. create an empty abstract board
         3. create the graphic objects, boardWidget, buddyPanel, InfoPanel
         4. group them in layout containers
-        5. open a channel to the presence server
-        6.1 if creating the game, make me the only player and go into local play mode
-        6.2 if connecting to a neighborhood game, call the activity connection methods
+        5. create an ActivityToolBox
+        6. open a channel to the presence server
+        7.1 if creating the game, make me the only player and go into local play mode
+        7.2 if connecting to a neighborhood game, call the activity connection methods
     """
     def __init__(self, handle):
         Activity.__init__(self, handle)
@@ -131,7 +132,7 @@ class PlayGo(Activity):
             self.game.key_press_event(widget, event)
 
     def _shared_cb(self, activity):
-        logger.debug('My Connect activity was shared')
+        logger.debug('My PlayGo activity was shared')
         self.shared = True
         self.initiating = True
         self._setup()
