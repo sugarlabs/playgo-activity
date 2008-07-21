@@ -9,6 +9,9 @@ class InfoPanel(hippo.CanvasBox):
         self.status_box = hippo.CanvasBox(spacing=4, padding=5,
                 orientation=hippo.ORIENTATION_VERTICAL)
         self.append(self.status_box)
+        self.score_box = hippo.CanvasBox(spacing=4, padding=5,
+                orientation=hippo.ORIENTATION_VERTICAL)
+        self.append(self.score_box)
 
     def show(self, text):
         textwidget = hippo.CanvasText(text=text,
@@ -17,4 +20,12 @@ class InfoPanel(hippo.CanvasBox):
             xalign=hippo.ALIGNMENT_CENTER)
         self.status_box.remove_all()
         self.status_box.append(textwidget)
+        
+    def show_score(self,  text):
+        textwidget = hippo.CanvasText(text=text,
+            font_desc=pango.FontDescription('Sans 10'),
+            color=style.COLOR_WHITE.get_int(),
+            xalign=hippo.ALIGNMENT_CENTER)
+        self.score_box.remove_all()
+        self.score_box.append(textwidget)
 

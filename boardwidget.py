@@ -99,8 +99,13 @@ class BoardWidget(gtk.EventBox):
         assert y < self.myBoard.size
         
         self.myBoard.setPointi( x, y, color )
+        self.update_score(self.myBoard.score)
         return None
-
+        
+    def update_score(self,  score): 
+        if score == 0: 
+            return 0
+        self.activity.info_panel.show_score(_("Score is: Whites %(W)d - Blacks %(B)d" % score))
 
 #    def remove(self, column, value):
 #        """Return:
@@ -215,14 +220,20 @@ class BoardWidget(gtk.EventBox):
         boolean check if the stone play is legal
         """
         if  self.myBoard.status.has_key( (x,y) ) :
+            self.activity.info_panel.show(_("There already is a stone there!"))
             return False
         
         c = 'W'
         if self.lastColor is 1 :
             c = 'B'
             
-#        if  not self.myBoard.legal( (x,y), c ) :
-#            return False
+        if  not self.myBoard.legal( (x,y), c ) :
+            self.activity.info_panel.show(_("Illegal move"))
+            return False
+        
+        if self.myBoard.checkKo( (x, y), c):
+            self.activity.info_panel.show(_("Ko violation!"))
+            return False
         
         logger.debug( " returning legal ")
         return True

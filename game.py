@@ -52,8 +52,12 @@ class abstractBoard:
         self.status = {}
         self.undostack = []
         self.boardSize = boardSize
+        self.score = {'B' : 0,  'W' : 0}
         _logger.setLevel( logging.DEBUG )
-        _logger.debug( "init baord size %d", boardSize )
+        _logger.debug( "init board size %d", boardSize )
+
+    def increase_score(self, color):
+        self.score[color] = self.score[color] + 1
 
     def neighbors(self,x):
         """ Returns the coordinates of the 4 (resp. 3 resp. 2 at the side 1 in the corner) intersections
@@ -81,39 +85,69 @@ class abstractBoard:
         """ This plays a color=black/white stone at pos, if that is a legal move
             (disregarding ko), and deletes stones captured by that move.
             It returns 1 if the move has been played, 0 if not. """
-
         if self.status.has_key(pos):                # check if empty
             return 0
 
-        l = self.legal(pos,color)
-        if l:                                       # legal move?
-            captures = l[1]
-            for x in captures: del self.status[x]   # remove captured stones, if any
+        if self.legal(pos,color): # legal move?
+            self.status[pos] = color
+            captures = self.get_captures(pos, color)
+            if captures:
+                for x in captures: 
+                    del self.status[x]   # remove captured stones, if any
+                    self.increase_score(self.invert(color))
             self.undostack.append((pos,color,captures))   # remember move + captured stones for easy undo
-            return 1
-        else: return 0
-
-    def legal(self, pos, color):
-        """ Check if a play by color at pos would be a legal move. """
+            return self.score
+        else: 
+            return 0
+    
+    def get_captures(self,  pos,  color):
+        """Returns a list of captured stones resulting from placing a color stone at pos """
         c = [] # captured stones
+        
         for x in self.neighbors(pos):
             if self.status.has_key(x) and self.status[x]==self.invert(color):
-                c = c + self.hasNoLibExcP(x, pos)        
-
-        self.status[pos]=color
-
+                c = c + self.hasNoLibExcP(x, self.invert(color), pos)
+                
         if c:
             captures = []
             for x in c:
                 if not x in captures: captures.append(x)
-            return (1, captures)
-
-        if self.hasNoLibExcP(pos):
-            del self.status[pos]
+            return captures
+            
+        return 0
+        
+    def checkKo(self,  pos, color):
+        '''
+        Check if a move by color at pos would be a basic Ko infraction
+        '''
+        # Basically what we need to check, is if the current play would undo
+        #   all that was done by the last entry in undostack (capture what was placed
+        #   and place what was captured). 
+        if self.undostack:
+            lastpos,  lastcolor,  lastcaptures = self.undostack[-1]
+            currentcaptures = self.get_captures(pos, color)
+            if lastcaptures != 0 and currentcaptures != 0:
+                if lastcolor != color and lastcaptures[0] == pos and lastpos == currentcaptures[0]:
+                    return 1
+        return 0
+        
+    def legal(self, pos, color):
+        """ Check if a play by color at pos would be a legal move. """
+        if self.status.has_key(pos):
             return 0
-        else: return (1, [])
+            
+        # If the play at pos would leave that stone without liberties, we have two possibilities: 
+        # 1- It's a capturing move
+        # 2- It's an illegal move
+        if self.hasNoLibExcP(pos, color): 
+            # Check if it would capture any stones
+            if self.get_captures(pos, color):
+                return 1
+            # It didnt, so I guess it's illegal
+            return 0
+        else: return 1
 
-    def hasNoLibExcP(self, pos, exc = None):
+    def hasNoLibExcP(self, pos, color, exc = None):
         """ This function checks if the string (=solidly connected) of stones containing
             the stone at pos has a liberty (resp. has a liberty besides that at exc).
             If no liberties are found, a list of all stones in the string is returned.
@@ -136,10 +170,10 @@ class abstractBoard:
             n = []         # this will contain the stones found in this iteration of the loop
             for x in newlyFound:
                 for y in self.neighbors(x):
-                    if not self.status.has_key(y) and y != exc:    # found a liberty
+                    if not self.status.has_key(y) and y != exc and y != pos:    # found a liberty
                         return []
-                    elif self.status.has_key(y) and self.status[y]==self.status[x] \
-                         and not y in st and not y in newlyFound: # found another stone of same color
+                    elif self.status.has_key(y) and self.status[y]==color \
+                        and not y in newlyFound and not y in st: # found another stone of same color
                         n.append(y)
                         foundNew = 1
 
@@ -190,6 +224,7 @@ class GoGame(ExportedGObject):
         self.is_initiator = is_initiator
         self.entered = False
         self.player_id = None
+        self.active_player = 1
         self.buddies_panel = buddies_panel
         self.info_panel = info_panel
         self.owner = owner
@@ -315,7 +350,7 @@ class GoGame(ExportedGObject):
             self.change_turn()
 
     def insert_cb(self, column, sender=None):
-        # Someone placed a stone
+        # Someone placed a stone        
         handle = self.tube.bus_name_to_handle[sender]
         _logger.debug('Insert(%d) from %s', column, sender)
 
