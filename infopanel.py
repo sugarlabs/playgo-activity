@@ -1,31 +1,20 @@
-import hippo
+import gtk
 import pango
 from sugar.graphics import style
 
-class InfoPanel(hippo.CanvasBox):
+class InfoPanel(gtk.VBox):
     def __init__(self):
-        hippo.CanvasBox.__init__(self, spacing=4, padding=5,
-                orientation=hippo.ORIENTATION_VERTICAL)
-        self.status_box = hippo.CanvasBox(spacing=4, padding=5,
-                orientation=hippo.ORIENTATION_VERTICAL)
-        self.append(self.status_box)
-        self.score_box = hippo.CanvasBox(spacing=4, padding=5,
-                orientation=hippo.ORIENTATION_VERTICAL)
-        self.append(self.score_box)
+        gtk.VBox.__init__(self)
+        self.status_label = gtk.Label('Status')
+        self.pack_start(self.status_label, False)
+        self.score_label = gtk.Label('Score')
+        self.pack_start(self.score_label,  False)
+        self.show_all()
 
     def show(self, text):
-        textwidget = hippo.CanvasText(text=text,
-            font_desc=pango.FontDescription('Sans 10'),
-            color=style.COLOR_WHITE.get_int(),
-            xalign=hippo.ALIGNMENT_CENTER)
-        self.status_box.remove_all()
-        self.status_box.append(textwidget)
-        
+        self.status_label.set_text(text)
+
     def show_score(self,  text):
-        textwidget = hippo.CanvasText(text=text,
-            font_desc=pango.FontDescription('Sans 10'),
-            color=style.COLOR_WHITE.get_int(),
-            xalign=hippo.ALIGNMENT_CENTER)
-        self.score_box.remove_all()
-        self.score_box.append(textwidget)
+        self.score_label.set_text(text)
+
 

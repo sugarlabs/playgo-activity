@@ -3,7 +3,6 @@ from gettext import gettext as _
 
 import dbus
 import gtk
-import hippo
 import telepathy
 import telepathy.client
 
@@ -36,37 +35,42 @@ class PlayGo(Activity):
     """
     def __init__(self, handle):
         Activity.__init__(self, handle)
+        self._name = handle
+        
+        self.set_title('PlayGo')
 
         logger.debug('Starting Playgo activity...')
+        
+        toolbox = ActivityToolbox(self)
+        self.set_toolbox(toolbox)
 
         board = abstractBoard( 19 )
         self.boardWidget = boardwidget.BoardWidget( board, self )
         self.buddies_panel = BuddiesPanel()
         self.info_panel = InfoPanel()
 
-        vbox = hippo.CanvasBox(spacing=4,
-            orientation=hippo.ORIENTATION_VERTICAL)
-
-        hbox = hippo.CanvasBox(spacing=4,
-            orientation=hippo.ORIENTATION_HORIZONTAL)
-
-        hbox.append(hippo.CanvasWidget(widget=self.boardWidget), hippo.PACK_EXPAND )
-        #hbox.append(self.buddies_panel)
+        #Prepare the main box
+        self._main_view = gtk.HBox()
         
-        vbox.append(hbox, hippo.PACK_EXPAND)
-        vbox.append(self.info_panel, hippo.PACK_END)
-        info_panels = InfoPanel()
-        info_panels.show( " hello there I am the side layout test ")
-        #hbox.append(info_panels)
+        #Prepare the left box
+        self.left_view = gtk.VBox()
+        self.left_view.pack_start(self.boardWidget)
+        self.info_panel = InfoPanel()        
+        self.left_view.pack_start(self.info_panel,  False)
+
+        #Pack the left view
+        self._main_view.pack_start(self.left_view)
         
-        canvas = hippo.Canvas()
-        canvas.set_root(vbox)
-        self.set_canvas(canvas)
+        #Prepare the right view
+        self.right_view = gtk.VBox()
+        self.right_view.pack_start(gtk.Label('Aca va el coso'),  False)
+        
+        #Pack the right view
+        self._main_view.pack_end(self.right_view,  False)
+        
+        #Set canvas and show all
+        self.set_canvas(self._main_view)
         self.show_all()
-
-        toolbox = ActivityToolbox(self)
-        self.set_toolbox(toolbox)
-        toolbox.show()
 
         self.pservice = presenceservice.get_instance()
         owner = self.pservice.get_owner()
