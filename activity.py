@@ -53,7 +53,7 @@ class PlayGo(Activity):
         self._main_view = gtk.HBox()
         
         #Prepare the left box
-        self.left_view = gtk.VBox()
+        self.left_view = gtk.VBox(False)
         self.left_view.pack_start(self.boardWidget)
         self.info_panel = InfoPanel()        
         self.left_view.pack_start(self.info_panel,  False)
@@ -63,7 +63,6 @@ class PlayGo(Activity):
         
         #Prepare the right view
         self.right_view = gtk.VBox()
-        self.right_view.pack_start(gtk.Label('Aca va el coso'),  False)
         
         #Pack the right view
         self._main_view.pack_end(self.right_view,  False)
