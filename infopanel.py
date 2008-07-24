@@ -6,9 +6,9 @@ class InfoPanel(gtk.VBox):
     def __init__(self):
         gtk.VBox.__init__(self)
         self.status_label = gtk.Label('Status')
-        self.pack_start(self.status_label, False, True, 10)
+        self.pack_start(self.status_label, True, True, 10)
         self.score_label = gtk.Label('Score')
-        self.pack_start(self.score_label,  False, True, 10)
+        self.pack_start(self.score_label, True, True, 10)
         self.show_all()
 
     def show(self, text):

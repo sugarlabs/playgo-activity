@@ -50,23 +50,32 @@ class PlayGo(Activity):
         self.info_panel = InfoPanel()
 
         #Prepare the main box
-        self._main_view = gtk.HBox()
+        self._main_view = gtk.VBox()
         
-        #Prepare the left box
-        self.left_view = gtk.VBox(False)
-        self.left_view.pack_start(self.boardWidget)
+        #Prepare the top box
+        self.top_view = gtk.HBox(False, 10)
+        self.boardWidget.set_size_request(770, 770)
+        self.top_view.pack_start(self.boardWidget, False)
+        
         self.info_panel = InfoPanel()        
-        self.left_view.pack_start(self.info_panel,  False)
 
-        #Pack the left view
-        self._main_view.pack_start(self.left_view)
+        self.buttons_box = gtk.VBox()
+        #Pass button
+        self.pass_button = gtk.Button(_('Pass'))
+        self.pass_button.connect("clicked",  self.pass_cb)
+#        self.buttons_box.pack_start(self.pass_button,  False,  False, 10)
         
-        #Prepare the right view
-        self.right_view = gtk.VBox()
+        #Undo button
+        self.undo_button = gtk.Button(_('Undo'))
+        self.pass_button.connect("clicked", self.undo_cb)
+#        self.buttons_box.pack_start(self.undo_button, False, False, 10)
         
-        #Pack the right view
-        self._main_view.pack_end(self.right_view,  False)
-        
+        self.top_view.pack_start(self.buttons_box,  False)
+
+        #Pack the top box and the InfoPanel into the main box
+        self._main_view.pack_start(self.top_view)
+        self._main_view.pack_start(self.info_panel)
+
         #Set canvas and show all
         self.set_canvas(self._main_view)
         self.show_all()
@@ -103,6 +112,12 @@ class PlayGo(Activity):
             #self.buddies_panel.set_count(owner, 69)
 
         self.connect('key-press-event', self.key_press_cb)
+
+    def pass_cb(self, widget, data=None):
+        self.game.change_turn()
+        
+    def undo_cb(self, widget, data=None):
+        pass
 
     def _get_buddy(self, cs_handle):
         """Get a Buddy from a channel specific handle."""
