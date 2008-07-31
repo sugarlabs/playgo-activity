@@ -1,6 +1,5 @@
 import logging
 
-from Numeric import *
 from gettext import gettext as _
 import gtk
 
@@ -188,7 +187,8 @@ class abstractBoard:
             if self.undostack:
                 pos, color, captures = self.undostack.pop()
                 del self.status[pos]
-                for p in captures: self.status[p] = self.invert(color)
+                if captures:
+                    for p in captures: self.status[p] = self.invert(color)
 
     def remove(self, pos):
         """ Remove a stone form the board, and store this action in undostack. """
