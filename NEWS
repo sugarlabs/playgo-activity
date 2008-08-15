@@ -1,0 +1,13 @@
+2
+* Almost complete rewrite by aa. New features: 
+  - Cleaner code
+  - Save and resume games from Journal
+  - Different Board sizes
+  - Restart game button
+  - Better collaboration (turn enforcement, notifications)
+  - Pass and Undo in hotseat (not shared) mode. 
+  - Full Spanish translation
+
+1
+* New activity PlayGo written by Gerard J. Cerchio (www.circlesoft.com)
+

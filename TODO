@@ -1,0 +1,8 @@
+  TODO: 
+        - Support spectators
+        - Add a pretty panel to display who's turn it is, and who is spectating
+        - Stop the game after two passes, and detect a winner. 
+        - Add Atari Go mode. 
+        - Add a 'Help' button that will take you to the PlayGo wiki page. 
+        - Integrate with GnuGO
+	- Add different types of Ko and different rulesets.

@@ -1,0 +1,17 @@
+activity.py
+gametoolbar.py
+collaboration.py
+boardwidget.py
+gogame.py
+infopanel.py
+activity/activity-go.svg
+activity/activity.info
+images/b.gif
+images/black.gif
+images/board.gif
+images/BsTurn.gif
+images/bw.gif
+images/w.gif
+images/white.gif
+images/WsTurn.gif
+images/gtk-refresh.svg
