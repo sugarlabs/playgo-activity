@@ -19,7 +19,18 @@
 from subprocess import Popen, PIPE
 import logging
 
+from os.path import exists, join, abspath
+from os import pathsep, environ
+from string import split
+
 logger = logging.getLogger('PlayGo')
+
+def search_for_gnugo():
+    paths = split(environ['PATH'], pathsep)
+    for path in paths:
+        if exists(join(path, 'gnugo')):
+            return abspath(join(path, 'gnugo'))
+    return False
 
 class gnugo:
     ''' A wrapper for talking to gnugo over GTP '''
