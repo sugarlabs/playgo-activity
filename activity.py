@@ -141,6 +141,7 @@ class PlayGo(Activity):
     def undo_cb(self, widget, data=None):
         if self.game.undo():
             self.board.queue_draw()
+            self.show_score()
             self.change_turn()
             if not self.get_shared(): self.change_player_color()
         

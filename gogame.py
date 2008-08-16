@@ -192,7 +192,9 @@ class GoGame:
                 pos, color, captures = self.undostack.pop()
                 del self.status[pos]
                 if captures:
-                    for p in captures: self.status[p] = self.invert(color)
+                    for p in captures: 
+                        self.status[p] = self.invert(color)
+                        self.score[color] -= 1
                 return True
             else:
                 return False
