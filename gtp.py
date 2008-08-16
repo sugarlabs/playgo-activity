@@ -34,9 +34,8 @@ def search_for_gnugo():
 
 class gnugo:
     ''' A wrapper for talking to gnugo over GTP '''
-    def __init__(self, boardsize=19, color='black', handicap=0, komi=5.5, level=3):
+    def __init__(self, boardsize=19, handicap=0, komi=5.5, level=3):
         ''' Start the gnugo subprocess '''
-        self.color = color
         try: 
             self.gnugo = Popen(['gnugo', '--mode', 'gtp', '--boardsize', str(boardsize),
                                 '--handicap', str(handicap), '--komi', str(komi), '--level', str(level) ], 
@@ -57,8 +56,8 @@ class gnugo:
     def _coords_to_xy(self, coords):
         return int(dict(zip('ABCDEFGHIJKLMNOPQRSTUVWXYZ', range(0, 26)))[coords[0]]), int(coords[1:])
     
-    def make_play(self, x, y):
-        self.stdin.write('play %s %s\n' % (self.color, self._xy_to_coords(x, y)))
+    def make_play(self, color, x, y):
+        self.stdin.write('play %s %s\n' % (color, self._xy_to_coords(x, y)))
         self.stdin.flush()
         output = self.stdout.readline()
         self.stdout.readline()
