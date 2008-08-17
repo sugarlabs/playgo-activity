@@ -36,6 +36,7 @@ class gnugo:
     ''' A wrapper for talking to gnugo over GTP '''
     def __init__(self, boardsize=19, handicap=0, komi=5.5, level=3):
         ''' Start the gnugo subprocess '''
+        self.size = boardsize
         try: 
             self.gnugo = Popen(['gnugo', '--mode', 'gtp', '--boardsize', str(boardsize),
                                 '--handicap', str(handicap), '--komi', str(komi), '--level', str(level) ], 
@@ -51,14 +52,21 @@ class gnugo:
         self.stdin.write('quit \n')
     
     def _xy_to_coords(self, x, y):
-        return dict(zip(range(0, 26), 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'))[x] + str(y)
+        return dict(zip(range(0, 25), 'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
         
     def _coords_to_xy(self, coords):
-        return int(dict(zip('ABCDEFGHIJKLMNOPQRSTUVWXYZ', range(0, 26)))[coords[0]]), int(coords[1:])
+        return int(dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(0, 25)))[coords[0]]), self.size - int(coords[1:])
+        
+    def short_to_long_colors(self, short_color):
+        if short_color == 'B':
+            return 'black'
+        return 'white'
     
     def make_play(self, color, x, y):
+        color = self.short_to_long_colors(color)
         self.stdin.write('play %s %s\n' % (color, self._xy_to_coords(x, y)))
         self.stdin.flush()
+        logger.debug('Sent play by %s at %s to gnugo', color, self._xy_to_coords(x, y))
         output = self.stdout.readline()
         self.stdout.readline()
         if output[0] == '?':
@@ -66,6 +74,7 @@ class gnugo:
         return True
     
     def get_move(self, color):
+        color = self.short_to_long_colors(color)
         self.stdin.write('genmove %s\n' % color)
         self.stdin.flush()
         output = self.stdout.readline()
@@ -73,4 +82,21 @@ class gnugo:
         if output[0] == '?':
             # FIXME: Handle error
             return False
+        elif output[2:] == 'PASS\n':
+            return -1, -1
+        logger.debug('Generated move %s', output[2:])
         return self._coords_to_xy(output[2:])
+
+    def undo(self):
+        self.stdin.write('undo \n')
+        self.stdin.flush()
+        self.stdout.readline()
+        self.stdout.readline()
+        
+    def dump_board(self):
+        self.stdin.write('showboard \n')
+        self.stdin.flush()
+        output = ''
+        for i in range(0, self.size+4):
+            output = output + self.stdout.readline()
+        logger.debug('%s', output)
