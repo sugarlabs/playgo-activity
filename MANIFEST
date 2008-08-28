@@ -4,6 +4,7 @@ collaboration.py
 boardwidget.py
 gogame.py
 infopanel.py
+gtp.py
 activity/activity-go.svg
 activity/activity.info
 images/b.gif

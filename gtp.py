@@ -49,13 +49,15 @@ class gnugo:
             self.stdout = self.gnugo.stdout
     
     def __del__(self):
+        logger.debug('Closing gnugo')
         self.stdin.write('quit \n')
+        self.stdin.flush()
     
     def _xy_to_coords(self, x, y):
-        return dict(zip(range(0, 25), 'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
+        return dict(zip(range(25), 'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
         
     def _coords_to_xy(self, coords):
-        return int(dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(0, 25)))[coords[0]]), self.size - int(coords[1:])
+        return int(dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(25)))[coords[0]]), self.size - int(coords[1:])
         
     def short_to_long_colors(self, short_color):
         if short_color == 'B':
@@ -88,15 +90,21 @@ class gnugo:
         return self._coords_to_xy(output[2:])
 
     def undo(self):
-        self.stdin.write('undo \n')
+        self.stdin.write('undo\n')
+        self.stdin.flush()
+        self.stdout.readline()
+        self.stdout.readline()
+        
+    def clear(self):
+        self.stdin.write('clear_board\n')
         self.stdin.flush()
         self.stdout.readline()
         self.stdout.readline()
         
     def dump_board(self):
-        self.stdin.write('showboard \n')
+        self.stdin.write('showboard\n')
         self.stdin.flush()
         output = ''
         for i in range(0, self.size+4):
             output = output + self.stdout.readline()
-        logger.debug('%s', output)
+        return output

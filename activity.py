@@ -31,6 +31,7 @@ from gogame import GoGame
 import boardwidget
 import infopanel
 from collaboration import CollaborationWrapper
+from gtp import gnugo
 
 
 logger = logging.getLogger('PlayGo')
@@ -52,12 +53,15 @@ class PlayGo(Activity):
         toolbox.add_toolbar(_('Game'), self.gameToolbar)
         self.gameToolbar.connect('game-restart', self.restart_game)
         self.gameToolbar.connect('game-board-size', self.board_size_change)
+        self.gameToolbar.connect('ai-activated', self.ai_activated_cb)
+        self.gameToolbar.connect('ai-deactivated', self.ai_deactivated_cb)
         self.gameToolbar.show()  
         
         # Initialize the game
         self.game = GoGame(self.size)
         self.CurrentColor = 'B'
         self.PlayerColor = 'B'
+        self.ai_activated = False
         self.set_up_ui()
         
         if not handle.object_id:
@@ -115,7 +119,18 @@ class PlayGo(Activity):
         self.set_canvas(self.main_view)
         self.show_all()
 
-    def insert_cb(self, widget, x, y, announce=True):
+    def insert_cb(self, widget, x, y, announce=True, ai_play=False):
+        ''' The insert function. It makes the play and manages turn changing
+            stone drawing, etc. 
+            
+        Parameters x and y are the coordinates of the play ((0,0) is top left), 
+        widget points to the widget that emitted the signal connected to this
+        function, announce is True when we need to announce this play to 
+        other people collaborating, and ai_play is True when this is called 
+        by the AI, so we know not to ask for an AI play again '''
+        
+        # Check if it's our turn only if it's a local play (announce is True)
+        # Calls by other players will always be out of turn for us. 
         if announce and self.get_currentcolor() != self.get_playercolor():
             logger.debug('Play at %s x %s was out-of-turn!', x, y)
             self.infopanel.show('It\'s not your turn!')
@@ -128,6 +143,8 @@ class PlayGo(Activity):
                 return False
             # Make the play
             captures = self.game.play((x, y), self.get_currentcolor())
+            if self.ai_activated and not ai_play: 
+                self.notify_ai(x, y, self.get_currentcolor())
             self.gameToolbar.grey_out_size_change()
             if captures: self.redraw_captures(captures)
             self.show_score()
@@ -136,14 +153,28 @@ class PlayGo(Activity):
         if self.get_shared() and announce:
             self.collaboration.Play(x, y)
         self.change_turn()
-        if not self.get_shared(): self.change_player_color()
+        # If we are playing a local game with AI turned off, change the color
+        if not self.get_shared() and not self.ai_activated:
+            self.change_player_color()
+        # Else, if the AI is on, and this wasn't played by it, request a play by it. 
+        elif self.ai_activated: 
+            self.change_player_color()
+            if not ai_play:
+                self.play_ai()
 
     def undo_cb(self, widget, data=None):
         if self.game.undo():
             self.board.queue_draw()
+            # If playing against AI undo twice
+            if self.ai_activated: 
+                self.ai.undo()
+                self.game.undo()
+                self.ai.undo()
+            else:
+                self.change_turn()
+            if not self.get_shared() and not self.ai_activated:
+                self.change_player_color()
             self.show_score()
-            self.change_turn()
-            if not self.get_shared(): self.change_player_color()
         
     def pass_cb(self, widget, data=None):
         if self.get_shared(): 
@@ -243,6 +274,8 @@ class PlayGo(Activity):
         self.board.status = self.game.status
         self.board.do_expose_event()
         self.show_score()
+        if self.ai_activated:
+            self.ai.clear()
         
     def board_size_change(self, widget, size):
         if size == self.size:
@@ -257,6 +290,32 @@ class PlayGo(Activity):
         self.board.connect('motion-notify-event', self.board_motion_cb)
         self.board.connect('insert-requested', self.insert_cb)
         self.board.show()
+        if self.ai_activated:
+            del self.ai
+            self.ai = gnugo(boardsize=self.size)
+        
+    def ai_activated_cb(self, widget):
+        self.restart_game()
+        self.ai_activated = True
+        self.ai = gnugo(boardsize=self.size)
+        self._alert(_('AI'), _('PlayGo AI Activated'))
+        
+    def ai_deactivated_cb(self, widget):
+        self.ai_activated = False
+        del self.ai
+        self._alert(_('AI'), _('PlayGo AI Deactivated'))
+        
+    def notify_ai(self, x, y, color):
+        if color == self.get_playercolor(): 
+            logger.debug('Notifying AI of play by %s at %s x %s', color, x, y)
+            self.ai.make_play(color, x, y)
+            
+    def play_ai(self):
+        if self.get_currentcolor() == self.get_playercolor():
+            x, y = self.ai.get_move(self.get_currentcolor())
+            logger.debug('Got play %s x %s from AI', x, y)
+            self.insert_cb(None, x, y, ai_play=True)
+            #logger.debug('Dumping board: %s', self.ai.dump_board())
         
     def show_score(self):
         self.infopanel.show_score(_("Score is: Whites %(W)d - Blacks %(B)d" % self.game.get_score()))

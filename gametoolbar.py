@@ -27,6 +27,8 @@ from sugar.graphics.objectchooser import ObjectChooser
 import logging
 from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, TYPE_NONE, TYPE_INT
 
+from gtp import search_for_gnugo
+
 logger = logging.getLogger('PlayGo')
 
 class GameToolbar(gtk.Toolbar):
@@ -34,6 +36,8 @@ class GameToolbar(gtk.Toolbar):
 
     __gsignals__ = {
         'game-restart': (SIGNAL_RUN_FIRST, TYPE_NONE, []), 
+        'ai-activated': (SIGNAL_RUN_FIRST, TYPE_NONE, []), 
+        'ai-deactivated': (SIGNAL_RUN_FIRST, TYPE_NONE, []), 
         'game-board-size': (SIGNAL_RUN_FIRST, TYPE_NONE, [TYPE_INT]), 
     }
     
@@ -67,6 +71,22 @@ class GameToolbar(gtk.Toolbar):
         self._add_widget(self._size_combo)
         self._size_combo.combo.set_active(0)
         
+        # Separator
+        separator = gtk.SeparatorToolItem()
+        separator.set_draw(True)
+        self.insert(separator, -1)
+        
+        # Artificial Intelligence Button
+        self._ai_button = gtk.ToggleToolButton()
+        if search_for_gnugo():
+            self._ai_button.connect('toggled', self._ai_toggled_cb)
+            self._ai_button.set_label(_('Play against PlayGo!'))
+        else:
+            self._ai_button.set_label(_('You need to install gnugo to play against PlayGo'))
+            self._ai_button.set_sensitive(False)
+        self.insert(self._ai_button, -1)
+        self._ai_button.show()
+        
     def _add_widget(self, widget, expand=False):
         tool_item = gtk.ToolItem()
         tool_item.set_expand(expand)
@@ -95,3 +115,12 @@ class GameToolbar(gtk.Toolbar):
         size_index = self._sizes.index(size+' X '+size)
         self._size_combo.combo.set_active(int(size_index))
         self._size_combo.combo.handler_unblock(self.size_handle_id)
+
+    def _ai_toggled_cb(self, widget):
+        if widget.get_active():
+            self.emit('ai-activated')
+        else:
+            self.emit('ai-deactivated')
+        
+    def grey_out_ai(self):
+        self._ai_button.set_sensitive(False)

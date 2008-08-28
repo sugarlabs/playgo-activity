@@ -49,6 +49,7 @@ class CollaborationWrapper(ExportedGObject):
     def _shared_cb(self, activity):
         self.activity.gameToolbar.grey_out_size_change()
         self.activity.gameToolbar.grey_out_restart()
+        self.activity.gameToolbar.grey_out_ai()
         self._sharing_setup()
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].OfferDBusTube(
             SERVICE, {})
@@ -58,6 +59,7 @@ class CollaborationWrapper(ExportedGObject):
     def _joined_cb(self, activity):
         self.activity.gameToolbar.grey_out_size_change()
         self.activity.gameToolbar.grey_out_restart()
+        self.activity.gameToolbar.grey_out_ai()
         self._sharing_setup()
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
             reply_handler=self._list_tubes_reply_cb, 
