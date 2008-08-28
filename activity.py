@@ -270,6 +270,8 @@ class PlayGo(Activity):
         
     def restart_game(self, widget=None):
         logger.debug('Received restart signal!')
+        self.CurrentColor = 'B'
+        self.PlayerColor = 'B'
         self.game.clear()
         self.board.status = self.game.status
         self.board.do_expose_event()
