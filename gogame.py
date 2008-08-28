@@ -185,6 +185,27 @@ class GoGame:
 
         return st     # no liberties found, return list of all stones connected to the original one
 
+    def get_territories(self):
+        def get_group(self, first_element, color):
+            current_group = [first_element]
+            for current_element in current_group:
+                for x in self.neighbors(current_element):
+                    if self.status.has_key(x):
+                       if self.status[x] != color:
+                            return None
+                    elif not x in current_group:
+                        current_group.append(x)
+            return set(current_group)
+            
+        groups = {'B':set(), 'W':set()}
+        for x in self.status.keys():
+            for n in self.neighbors(x):
+                if not self.status.has_key(n):
+                    new_group = get_group(self, n, self.status[x])
+                    if new_group: 
+                        groups[self.status[x]] |= new_group
+        return groups
+
     def undo(self, no=1):
         """ Undo the last no moves. """
         for i in range(no):
