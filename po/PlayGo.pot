@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-14 10:24-0300\n"
+"POT-Creation-Date: 2008-08-28 17:24-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,61 +20,119 @@ msgstr ""
 msgid "PlayGo"
 msgstr ""
 
-#: gogame.py:137
+#: gogame.py:138
 msgid "There already is a stone there!"
 msgstr ""
 
-#: gogame.py:139
+#: gogame.py:140
 msgid "Ko violation!"
 msgstr ""
 
-#: gogame.py:149
+#: gogame.py:150
 msgid "Illegal move."
 msgstr ""
 
-#: activity.py:51
+#: activity.py:55
 msgid "Game"
 msgstr ""
 
-#: activity.py:65
+#: activity.py:71
 msgid "Welcome to PlayGo!"
 msgstr ""
 
-#: activity.py:101
+#: activity.py:107
 msgid "Pass"
 msgstr ""
 
-#: activity.py:106
+#: activity.py:112
 msgid "Undo"
 msgstr ""
 
-#: activity.py:259
+#: activity.py:139 activity.py:197
+msgid "It's not your turn!"
+msgstr ""
+
+#: activity.py:158
+msgid "Opponent passed"
+msgstr ""
+
+#: activity.py:255
+msgid "White's turn"
+msgstr ""
+
+#: activity.py:257
+msgid "Black's turn"
+msgstr ""
+
+#: activity.py:309
+msgid "Blacks win!"
+msgstr ""
+
+#: activity.py:311
+msgid "Whites win!"
+msgstr ""
+
+#: activity.py:313
+msgid "There was a tie!"
+msgstr ""
+
+#: activity.py:314
+#, python-format
+msgid "Game ended! %s"
+msgstr ""
+
+#: activity.py:315
+#, python-format
+msgid "Final score: Whites %(W)d - Blacks %(B)d"
+msgstr ""
+
+#: activity.py:339 activity.py:344
+msgid "AI"
+msgstr ""
+
+#: activity.py:339
+msgid "PlayGo AI Activated"
+msgstr ""
+
+#: activity.py:344
+msgid "PlayGo AI Deactivated"
+msgstr ""
+
+#: activity.py:359
 #, python-format
 msgid "Score is: Whites %(W)d - Blacks %(B)d"
 msgstr ""
 
-#: activity.py:275
+#: activity.py:375
 msgid "Buddy joined"
 msgstr ""
 
-#: activity.py:275
+#: activity.py:375
 #, python-format
 msgid "%s joined"
 msgstr ""
 
-#: activity.py:278
+#: activity.py:378
 msgid "Buddy left"
 msgstr ""
 
-#: activity.py:278
+#: activity.py:378
 #, python-format
 msgid "%s left"
 msgstr ""
 
-#: gametoolbar.py:50
+#: gametoolbar.py:55
 msgid "Restart Game"
 msgstr ""
 
-#: gametoolbar.py:59
+#: gametoolbar.py:64
 msgid "Board size"
+msgstr ""
+
+#: gametoolbar.py:83
+msgid "Play against PlayGo!"
+msgstr ""
+
+#: gametoolbar.py:85
+msgid "You need to install gnugo to play against PlayGo"
 msgstr ""
