@@ -37,6 +37,7 @@ from gtp import gnugo
 logger = logging.getLogger('PlayGo')
 
 DEFAULT_SIZE = 19
+DEFAULT_KOMI = 5.5
 
 class PlayGo(Activity):
     def __init__(self, handle):
@@ -45,6 +46,7 @@ class PlayGo(Activity):
         logger.debug('Initiating PlayGo')
         
         self.size = DEFAULT_SIZE
+        self.komi = DEFAULT_KOMI
         
         # Set the activity toolbox
         toolbox = ActivityToolbox(self)
@@ -61,6 +63,7 @@ class PlayGo(Activity):
         self.game = GoGame(self.size)
         self.CurrentColor = 'B'
         self.PlayerColor = 'B'
+        self.pass_count = 0
         self.ai_activated = False
         self.set_up_ui()
         
@@ -133,10 +136,11 @@ class PlayGo(Activity):
         # Calls by other players will always be out of turn for us. 
         if announce and self.get_currentcolor() != self.get_playercolor():
             logger.debug('Play at %s x %s was out-of-turn!', x, y)
-            self.infopanel.show('It\'s not your turn!')
+            self.infopanel.show(_('It\'s not your turn!'))
             return False
         # Make the play only if it wasn't a pass move. 
         if x != -1:
+            self.pass_count = 0
             error = self.game.illegal(x, y, self.get_currentcolor())
             if error:
                 self.infopanel.show(error)
@@ -149,9 +153,17 @@ class PlayGo(Activity):
             if captures: self.redraw_captures(captures)
             self.show_score()
             self.board.draw_stone(x, y, self.get_currentcolor(), widget)
+        # Player passed
+        else:
+            self.infopanel.show(_('Opponent passed'))
+            self.pass_count += 1
         # Announce the local play
         if self.get_shared() and announce:
             self.collaboration.Play(x, y)
+        # If this is the second consecutive pass, the game ends
+        if self.pass_count == 2:
+            self.game_end()
+            return
         self.change_turn()
         # If we are playing a local game with AI turned off, change the color
         if not self.get_shared() and not self.ai_activated:
@@ -179,13 +191,17 @@ class PlayGo(Activity):
     def pass_cb(self, widget, data=None):
         if self.get_shared(): 
             if self.get_currentcolor() == self.get_playercolor():
+                self.pass_count += 1
                 self.collaboration.Play(-1, -1)
             else:
-                self.infopanel.show('It\'s not your turn!')
+                self.infopanel.show(_('It\'s not your turn!'))
                 return
         else:
+            self.pass_count += 1
             self.change_player_color()
         self.change_turn()
+        if self.pass_count == 2:
+            self.game_end()
 
     def write_file(self, file_path):
         logger.debug('Writing file: %s', file_path)
@@ -236,9 +252,9 @@ class PlayGo(Activity):
     def change_turn(self):
         # It's the other guy's turn now
         if self.CurrentColor == 'B':
-            self.infopanel.show('White\'s turn')
+            self.infopanel.show(_('White\'s turn'))
         else:
-            self.infopanel.show('Black\'s turn')
+            self.infopanel.show(_('Black\'s turn'))
         self.CurrentColor = self.invert_color(self.get_currentcolor())
 
     def get_playercolor(self):
@@ -272,12 +288,32 @@ class PlayGo(Activity):
         logger.debug('Received restart signal!')
         self.CurrentColor = 'B'
         self.PlayerColor = 'B'
+        self.pass_count = 0
         self.game.clear()
         self.board.status = self.game.status
         self.board.do_expose_event()
         self.show_score()
+        self.board.set_sensitive(True)
+        self.buttons_box.set_sensitive(True)
         if self.ai_activated:
             self.ai.clear()
+        
+    def game_end(self):
+        # TODO: Mark captured territories with pretty symbols
+        self.board.set_sensitive(False)
+        self.buttons_box.set_sensitive(False)
+        territories = self.game.get_territories()
+        final_score = {'B':(len(territories['B']) - self.game.get_score()['W']), 
+                                'W':(len(territories['W']) - self.game.get_score()['B'] + self.komi)}
+        if final_score['B'] > final_score['W']:
+            winner_string = _('Blacks win!')
+        elif final_score['W'] > final_score['B']:
+            winner_string = _('Whites win!')
+        else:
+            winner_string = _('There was a tie!')
+        self.infopanel.show(_('Game ended! %s' % winner_string))
+        self.infopanel.show_score(_('Final score: Whites %(W)d - Blacks %(B)d' % final_score))
+        
         
     def board_size_change(self, widget, size):
         if size == self.size:
