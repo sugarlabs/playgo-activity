@@ -159,10 +159,8 @@ class GoBoardWidget(gtk.Widget):
 
         #Scale everything
         self.unit = (min(self.allocation.height, self.allocation.width)+10)/(self.size + 1) 
-        if self.unit == 0:
-            return
-        self.BlackPixbuf = self.BlackPixbuf.scale_simple( int(self.unit), int(self.unit), gtk.gdk.INTERP_BILINEAR )
-        self.WhitePixbuf = self.WhitePixbuf.scale_simple( int(self.unit), int(self.unit), gtk.gdk.INTERP_BILINEAR )
+        self.ScaledBlackPixbuf = self.BlackPixbuf.scale_simple( int(self.unit), int(self.unit), gtk.gdk.INTERP_BILINEAR )
+        self.ScaledWhitePixbuf = self.WhitePixbuf.scale_simple( int(self.unit), int(self.unit), gtk.gdk.INTERP_BILINEAR )
         #Draw the board
         self.window.draw_drawable(self.gc, self.BoardPixmap, 0, 0, 0, 0, self.allocation.width, self.allocation.height)
         #Draw the lines
@@ -218,9 +216,9 @@ class GoBoardWidget(gtk.Widget):
         ctx = self.window.cairo_create()
         ct = gtk.gdk.CairoContext(ctx)
         if  color == 'B': 
-            ct.set_source_pixbuf(self.BlackPixbuf, self.unit*x - self.unit/2, self.unit*y - self.unit/2 )
+            ct.set_source_pixbuf(self.ScaledBlackPixbuf, self.unit*x - self.unit/2, self.unit*y - self.unit/2 )
         else:
-            ct.set_source_pixbuf(self.WhitePixbuf, self.unit*x - self.unit/2, self.unit*y - self.unit/2 )
+            ct.set_source_pixbuf(self.ScaledWhitePixbuf, self.unit*x - self.unit/2, self.unit*y - self.unit/2 )
         ctx.paint()
     
     def draw_stones(self, status):
