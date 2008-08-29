@@ -77,7 +77,7 @@ class gnugo:
     
     def get_move(self, color):
         color = self.short_to_long_colors(color)
-        self.stdin.write('genmove %s\n' % color)
+        self.stdin.write('kgs-genmove_cleanup %s\n' % color)
         self.stdin.flush()
         output = self.stdout.readline()
         self.stdout.readline()
@@ -88,6 +88,13 @@ class gnugo:
             return -1, -1
         logger.debug('Generated move %s', output[2:])
         return self._coords_to_xy(output[2:])
+
+    def pass_move(self, color):
+        color = self.short_to_long_colors(color)
+        self.stdin.write('%s pass\n' % color)
+        self.stdin.flush()
+        self.stdout.readline()
+        self.stdout.readline()
 
     def undo(self):
         self.stdin.write('undo\n')

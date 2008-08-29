@@ -155,16 +155,17 @@ class PlayGo(Activity):
             self.board.draw_stone(x, y, self.get_currentcolor(), widget)
         # Player passed
         else:
-            self.infopanel.show(_('Opponent passed'))
             self.pass_count += 1
         # Announce the local play
         if self.get_shared() and announce:
             self.collaboration.Play(x, y)
+        self.change_turn()
+        if x == -1:
+            self.infopanel.show(_('Opponent passed'))
         # If this is the second consecutive pass, the game ends
         if self.pass_count == 2:
             self.game_end()
             return
-        self.change_turn()
         # If we are playing a local game with AI turned off, change the color
         if not self.get_shared() and not self.ai_activated:
             self.change_player_color()
@@ -202,6 +203,9 @@ class PlayGo(Activity):
         self.change_turn()
         if self.pass_count == 2:
             self.game_end()
+        if self.ai_activated:
+            self.ai.pass_move(self.get_currentcolor())
+            self.play_ai()
 
     def write_file(self, file_path):
         logger.debug('Writing file: %s', file_path)
