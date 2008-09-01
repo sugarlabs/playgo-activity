@@ -23,7 +23,11 @@ import sugar.logger
 from sugar.presence import presenceservice
 import telepathy
 from dbus.service import method, signal
-from sugar.presence.sugartubeconn import SugarTubeConnection
+# In build 656 Sugar lacks sugartubeconn
+try:
+  from sugar.presence.sugartubeconn import SugarTubeConnection
+except:
+  from sugar.presence.tubeconn import TubeConnection
 from dbus.gobject_service import ExportedGObject
 
 SERVICE = "org.freedesktop.Telepathy.Tube.PlayGo"
