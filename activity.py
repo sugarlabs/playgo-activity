@@ -310,13 +310,13 @@ class PlayGo(Activity):
         final_score = {'B':(len(territories['B']) - self.game.get_score()['W']), 
                                 'W':(len(territories['W']) - self.game.get_score()['B'] + self.komi)}
         if final_score['B'] > final_score['W']:
-            winner_string = _('Blacks win!')
+            winner_string = _('Black wins!')
         elif final_score['W'] > final_score['B']:
-            winner_string = _('Whites win!')
+            winner_string = _('White wins!')
         else:
             winner_string = _('There was a tie!')
         self.infopanel.show(_('Game ended! %s' % winner_string))
-        self.infopanel.show_score(_('Final score: Whites %(W)d - Blacks %(B)d' % final_score))
+        self.infopanel.show_score(_('Final score: White %(W)d - Black %(B)d' % final_score))
         
         
     def board_size_change(self, widget, size):
@@ -360,7 +360,7 @@ class PlayGo(Activity):
             #logger.debug('Dumping board: %s', self.ai.dump_board())
         
     def show_score(self):
-        self.infopanel.show_score(_("Score is: Whites %(W)d - Blacks %(B)d" % self.game.get_score()))
+        self.infopanel.show_score(_("Score is: White %(W)d - Black %(B)d" % self.game.get_score()))
     
     def _alert(self, title, text=None):
         from sugar.graphics.alert import NotifyAlert
