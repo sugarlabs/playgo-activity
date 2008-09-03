@@ -222,6 +222,7 @@ class PlayGo(Activity):
         self.metadata['our-color'] = self.get_playercolor()
         self.metadata['shared'] = str(self.get_shared())
         self.metadata['size'] = str(self.size)
+        self.metadata['ai'] = str(self.ai_activated)
         
     def read_file(self, file_path):
         logger.debug('Reading file: %s', file_path)
@@ -236,6 +237,9 @@ class PlayGo(Activity):
         if self.size != self.metadata.get('size', DEFAULT_SIZE):
             self.board_size_change(None, int(self.metadata.get('size', DEFAULT_SIZE)))
         self.bootstrap(newstack)
+        if self.metadata.get('ai', None) == 'True':
+            self.gameToolbar._size_combo.set_sensitive(False)
+            self.gameToolbar._ai_button.set_active(True) # This triggers the 'toggled' signal too
         
     def board_motion_cb(self, widget, event):
         x, y = self.board.get_mouse_event_xy(event)
@@ -336,10 +340,11 @@ class PlayGo(Activity):
             del self.ai
             self.ai = gnugo(boardsize=self.size)
         
-    def ai_activated_cb(self, widget):
-        self.restart_game()
+    def ai_activated_cb(self, widget=None):
         self.ai_activated = True
         self.ai = gnugo(boardsize=self.size)
+        for pos, color, captures in self.game.undostack:
+            self.notify_ai(pos[0], pos[1], color)
         self._alert(_('AI'), _('PlayGo AI Activated'))
         
     def ai_deactivated_cb(self, widget):
@@ -348,7 +353,6 @@ class PlayGo(Activity):
         self._alert(_('AI'), _('PlayGo AI Deactivated'))
         
     def notify_ai(self, x, y, color):
-        if color == self.get_playercolor(): 
             logger.debug('Notifying AI of play by %s at %s x %s', color, x, y)
             self.ai.make_play(color, x, y)
             
