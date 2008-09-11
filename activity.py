@@ -298,6 +298,7 @@ class PlayGo(Activity):
         self.PlayerColor = 'B'
         self.pass_count = 0
         self.game.clear()
+        self.board.territories = None
         self.board.status = self.game.status
         self.board.do_expose_event()
         self.show_score()
@@ -307,12 +308,14 @@ class PlayGo(Activity):
             self.ai.clear()
         
     def game_end(self):
-        # TODO: Mark captured territories with pretty symbols
         self.board.set_sensitive(False)
         self.buttons_box.set_sensitive(False)
         territories = self.game.get_territories()
-        final_score = {'B':(len(territories['B']) - self.game.get_score()['W']), 
+        self.board.territories = territories
+        
+        final_score = {'B':(len(territories['B']) - self.game.get_score()['W']),
                                 'W':(len(territories['W']) - self.game.get_score()['B'] + self.komi)}
+
         if final_score['B'] > final_score['W']:
             winner_string = _('Black wins!')
         elif final_score['W'] > final_score['B']:
@@ -320,8 +323,7 @@ class PlayGo(Activity):
         else:
             winner_string = _('There was a tie!')
         self.infopanel.show(_('Game ended! %s' % winner_string))
-        self.infopanel.show_score(_('Final score: White %(W)d - Black %(B)d' % final_score))
-        
+        self.infopanel.show_score(_('Final score: White %(W)d - Black %(B)d' % final_score))        
         
     def board_size_change(self, widget, size):
         if size == self.size:
@@ -353,8 +355,8 @@ class PlayGo(Activity):
         self._alert(_('AI'), _('PlayGo AI Deactivated'))
         
     def notify_ai(self, x, y, color):
-            logger.debug('Notifying AI of play by %s at %s x %s', color, x, y)
-            self.ai.make_play(color, x, y)
+        logger.debug('Notifying AI of play by %s at %s x %s', color, x, y)
+        self.ai.make_play(color, x, y)
             
     def play_ai(self):
         if self.get_currentcolor() == self.get_playercolor():

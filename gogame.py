@@ -191,10 +191,10 @@ class GoGame:
             for current_element in current_group:
                 for x in self.neighbors(current_element):
                     if self.status.has_key(x):
-                       if self.status[x] != color:
+                        if self.status[x] != color:
                             return None
                     elif not x in current_group:
-                        current_group.append(x)
+                        current_group.append(x)   
             return set(current_group)
             
         groups = {'B':set(), 'W':set()}

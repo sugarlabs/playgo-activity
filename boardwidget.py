@@ -31,14 +31,15 @@ class GoBoardWidget(gtk.Widget):
             'insert-requested': (gobject.SIGNAL_RUN_FIRST, gobject.TYPE_NONE, (gobject.TYPE_INT, gobject.TYPE_INT)),
         }
         
+    #TODO: this should default to DEFAULT_SIZE, not 19, but this is defined in activity.py not here
     def __init__(self, status, size=19):
         gtk.Widget.__init__(self)
 
         self.status = status
         self.size = size
-        
         self.lastX = -1
         self.lastY = -1
+        self.territories = None
         
 
     def do_realize(self):
@@ -167,6 +168,10 @@ class GoBoardWidget(gtk.Widget):
         self.draw_lines()
         #Draw the stones
         self.draw_stones(self.status)
+        #Draw scored terriotires if they exist (end of game)
+        if self.territories:
+            self.draw_scored_territories(self.territories)
+
         
     def get_mouse_event_xy(self, event):
         """
@@ -224,7 +229,35 @@ class GoBoardWidget(gtk.Widget):
     def draw_stones(self, status):
         for x in status.keys():
             self.draw_stone(x[0], x[1], status[x], self)
+      
+    #TODO: right now the stone image is aliased to the background color, so this ends up looking a bit funky
+    #one fix would be to use non-aliased stone images, and let cairo alias them for us (can it?)
+    def draw_scored_territory(self, x, y, color, widget):       
+        x = x + 1
+        y = y + 1
+        ctx = self.window.cairo_create()
+
+        if  color == 'B': 
+            ctx.set_source_rgba(0, 0, 0, 1)
+        else:
+            ctx.set_source_rgba(0xff, 0xff, 0xff, 1)
+        ctx.set_line_width(4)
             
+        # Horizontal mark
+        ctx.move_to(self.unit*x - self.unit/4, self.unit*y)
+        ctx.line_to(self.unit*x + self.unit/4, self.unit*y)
+        
+        # Vertical mark
+        ctx.move_to(self.unit*x, self.unit*y - self.unit/4)
+        ctx.line_to(self.unit*x, self.unit*y + self.unit/4)
+        
+        ctx.stroke()
+              
+    def draw_scored_territories(self, territories):
+        for color in territories.keys():
+            for n in territories[color]:
+                self.draw_scored_territory(n[0], n[1], color, self)
+        
     def redraw_area(self, x, y):
         x, y = self.get_pixel_from_coordinates(x, y)
         self.window.invalidate_rect(gtk.gdk.Rectangle(int(x - self.unit/2), int(y - self.unit/2), int(self.unit), int(self.unit)), False)
