@@ -1,5 +1,10 @@
 4
-
+  - Fixed problem with sugartubeconnection import on old bilds (needs testing)
+  - Nate Ridderman: Change references to 'Whites' and 'Blacks' to 'White' and 'Black'
+  - Allow GnuGo to pick up game state at any point in time, including resuming from Journal
+  - Mark territories at game end with pretty crosses. (Thanks Nate!)
+  - Minor code cleanups. 
+  - Added licensing information to activity.info (GPLv2 or later)
 2
 * Almost complete rewrite by aa. New features: 
   - Cleaner code
