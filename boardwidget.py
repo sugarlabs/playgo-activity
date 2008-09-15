@@ -19,6 +19,7 @@
 
 import gobject
 import gtk
+from math import pi as PI
 
 import logging
 
@@ -115,7 +116,7 @@ class GoBoardWidget(gtk.Widget):
         elif self.size == 9 :
             seq = [ 3, 7 ]
             # set the middle singleton
-            ctx.arc( self.unit * 5, self.unit * 5, 3, 0, -1e-10)
+            ctx.arc( self.unit * 5, self.unit * 5, 3, 0, PI * 2)
             ctx.fill_preserve()
             ctx.stroke()
         else :
@@ -125,7 +126,7 @@ class GoBoardWidget(gtk.Widget):
         #TODO: adjust size for teeny boards
         for x in seq :
             for y in seq :
-                ctx.arc( self.unit * x, self.unit * y, 3, 0, -1e-10)
+                ctx.arc( self.unit * x, self.unit * y, 3, 0, PI * 2)
                 ctx.fill_preserve()
                 ctx.stroke()   
                 
@@ -203,7 +204,7 @@ class GoBoardWidget(gtk.Widget):
         else:
             ctx.set_source_rgba(0xff, 0xff, 0xff, .5 )
         
-        ctx.arc( self.lastX, self.lastY, self.unit/2 -4, 0, -1e-10)
+        ctx.arc( self.lastX, self.lastY, self.unit/2 -4, 0, 2 * PI)
         ctx.fill_preserve()
         ctx.stroke()
         del ctx
