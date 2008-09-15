@@ -1,5 +1,6 @@
 [Activity]
 name = PlayGo
+license = GPLv2+
 service_name = org.laptop.PlayGo
 class = activity.PlayGo
 icon = activity-go
