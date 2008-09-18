@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-08-28 17:24-0300\n"
+"POT-Creation-Date: 2008-09-15 19:05-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -48,75 +48,75 @@ msgstr ""
 msgid "Undo"
 msgstr ""
 
-#: activity.py:139 activity.py:197
+#: activity.py:139 activity.py:198
 msgid "It's not your turn!"
 msgstr ""
 
-#: activity.py:158
+#: activity.py:164
 msgid "Opponent passed"
 msgstr ""
 
-#: activity.py:255
+#: activity.py:263
 msgid "White's turn"
 msgstr ""
 
-#: activity.py:257
+#: activity.py:265
 msgid "Black's turn"
 msgstr ""
 
-#: activity.py:309
-msgid "Blacks win!"
+#: activity.py:320
+msgid "Black wins!"
 msgstr ""
 
-#: activity.py:311
-msgid "Whites win!"
+#: activity.py:322
+msgid "White wins!"
 msgstr ""
 
-#: activity.py:313
+#: activity.py:324
 msgid "There was a tie!"
 msgstr ""
 
-#: activity.py:314
+#: activity.py:325
 #, python-format
 msgid "Game ended! %s"
 msgstr ""
 
-#: activity.py:315
+#: activity.py:326
 #, python-format
-msgid "Final score: Whites %(W)d - Blacks %(B)d"
+msgid "Final score: White %(W)d - Black %(B)d"
 msgstr ""
 
-#: activity.py:339 activity.py:344
+#: activity.py:350 activity.py:355
 msgid "AI"
 msgstr ""
 
-#: activity.py:339
+#: activity.py:350
 msgid "PlayGo AI Activated"
 msgstr ""
 
-#: activity.py:344
+#: activity.py:355
 msgid "PlayGo AI Deactivated"
 msgstr ""
 
-#: activity.py:359
+#: activity.py:369
 #, python-format
-msgid "Score is: Whites %(W)d - Blacks %(B)d"
+msgid "Score is: White %(W)d - Black %(B)d"
 msgstr ""
 
-#: activity.py:375
+#: activity.py:385
 msgid "Buddy joined"
 msgstr ""
 
-#: activity.py:375
+#: activity.py:385
 #, python-format
 msgid "%s joined"
 msgstr ""
 
-#: activity.py:378
+#: activity.py:388
 msgid "Buddy left"
 msgstr ""
 
-#: activity.py:378
+#: activity.py:388
 #, python-format
 msgid "%s left"
 msgstr ""
