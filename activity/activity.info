@@ -1,7 +1,7 @@
 [Activity]
 name = PlayGo
 license = GPLv2+
-service_name = org.laptop.PlayGo
+bundle_id = org.laptop.PlayGo
 class = activity.PlayGo
 icon = activity-go
 activity_version = 4
