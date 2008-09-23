@@ -16,3 +16,13 @@ images/w.gif
 images/white.gif
 images/WsTurn.gif
 images/gtk-refresh.svg
+NEWS
+TODO
+README
+setup.py
+images/README
+locale/es/activity.linfo
+locale/es/LC_MESSAGES/org.laptop.PlayGo.mo
+po/POTFILES.in
+po/PlayGo.pot
+po/es.po
