@@ -4,6 +4,6 @@ license = GPLv2+
 bundle_id = org.laptop.PlayGo
 class = activity.PlayGo
 icon = activity-go
-activity_version = 4
+activity_version = 5
 host_version = 1
 show_launcher = yes
