@@ -26,6 +26,9 @@ setup.py
 images/README
 locale/es/activity.linfo
 locale/es/LC_MESSAGES/org.laptop.PlayGo.mo
+locale/fr/activity.linfo
+locale/fr/LC_MESSAGES/org.laptop.PlayGo.mo
 po/POTFILES.in
 po/PlayGo.pot
 po/es.po
+po/fr.po
