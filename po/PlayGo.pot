@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-15 19:05-0300\n"
+"POT-Creation-Date: 2008-09-26 03:33-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -86,37 +86,42 @@ msgstr ""
 msgid "Final score: White %(W)d - Black %(B)d"
 msgstr ""
 
-#: activity.py:350 activity.py:355
+#: activity.py:349 activity.py:355 activity.py:361
 msgid "AI"
 msgstr ""
 
-#: activity.py:350
-msgid "PlayGo AI Activated"
+#: activity.py:349
+#, python-format
+msgid "GnuGo loading failed!: %s"
 msgstr ""
 
 #: activity.py:355
+msgid "PlayGo AI Activated"
+msgstr ""
+
+#: activity.py:361
 msgid "PlayGo AI Deactivated"
 msgstr ""
 
-#: activity.py:369
+#: activity.py:375
 #, python-format
 msgid "Score is: White %(W)d - Black %(B)d"
 msgstr ""
 
-#: activity.py:385
+#: activity.py:391
 msgid "Buddy joined"
 msgstr ""
 
-#: activity.py:385
+#: activity.py:391
 #, python-format
 msgid "%s joined"
 msgstr ""
 
-#: activity.py:388
+#: activity.py:394
 msgid "Buddy left"
 msgstr ""
 
-#: activity.py:388
+#: activity.py:394
 #, python-format
 msgid "%s left"
 msgstr ""
