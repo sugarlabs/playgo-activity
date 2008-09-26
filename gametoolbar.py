@@ -124,3 +124,6 @@ class GameToolbar(gtk.Toolbar):
         
     def grey_out_ai(self):
         self._ai_button.set_sensitive(False)
+        
+    def set_ai_button_state(self, value):
+        self._ai_button.set_active(value)

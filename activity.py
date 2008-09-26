@@ -343,16 +343,22 @@ class PlayGo(Activity):
             self.ai = gnugo(boardsize=self.size)
         
     def ai_activated_cb(self, widget=None):
-        self.ai_activated = True
-        self.ai = gnugo(boardsize=self.size)
-        for pos, color, captures in self.game.undostack:
-            self.notify_ai(pos[0], pos[1], color)
-        self._alert(_('AI'), _('PlayGo AI Activated'))
+        try:
+            self.ai = gnugo(boardsize=self.size)
+        except Exception, e:
+            self._alert(_('AI'), _('GnuGo loading failed!: %s' % e))
+            self.gameToolbar.set_ai_button_state(False)
+        else:
+            self.ai_activated = True
+            for pos, color, captures in self.game.undostack:
+                self.notify_ai(pos[0], pos[1], color)
+            self._alert(_('AI'), _('PlayGo AI Activated'))
         
     def ai_deactivated_cb(self, widget):
-        self.ai_activated = False
-        del self.ai
-        self._alert(_('AI'), _('PlayGo AI Deactivated'))
+        if self.ai:
+            self.ai_activated = False
+            del self.ai
+            self._alert(_('AI'), _('PlayGo AI Deactivated'))
         
     def notify_ai(self, x, y, color):
         logger.debug('Notifying AI of play by %s at %s x %s', color, x, y)

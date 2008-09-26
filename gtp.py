@@ -19,6 +19,7 @@
 from subprocess import Popen, PIPE
 import logging
 
+from sugar.activity.activity import get_bundle_path
 from os.path import exists, join, abspath
 from os import pathsep, environ
 from string import split
@@ -30,6 +31,9 @@ def search_for_gnugo():
     for path in paths:
         if exists(join(path, 'gnugo')):
             return abspath(join(path, 'gnugo'))
+    default_path = join(get_bundle_path(), 'gnugo', 'gnugo')
+    if exists(default_path):
+        return abspath(default_path)
     return False
 
 class gnugo:
@@ -37,16 +41,23 @@ class gnugo:
     def __init__(self, boardsize=19, handicap=0, komi=5.5, level=3):
         ''' Start the gnugo subprocess '''
         self.size = boardsize
-        try: 
-            self.gnugo = Popen(['gnugo', '--mode', 'gtp', '--boardsize', str(boardsize),
-                                '--handicap', str(handicap), '--komi', str(komi), '--level', str(level) ], 
-                                stdout=PIPE, stdin=PIPE)
-        except:
-            logger.error('Could not start gnugo subprocess')
+        self.path = search_for_gnugo()
+        
+        if self.path:
+            logger.debug('Found gnugo at %s', self.path)
+            try: 
+                self.gnugo = Popen([self.path, '--mode', 'gtp', '--boardsize', str(boardsize),
+                                    '--handicap', str(handicap), '--komi', str(komi), '--level', str(level) ], 
+                                    stdout=PIPE, stdin=PIPE)
+            except OSError, data:
+                logger.error('Could not start gnugo subprocess: %s', data)
+                raise
+            else:
+                logger.debug('Successfuly loaded gnugo!')
+                self.stdin = self.gnugo.stdin
+                self.stdout = self.gnugo.stdout
         else:
-            logger.debug('Successfuly loaded gnugo!')
-            self.stdin = self.gnugo.stdin
-            self.stdout = self.gnugo.stdout
+            logger.error('Could not find gnugo')
     
     def __del__(self):
         logger.debug('Closing gnugo')
