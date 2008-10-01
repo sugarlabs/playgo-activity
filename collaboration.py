@@ -27,7 +27,7 @@ from dbus.service import method, signal
 try:
   from sugar.presence.sugartubeconn import SugarTubeConnection
 except:
-  from sugar.presence.tubeconn import TubeConnection
+  from sugar.presence.tubeconn import TubeConnection as SugarTubeConnection
 from dbus.gobject_service import ExportedGObject
 
 SERVICE = "org.freedesktop.Telepathy.Tube.PlayGo"
