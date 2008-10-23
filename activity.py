@@ -25,6 +25,7 @@ from gettext import gettext as _
 import cPickle
 import gtk
 from sugar.activity.activity import Activity, ActivityToolbox
+from sugar._sugarext import KeyGrabber
 
 from gametoolbar import GameToolbar
 from gogame import GoGame
@@ -73,7 +74,28 @@ class PlayGo(Activity):
             self.show_score()
         self.lastX = -1
         self.lastY = -1
-            
+
+        # Set keypad actions
+        self._key_actions = {
+            'KP_Up'     : 'move_up',
+            'KP_Right'  : 'move_right',
+            'KP_Down'   : 'move_down',
+            'KP_Left'   : 'move_left',
+            'KP_Home'   : 'place_stone',
+            'KP_Next'   : 'undo',
+            'KP_End'    : 'pass' }
+
+        self._key_grabber = KeyGrabber()
+        self._key_grabber.connect('key-pressed',
+                                  self._key_pressed_cb)
+
+        # New KeyGrabber API change (ticket #7999)
+        try:
+            self._key_grabber.grab_keys(self._key_actions.keys())
+        except:
+            for key in self._key_actions.keys():
+                self._key_grabber.grab(key)
+
         #Set up collaboration
         self.collaboration = CollaborationWrapper(self, 
                                                   self.buddy_joined, 
@@ -175,7 +197,7 @@ class PlayGo(Activity):
             if not ai_play:
                 self.play_ai()
 
-    def undo_cb(self, widget, data=None):
+    def undo_cb(self, widget=None, data=None):
         if self.game.undo():
             self.board.queue_draw()
             # If playing against AI undo twice
@@ -189,7 +211,7 @@ class PlayGo(Activity):
                 self.change_player_color()
             self.show_score()
         
-    def pass_cb(self, widget, data=None):
+    def pass_cb(self, widget=None, data=None):
         if self.get_shared(): 
             if self.get_currentcolor() == self.get_playercolor():
                 self.pass_count += 1
@@ -245,10 +267,10 @@ class PlayGo(Activity):
         x, y = self.board.get_mouse_event_xy(event)
         if x == self.lastX and y == self.lastY:
             return
-        self.lastX = x
-        self.lastY = y
         if not self.game.is_occupied(x, y) and self.game.legal((x, y), self.get_playercolor()):
             self.board.draw_ghost_stone(x, y, self.get_playercolor())
+            self.lastX = x
+            self.lastY = y
     
     def invert_color(self, color):
         if color == 'B': return 'W'
@@ -304,6 +326,8 @@ class PlayGo(Activity):
         self.show_score()
         self.board.set_sensitive(True)
         self.buttons_box.set_sensitive(True)
+        self.lastX = -1
+        self.lastY = -1
         if self.ai_activated:
             self.ai.clear()
         
@@ -326,6 +350,8 @@ class PlayGo(Activity):
         self.infopanel.show_score(_('Final score: White %(W)d - Black %(B)d' % final_score))        
         
     def board_size_change(self, widget, size):
+        self.lastY = -1
+        self.lastX = -1
         if size == self.size:
             return
         self.size = size
@@ -386,7 +412,48 @@ class PlayGo(Activity):
     def _alert_cancel_cb(self, alert, response_id):
         self.remove_alert(alert)
     
-    # ------- Callbacks for Collaboration -------- #
+    # ----------- Keypad events functions ----------- #
+    def _key_pressed_cb(self, grabber, keycode, state):
+        key = grabber.get_key(keycode, state)
+        logging.debug("Key pressed: %s", key)
+        action = self._key_actions[key]
+        method = getattr(self,  'handle_' + action)
+        method()
+
+    def handle_move_up(self):
+        self.move_ghost_stone(0, -1)
+
+    def handle_move_right(self):
+        self.move_ghost_stone(1, 0)
+
+    def handle_move_down(self):
+        self.move_ghost_stone(0, 1)
+
+    def handle_move_left(self):
+        self.move_ghost_stone(-1, 0)
+
+    def handle_place_stone(self):
+        self.insert_cb(None, self.lastX, self.lastY)
+
+    def handle_undo(self):
+        self.undo_cb()
+
+    def handle_pass(self):
+        self.pass_cb()
+
+    def move_ghost_stone(self, deltaX=0, deltaY=0):
+        if self.lastX < 0:
+            self.lastX = int(self.size/2)
+            self.lastY = int(self.size/2)
+        x = self.lastX + deltaX
+        y = self.lastY + deltaY
+        if x < 0 or x > self.size - 1 or y < 0 or y > self.size - 1:
+            return
+        self.board.draw_ghost_stone(x, y, self.get_playercolor())
+        self.lastX = x
+        self.lastY = y
+
+    # ------- Callbacks for Collaboration ------- #
     def buddy_joined(self, buddy):
         self._alert(_('Buddy joined'), _('%s joined' % buddy.props.nick))
         
