@@ -54,22 +54,25 @@ class CollaborationWrapper(ExportedGObject):
         self.activity.gameToolbar.grey_out_size_change()
         self.activity.gameToolbar.grey_out_restart()
         self.activity.gameToolbar.grey_out_ai()
+        self.activity.undo_button.hide()
+        self.activity.board.set_sensitive(False)
         self._sharing_setup()
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].OfferDBusTube(
             SERVICE, {})
         self.is_initiator = True
-        self.activity.undo_button.hide()
             
     def _joined_cb(self, activity):
         self.activity.gameToolbar.grey_out_size_change()
         self.activity.gameToolbar.grey_out_restart()
         self.activity.gameToolbar.grey_out_ai()
+        self.activity.undo_button.hide()
+        self.activity.board.set_sensitive(False)
         self._sharing_setup()
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
             reply_handler=self._list_tubes_reply_cb, 
             error_handler=self._list_tubes_error_cb)
         self.is_initiator = False
-        self.activity.undo_button.hide()
+        self.activity.board.set_sensitive(True)
     
     def _sharing_setup(self):
         if self.activity._shared_activity is None:
@@ -169,6 +172,7 @@ class CollaborationWrapper(ExportedGObject):
                                                  self.activity.get_playercolor(), 
                                                  self.activity.size, 
                                                  dbus_interface=IFACE)
+        self.activity.board.set_sensitive(True)
         
     def play_signal_cb(self, x, y, sender=None):
         """Somebody placed a stone. """
