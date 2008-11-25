@@ -347,7 +347,7 @@ class PlayGo(Activity):
         else:
             winner_string = _('There was a tie!')
         self.infopanel.show(_('Game ended! %s' % winner_string))
-        self.infopanel.show_score(_('Final score: White %(W)d - Black %(B)d' % final_score))        
+        self.infopanel.show_score(_('Final score: White %(W)g - Black %(B)g' % final_score))        
         
     def board_size_change(self, widget, size):
         self.lastY = -1
@@ -398,7 +398,7 @@ class PlayGo(Activity):
             #logger.debug('Dumping board: %s', self.ai.dump_board())
         
     def show_score(self):
-        self.infopanel.show_score(_("Score is: White %(W)d - Black %(B)d" % self.game.get_score()))
+        self.infopanel.show_score(_("Score is: White %(W)g - Black %(B)g" % self.game.get_score()))
     
     def _alert(self, title, text=None):
         from sugar.graphics.alert import NotifyAlert
