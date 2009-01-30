@@ -31,7 +31,7 @@ def search_for_gnugo():
     for path in paths:
         if exists(join(path, 'gnugo')):
             return abspath(join(path, 'gnugo'))
-    default_path = join(get_bundle_path(), 'gnugo', 'gnugo')
+    default_path = join(get_bundle_path(), 'bin', 'gnugo')
     if exists(default_path):
         return abspath(default_path)
     return False
