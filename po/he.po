@@ -1,0 +1,143 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-26 03:33-0300\n"
+"PO-Revision-Date: 2008-12-14 11:08-0500\n"
+"Last-Translator: Zvi Devir <zdevir@gmail.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Pootle 1.1.0rc2\n"
+
+#: activity/activity.info:2
+#, fuzzy
+msgid "PlayGo"
+msgstr "PlayGo"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "יש כאן כבר אבן!"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "הפרת קו!"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "מהלך לא חוקי."
+
+#: activity.py:55
+msgid "Game"
+msgstr "משחק"
+
+#: activity.py:71
+msgid "Welcome to PlayGo!"
+msgstr "ברוכים הבאים ל-PlayGo!"
+
+#: activity.py:107
+msgid "Pass"
+msgstr "עבור"
+
+#: activity.py:112
+msgid "Undo"
+msgstr "ביטול"
+
+#: activity.py:139 activity.py:198
+msgid "It's not your turn!"
+msgstr "זה אינו התור שלך!"
+
+#: activity.py:164
+msgid "Opponent passed"
+msgstr "יריב עבר"
+
+#: activity.py:263
+msgid "White's turn"
+msgstr "התור של הלבן"
+
+#: activity.py:265
+msgid "Black's turn"
+msgstr "התור של השחור"
+
+#: activity.py:320
+msgid "Black wins!"
+msgstr "השחור מנצח!"
+
+#: activity.py:322
+msgid "White wins!"
+msgstr "הלבן מנצח!"
+
+#: activity.py:324
+msgid "There was a tie!"
+msgstr "תיק\"ו!"
+
+#: activity.py:325
+#, python-format
+msgid "Game ended! %s"
+msgstr "המשחק הסתיים! %s"
+
+#: activity.py:326
+#, python-format
+msgid "Final score: White %(W)d - Black %(B)d"
+msgstr "ניקוד סופי: לבן %(W)d - שחור %(B)d"
+
+#: activity.py:349 activity.py:355 activity.py:361
+msgid "AI"
+msgstr "מחשב"
+
+#: activity.py:349
+#, python-format
+msgid "GnuGo loading failed!: %s"
+msgstr "בעיה בטעינת GnuGo‏: %s"
+
+#: activity.py:355
+msgid "PlayGo AI Activated"
+msgstr "משחק מחשב הופעל"
+
+#: activity.py:361
+msgid "PlayGo AI Deactivated"
+msgstr "משחק מחשב הופסק"
+
+#: activity.py:375
+#, python-format
+msgid "Score is: White %(W)d - Black %(B)d"
+msgstr "ניקוד נוכחי: לבן %(W)d - שחור%(B)d"
+
+#: activity.py:391
+msgid "Buddy joined"
+msgstr "חבר הצטרף"
+
+#: activity.py:391
+#, python-format
+msgid "%s joined"
+msgstr "%s הצטרף"
+
+#: activity.py:394
+msgid "Buddy left"
+msgstr "חבר עזב"
+
+#: activity.py:394
+#, python-format
+msgid "%s left"
+msgstr "%s עזב"
+
+#: gametoolbar.py:55
+msgid "Restart Game"
+msgstr "התחלה משחק מחדש"
+
+#: gametoolbar.py:64
+msgid "Board size"
+msgstr "גודל לוח"
+
+#: gametoolbar.py:83
+msgid "Play against PlayGo!"
+msgstr "שחק כנגד PlayGo!"
+
+#: gametoolbar.py:85
+msgid "You need to install gnugo to play against PlayGo"
+msgstr "יש להתקין את gnugo כדי לשחק נגד PlayGo"
