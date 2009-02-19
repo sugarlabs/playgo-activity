@@ -4,3 +4,4 @@
         - Add Atari Go mode. 
         - Add a 'Help' button that will take you to the PlayGo wiki page. 
 	- Add different types of Ko and different rulesets.
+	- Support removing dead stones at the end of the game
