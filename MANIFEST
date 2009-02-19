@@ -16,9 +16,9 @@ images/w.gif
 images/white.gif
 images/WsTurn.gif
 images/gtk-refresh.svg
-gnugo/gnugo
-gnugo/README
-gnugo/COPYING
+bin/gnugo
+bin/README
+bin/COPYING
 NEWS
 TODO
 README
