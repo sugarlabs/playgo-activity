@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2008-09-26 03:33-0300\n"
-"PO-Revision-Date: 2009-01-30 07:00-0500\n"
-"Last-Translator: Yuan Chao <yuanchao@gmail.com>\n"
+"PO-Revision-Date: 2008-12-14 11:08-0500\n"
+"Last-Translator: Zvi Devir <zdevir@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,127 +16,128 @@ msgstr ""
 "X-Generator: Pootle 1.1.0rc2\n"
 
 #: activity/activity.info:2
+#, fuzzy
 msgid "PlayGo"
-msgstr "下圍棋"
+msgstr "PlayGo"
 
 #: gogame.py:138
 msgid "There already is a stone there!"
-msgstr "該處已有棋子！"
+msgstr "יש כאן כבר אבן!"
 
 #: gogame.py:140
 msgid "Ko violation!"
-msgstr "違法吃子！"
+msgstr "הפרת קו!"
 
 #: gogame.py:150
 msgid "Illegal move."
-msgstr "非法落子。"
+msgstr "מהלך לא חוקי."
 
 #: activity.py:55
 msgid "Game"
-msgstr "棋局"
+msgstr "משחק"
 
 #: activity.py:71
 msgid "Welcome to PlayGo!"
-msgstr "歡迎來下圍棋！"
+msgstr "ברוכים הבאים ל-PlayGo!"
 
 #: activity.py:107
 msgid "Pass"
-msgstr "棄權"
+msgstr "עבור"
 
 #: activity.py:112
 msgid "Undo"
-msgstr "悔棋"
+msgstr "ביטול"
 
 #: activity.py:139 activity.py:198
 msgid "It's not your turn!"
-msgstr "對手回合！"
+msgstr "זה אינו התור שלך!"
 
 #: activity.py:164
 msgid "Opponent passed"
-msgstr "對手棄權"
+msgstr "יריב עבר"
 
 #: activity.py:263
 msgid "White's turn"
-msgstr "輪到白方"
+msgstr "התור של הלבן"
 
 #: activity.py:265
 msgid "Black's turn"
-msgstr "輪到黑方"
+msgstr "התור של השחור"
 
 #: activity.py:320
 msgid "Black wins!"
-msgstr "黑方勝！"
+msgstr "השחור מנצח!"
 
 #: activity.py:322
 msgid "White wins!"
-msgstr "白方勝！"
+msgstr "הלבן מנצח!"
 
 #: activity.py:324
 msgid "There was a tie!"
-msgstr "和局！"
+msgstr "תיק\"ו!"
 
 #: activity.py:325
 #, python-format
 msgid "Game ended! %s"
-msgstr "遊戲結束！ %s"
+msgstr "המשחק הסתיים! %s"
 
 #: activity.py:326
 #, python-format
 msgid "Final score: White %(W)d - Black %(B)d"
-msgstr "最後績分： 白方 %(W)d - 黑方 %(B)d"
+msgstr "ניקוד סופי: לבן %(W)d - שחור %(B)d"
 
 #: activity.py:349 activity.py:355 activity.py:361
 msgid "AI"
-msgstr "人工智慧"
+msgstr "מחשב"
 
 #: activity.py:349
 #, python-format
 msgid "GnuGo loading failed!: %s"
-msgstr "GnuGo 讀取失敗！： %s"
+msgstr "בעיה בטעינת GnuGo‏: %s"
 
 #: activity.py:355
 msgid "PlayGo AI Activated"
-msgstr "下圍棋人工智慧啟動"
+msgstr "משחק מחשב הופעל"
 
 #: activity.py:361
 msgid "PlayGo AI Deactivated"
-msgstr "下圍棋人工智慧停用"
+msgstr "משחק מחשב הופסק"
 
 #: activity.py:375
 #, python-format
 msgid "Score is: White %(W)d - Black %(B)d"
-msgstr "得分： 白方 %(W)d - 黑方 %(B)d"
+msgstr "ניקוד נוכחי: לבן %(W)d - שחור%(B)d"
 
 #: activity.py:391
 msgid "Buddy joined"
-msgstr "好友已加入"
+msgstr "חבר הצטרף"
 
 #: activity.py:391
 #, python-format
 msgid "%s joined"
-msgstr "%s 加入"
+msgstr "%s הצטרף"
 
 #: activity.py:394
 msgid "Buddy left"
-msgstr "好友已離開"
+msgstr "חבר עזב"
 
 #: activity.py:394
 #, python-format
 msgid "%s left"
-msgstr "%s 離開"
+msgstr "%s עזב"
 
 #: gametoolbar.py:55
 msgid "Restart Game"
-msgstr "重新開始新遊戲"
+msgstr "התחלה משחק מחדש"
 
 #: gametoolbar.py:64
 msgid "Board size"
-msgstr "棋盤大小"
+msgstr "גודל לוח"
 
 #: gametoolbar.py:83
 msgid "Play against PlayGo!"
-msgstr "與人工智慧對奕"
+msgstr "שחק כנגד PlayGo!"
 
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
-msgstr "您須要安裝 gnugo 才能與人工智慧對奕"
+msgstr "יש להתקין את gnugo כדי לשחק נגד PlayGo"
