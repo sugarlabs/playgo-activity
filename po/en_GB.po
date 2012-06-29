@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2008-09-26 03:33-0300\n"
+"PO-Revision-Date: 2012-06-29 06:48+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: en_GB\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "PlayGo"
+msgstr "PlayGo"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "There already is a stone there!"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "Ko violation!"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "Illegal move."
+
+#: activity.py:55
+msgid "Game"
+msgstr "Game"
+
+#: activity.py:71
+msgid "Welcome to PlayGo!"
+msgstr "Welcome to PlayGo!"
+
+#: activity.py:107
+msgid "Pass"
+msgstr "Pass"
+
+#: activity.py:112
+msgid "Undo"
+msgstr "Undo"
+
+#: activity.py:139 activity.py:198
+msgid "It's not your turn!"
+msgstr "It's not your turn!"
+
+#: activity.py:164
+msgid "Opponent passed"
+msgstr "Opponent passed"
+
+#: activity.py:263
+msgid "White's turn"
+msgstr "White's turn"
+
+#: activity.py:265
+msgid "Black's turn"
+msgstr "Black's turn"
+
+#: activity.py:320
+msgid "Black wins!"
+msgstr "Black wins!"
+
+#: activity.py:322
+msgid "White wins!"
+msgstr "White wins!"
+
+#: activity.py:324
+msgid "There was a tie!"
+msgstr "There was a tie!"
+
+#: activity.py:325
+#, python-format
+msgid "Game ended! %s"
+msgstr "Game ended! %s"
+
+#: activity.py:326
+#, python-format
+msgid "Final score: White %(W)d - Black %(B)d"
+msgstr "Final score: White %(W)d - Black %(B)d"
+
+#: activity.py:349 activity.py:355 activity.py:361
+msgid "AI"
+msgstr "AI"
+
+#: activity.py:349
+#, python-format
+msgid "GnuGo loading failed!: %s"
+msgstr "GnuGo loading failed!: %s"
+
+#: activity.py:355
+msgid "PlayGo AI Activated"
+msgstr "PlayGo AI Activated"
+
+#: activity.py:361
+msgid "PlayGo AI Deactivated"
+msgstr "PlayGo AI Deactivated"
+
+#: activity.py:375
+#, python-format
+msgid "Score is: White %(W)d - Black %(B)d"
+msgstr "Score is: White %(W)d - Black %(B)d"
+
+#: activity.py:391
+msgid "Buddy joined"
+msgstr "Buddy joined"
+
+#: activity.py:391
+#, python-format
+msgid "%s joined"
+msgstr "%s joined"
+
+#: activity.py:394
+msgid "Buddy left"
+msgstr "Buddy left"
+
+#: activity.py:394
+#, python-format
+msgid "%s left"
+msgstr "%s left"
+
+#: gametoolbar.py:55
+msgid "Restart Game"
+msgstr "Restart Game"
+
+#: gametoolbar.py:64
+msgid "Board size"
+msgstr "Board size"
+
+#: gametoolbar.py:83
+msgid "Play against PlayGo!"
+msgstr "Play against PlayGo!"
+
+#: gametoolbar.py:85
+msgid "You need to install gnugo to play against PlayGo"
+msgstr "You need to install gnugo to play against PlayGo"
