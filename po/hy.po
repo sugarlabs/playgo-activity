@@ -1,0 +1,144 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-06-30 00:32-0400\n"
+"PO-Revision-Date: 2012-08-03 22:12+0200\n"
+"Last-Translator: anush.mkrtchyan <anush.mkrtchyan@ca1492.com>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: hy\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Pootle 2.0.5\n"
+
+#: activity/activity.info:2
+msgid "PlayGo"
+msgstr "ՓլեյԳօ"
+
+#: activity.py:56
+msgid "Game"
+msgstr "Խաղ"
+
+#: activity.py:72
+msgid "Welcome to PlayGo!"
+msgstr "Բարի գալուստ ՓլեյԳօ"
+
+#: activity.py:129
+msgid "Pass"
+msgstr "Անցնել"
+
+#: activity.py:134
+msgid "Undo"
+msgstr "Ետարկել"
+
+#: activity.py:161 activity.py:220
+msgid "It's not your turn!"
+msgstr "Քո հերթը չէ"
+
+#: activity.py:186
+msgid "Opponent passed"
+msgstr "Մրցակիցը անցավ"
+
+#: activity.py:285
+msgid "White's turn"
+msgstr "Սպիտակի հերթը"
+
+#: activity.py:287
+msgid "Black's turn"
+msgstr "Սևի հերթը"
+
+#: activity.py:344
+msgid "Black wins!"
+msgstr "Սևը հաղթում է"
+
+#: activity.py:346
+msgid "White wins!"
+msgstr "Սպիտակը հաղթում է"
+
+#: activity.py:348
+msgid "There was a tie!"
+msgstr ""
+
+#: activity.py:349
+#, python-format
+msgid "Game ended! %s"
+msgstr ""
+
+#: activity.py:350
+#, python-format
+msgid "Final score: White %(W)g - Black %(B)g"
+msgstr ""
+
+#: activity.py:375 activity.py:381 activity.py:387
+msgid "AI"
+msgstr ""
+
+#: activity.py:375
+#, python-format
+msgid "GnuGo loading failed!: %s"
+msgstr ""
+
+#: activity.py:381
+msgid "PlayGo AI Activated"
+msgstr ""
+
+#: activity.py:387
+msgid "PlayGo AI Deactivated"
+msgstr ""
+
+#: activity.py:401
+#, python-format
+msgid "Score is: White %(W)g - Black %(B)g"
+msgstr ""
+
+#: activity.py:458
+msgid "Buddy joined"
+msgstr "Բուդին միացավ"
+
+#: activity.py:458
+#, python-format
+msgid "%s joined"
+msgstr "%s միացավ"
+
+#: activity.py:461
+msgid "Buddy left"
+msgstr "Բուդին հեռացավ"
+
+#: activity.py:461
+#, python-format
+msgid "%s left"
+msgstr "%s հեռացավ"
+
+#: gametoolbar.py:55
+msgid "Restart Game"
+msgstr "Վերամեկնարկել Խաղը"
+
+#: gametoolbar.py:64
+msgid "Board size"
+msgstr "Տախտակի չափսը"
+
+#: gametoolbar.py:83
+msgid "Play against PlayGo!"
+msgstr "Խաղալ ՓլեյԳօ-ի դեմ"
+
+#: gametoolbar.py:85
+msgid "You need to install gnugo to play against PlayGo"
+msgstr ""
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr ""
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr ""
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr ""
