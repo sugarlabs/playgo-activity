@@ -6,121 +6,113 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-26 03:33-0300\n"
-"PO-Revision-Date: 2008-10-02 15:59-0400\n"
-"Last-Translator: Myckel Habets <myckel@sdf.lonestar.org>\n"
+"POT-Creation-Date: 2012-06-30 00:32-0400\n"
+"PO-Revision-Date: 2012-08-20 22:37+0200\n"
+"Last-Translator: whe <heppew@yahoo.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Pootle 1.1.0rc2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.0.5\n"
 
 #: activity/activity.info:2
 msgid "PlayGo"
 msgstr "SpeelGo"
 
-#: gogame.py:138
-msgid "There already is a stone there!"
-msgstr "Er is daar al een steen!"
-
-#: gogame.py:140
-msgid "Ko violation!"
-msgstr "Ko overtreding!"
-
-#: gogame.py:150
-msgid "Illegal move."
-msgstr "Ongeldige zet."
-
-#: activity.py:55
+#: activity.py:56
 msgid "Game"
 msgstr "Spel"
 
-#: activity.py:71
+#: activity.py:72
 msgid "Welcome to PlayGo!"
 msgstr "Welkom bij SpeelGo!"
 
-#: activity.py:107
+#: activity.py:129
 msgid "Pass"
 msgstr "Overslaan"
 
-#: activity.py:112
+#: activity.py:134
 msgid "Undo"
 msgstr "Ongedaan maken"
 
-#: activity.py:139 activity.py:198
+#: activity.py:161 activity.py:220
 msgid "It's not your turn!"
 msgstr "Je bent niet aan de beurt!"
 
-#: activity.py:164
+#: activity.py:186
 msgid "Opponent passed"
 msgstr "Tegenstander slaat over"
 
-#: activity.py:263
+#: activity.py:285
 msgid "White's turn"
 msgstr "Beurt is aan wit"
 
-#: activity.py:265
+#: activity.py:287
 msgid "Black's turn"
 msgstr "Beurt is aan zwart"
 
-#: activity.py:320
+#: activity.py:344
 msgid "Black wins!"
 msgstr "Zwart wint!"
 
-#: activity.py:322
+#: activity.py:346
 msgid "White wins!"
 msgstr "Wit wint!"
 
-#: activity.py:324
+#: activity.py:348
 msgid "There was a tie!"
 msgstr "Er was een gelijkspel!"
 
-#: activity.py:325
+#: activity.py:349
 #, python-format
 msgid "Game ended! %s"
 msgstr "Spel afgelopen! %s"
 
-#: activity.py:326
+#: activity.py:350
 #, python-format
-msgid "Final score: White %(W)d - Black %(B)d"
-msgstr "Eindscore: Wit %(W)d - Zwart %(B)d"
+#, python-format, 
+msgid "Final score: White %(W)g - Black %(B)g"
+msgstr "Eindscore: Wit %(W)g - Zwart %(B)g"
 
-#: activity.py:349 activity.py:355 activity.py:361
+#: activity.py:375 activity.py:381 activity.py:387
 msgid "AI"
 msgstr "AI"
 
-#: activity.py:349
+#: activity.py:375
 #, python-format
 msgid "GnuGo loading failed!: %s"
 msgstr "Laden van GnuGo mislukt!: %s"
 
-#: activity.py:355
+#: activity.py:381
 msgid "PlayGo AI Activated"
 msgstr "SpeelGo AI geactiveerd"
 
-#: activity.py:361
+#: activity.py:387
 msgid "PlayGo AI Deactivated"
 msgstr "SpeelGo AI gedeactiveerd"
 
-#: activity.py:375
+#: activity.py:401
 #, python-format
-msgid "Score is: White %(W)d - Black %(B)d"
-msgstr "Score is: Wit %(W)d - Zwart %(B)d"
+#, python-format, 
+msgid "Score is: White %(W)g - Black %(B)g"
+msgstr "Score is: Wit %(W)g - Zwart %(B)g"
 
-#: activity.py:391
+#: activity.py:458
 msgid "Buddy joined"
 msgstr "Maatje speelt mee"
 
-#: activity.py:391
+#: activity.py:458
 #, python-format
 msgid "%s joined"
 msgstr "%s doet mee"
 
-#: activity.py:394
+#: activity.py:461
 msgid "Buddy left"
 msgstr "Maatje verlaat het spel"
 
-#: activity.py:394
+#: activity.py:461
 #, python-format
 msgid "%s left"
 msgstr "%s gaat weg"
@@ -140,3 +132,15 @@ msgstr "Speel tegen SpeelGo!"
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
 msgstr "Je moet gnugo installeren als je tegen SpeelGo wilt spelen"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "Er is daar al een steen!"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "Ko overtreding!"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "Ongeldige zet."
