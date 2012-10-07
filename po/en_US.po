@@ -71,7 +71,8 @@ msgid "Game ended! %s"
 msgstr "Game ended! %s"
 
 #: activity.py:350
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "Final score: White %(W)g - Black %(B)g"
 msgstr "Final score: White %(W)g - Black %(B)g"
 
@@ -93,7 +94,8 @@ msgid "PlayGo AI Deactivated"
 msgstr "PlayGo AI Deactivated"
 
 #: activity.py:401
-#, python-format, 
+#, python-format
+#, python-format,
 msgid "Score is: White %(W)g - Black %(B)g"
 msgstr "Score is: White %(W)g - Black %(B)g"
 
