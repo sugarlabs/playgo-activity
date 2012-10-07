@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-26 03:33-0300\n"
-"PO-Revision-Date: 2012-06-29 04:14+0200\n"
+"POT-Creation-Date: 2012-06-30 00:32-0400\n"
+"PO-Revision-Date: 2012-07-18 10:03+0200\n"
 "Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: en\n"
@@ -21,108 +21,98 @@ msgstr ""
 msgid "PlayGo"
 msgstr "PlayGo"
 
-#: gogame.py:138
-msgid "There already is a stone there!"
-msgstr "There already is a stone there!"
-
-#: gogame.py:140
-msgid "Ko violation!"
-msgstr "Ko violation!"
-
-#: gogame.py:150
-msgid "Illegal move."
-msgstr "Illegal move."
-
-#: activity.py:55
+#: activity.py:56
 msgid "Game"
 msgstr "Game"
 
-#: activity.py:71
+#: activity.py:72
 msgid "Welcome to PlayGo!"
 msgstr "Welcome to PlayGo!"
 
-#: activity.py:107
+#: activity.py:129
 msgid "Pass"
 msgstr "Pass"
 
-#: activity.py:112
+#: activity.py:134
 msgid "Undo"
 msgstr "Undo"
 
-#: activity.py:139 activity.py:198
+#: activity.py:161 activity.py:220
 msgid "It's not your turn!"
 msgstr "It's not your turn!"
 
-#: activity.py:164
+#: activity.py:186
 msgid "Opponent passed"
 msgstr "Opponent passed"
 
-#: activity.py:263
+#: activity.py:285
 msgid "White's turn"
 msgstr "White's turn"
 
-#: activity.py:265
+#: activity.py:287
 msgid "Black's turn"
 msgstr "Black's turn"
 
-#: activity.py:320
+#: activity.py:344
 msgid "Black wins!"
 msgstr "Black wins!"
 
-#: activity.py:322
+#: activity.py:346
 msgid "White wins!"
 msgstr "White wins!"
 
-#: activity.py:324
+#: activity.py:348
 msgid "There was a tie!"
 msgstr "There was a tie!"
 
-#: activity.py:325
+#: activity.py:349
 #, python-format
 msgid "Game ended! %s"
 msgstr "Game ended! %s"
 
-#: activity.py:326
+#: activity.py:350
 #, python-format
-msgid "Final score: White %(W)d - Black %(B)d"
-msgstr "Final score: White %(W)d - Black %(B)d"
+#, python-format,
+msgid "Final score: White %(W)g - Black %(B)g"
+msgstr "Final score: White %(W)g - Black %(B)g"
 
-#: activity.py:349 activity.py:355 activity.py:361
+#: activity.py:375 activity.py:381 activity.py:387
 msgid "AI"
 msgstr "AI"
 
-#: activity.py:349
+#: activity.py:375
 #, python-format
 msgid "GnuGo loading failed!: %s"
 msgstr "GnuGo loading failed!: %s"
 
-#: activity.py:355
+#: activity.py:381
 msgid "PlayGo AI Activated"
 msgstr "PlayGo AI Activated"
 
-#: activity.py:361
+#: activity.py:387
 msgid "PlayGo AI Deactivated"
 msgstr "PlayGo AI Deactivated"
 
-#: activity.py:375
+#: activity.py:401
 #, python-format
-msgid "Score is: White %(W)d - Black %(B)d"
-msgstr "Score is: White %(W)d - Black %(B)d"
+#, python-format,
+msgid "Score is: White %(W)g - Black %(B)g"
+msgstr "Score is: White %(W)g - Black %(B)g"
 
-#: activity.py:391
+#: activity.py:458
 msgid "Buddy joined"
 msgstr "Buddy joined"
 
-#: activity.py:391
+#: activity.py:458
 #, python-format
 msgid "%s joined"
 msgstr "%s joined"
 
-#: activity.py:394
+#: activity.py:461
 msgid "Buddy left"
 msgstr "Buddy left"
 
-#: activity.py:394
+#: activity.py:461
 #, python-format
 msgid "%s left"
 msgstr "%s left"
@@ -142,3 +132,15 @@ msgstr "Play against PlayGo!"
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
 msgstr "You need to install gnugo to play against PlayGo"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "There already is a stone there!"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "Ko violation!"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "Illegal move."
