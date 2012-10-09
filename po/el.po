@@ -7,8 +7,8 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-30 00:32-0400\n"
-"PO-Revision-Date: 2012-09-07 20:39+0200\n"
-"Last-Translator: Yannis <kiolalis@gmail.com>\n"
+"PO-Revision-Date: 2012-10-09 07:40+0200\n"
+"Last-Translator: Chris <cjl@laptop.org>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: el\n"
 "MIME-Version: 1.0\n"
@@ -72,9 +72,9 @@ msgstr "Τέλος Παιχνιδιού! %s"
 
 #: activity.py:350
 #, python-format
-#, python-format, 
+#, python-format,
 msgid "Final score: White %(W)g - Black %(B)g"
-msgstr "Τελική βαθμολογία: Άσπρα %(W)d - Μαύρα %(B)d"
+msgstr "Τελική βαθμολογία: Άσπρα %(W)g- Μαύρα %(B)g"
 
 # Τ/Ν : Τεχνητή Νοημοσύνη
 # AI: Artificial Intelligence
@@ -97,9 +97,9 @@ msgstr "Η Τ/Ν του ΓΚΟ Απενεργοποιήθηκε"
 
 #: activity.py:401
 #, python-format
-#, python-format, 
+#, python-format,
 msgid "Score is: White %(W)g - Black %(B)g"
-msgstr "Βαθμολογία: Άσπρα %(W)d - Μαύρα %(B)d"
+msgstr "Βαθμολογία: Άσπρα %(W)g - Μαύρα %(B)g"
 
 #: activity.py:458
 msgid "Buddy joined"
