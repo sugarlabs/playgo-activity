@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-26 03:33-0300\n"
+"POT-Creation-Date: 2012-06-30 00:32-0400\n"
 "PO-Revision-Date: 2009-02-15 01:34-0500\n"
 "Last-Translator: Clytie Siddall <clytie@riverland.net.au>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,109 +20,99 @@ msgstr ""
 msgid "PlayGo"
 msgstr "PlayGo"
 
-#: gogame.py:138
-msgid "There already is a stone there!"
-msgstr "Một đá đã có !"
-
-#: gogame.py:140
-msgid "Ko violation!"
-msgstr "Vi phạm KO !"
-
-#: gogame.py:150
-msgid "Illegal move."
-msgstr "Sai đi."
-
-#: activity.py:55
+#: activity.py:56
 msgid "Game"
 msgstr "Lượt chơi"
 
-#: activity.py:71
+#: activity.py:72
 msgid "Welcome to PlayGo!"
 msgstr "Chào mừng đến PlayGo!"
 
-#: activity.py:107
+#: activity.py:129
 msgid "Pass"
 msgstr "Không đi"
 
-#: activity.py:112
+#: activity.py:134
 msgid "Undo"
 msgstr "Hủy bước"
 
-#: activity.py:139 activity.py:198
+#: activity.py:161 activity.py:220
 msgid "It's not your turn!"
 msgstr "Không phải lần đi của bạn !"
 
-#: activity.py:164
+#: activity.py:186
 msgid "Opponent passed"
 msgstr "Đối thủ không đi lần này"
 
-#: activity.py:263
+#: activity.py:285
 msgid "White's turn"
 msgstr "Tới lượt Trắng"
 
-#: activity.py:265
+#: activity.py:287
 msgid "Black's turn"
 msgstr "Tới lượt Đen"
 
-#: activity.py:320
+#: activity.py:344
 msgid "Black wins!"
 msgstr "Đen thắng !"
 
-#: activity.py:322
+#: activity.py:346
 msgid "White wins!"
 msgstr "Trắng thắng !"
 
-#: activity.py:324
+#: activity.py:348
 msgid "There was a tie!"
 msgstr "Trận đấu kết thúc ngang điểm !"
 
-#: activity.py:325
+#: activity.py:349
 #, python-format
 msgid "Game ended! %s"
 msgstr "Lượt chơi đã kết thúc ! %s"
 
-#: activity.py:326
+#: activity.py:350
 #, python-format
-msgid "Final score: White %(W)d - Black %(B)d"
+#, python-format, fuzzy
+msgid "Final score: White %(W)g - Black %(B)g"
 msgstr "Điểm cuối cùng: Trắng %(W)d — Đen %(B)d"
 
 # Trí tuệ
-#: activity.py:349 activity.py:355 activity.py:361
+#: activity.py:375 activity.py:381 activity.py:387
 msgid "AI"
 msgstr "AI"
 
-#: activity.py:349
+#: activity.py:375
 #, python-format
 msgid "GnuGo loading failed!: %s"
 msgstr "Lỗi nạp GnuGo : %s"
 
-#: activity.py:355
+#: activity.py:381
 msgid "PlayGo AI Activated"
 msgstr "AI Playgo đã được kích hoạt"
 
-#: activity.py:361
+#: activity.py:387
 msgid "PlayGo AI Deactivated"
 msgstr "AI Playgo bị tắt"
 
-#: activity.py:375
+#: activity.py:401
 #, python-format
-msgid "Score is: White %(W)d - Black %(B)d"
+#, python-format, fuzzy
+msgid "Score is: White %(W)g - Black %(B)g"
 msgstr "Điểm: Trắng %(W)d — Đen %(B)d"
 
-#: activity.py:391
+#: activity.py:458
 msgid "Buddy joined"
 msgstr "Bạn bè mới tham gia"
 
-#: activity.py:391
+#: activity.py:458
 #, python-format
 msgid "%s joined"
 msgstr "%s mới tham gia"
 
-#: activity.py:394
+#: activity.py:461
 msgid "Buddy left"
 msgstr "Bạn bè mới ra đi"
 
-#: activity.py:394
+#: activity.py:461
 #, python-format
 msgid "%s left"
 msgstr "%s mới ra đi"
@@ -142,3 +132,15 @@ msgstr "Chơi với PlayGo!"
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
 msgstr "Để chơi với PlayGo thì bạn cần phải cài đặt gnugo"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "Một đá đã có !"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "Vi phạm KO !"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "Sai đi."

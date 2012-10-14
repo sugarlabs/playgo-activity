@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-26 03:33-0300\n"
+"POT-Creation-Date: 2012-06-30 00:32-0400\n"
 "PO-Revision-Date: 2009-01-30 07:00-0500\n"
 "Last-Translator: Yuan Chao <yuanchao@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,108 +19,98 @@ msgstr ""
 msgid "PlayGo"
 msgstr "下圍棋"
 
-#: gogame.py:138
-msgid "There already is a stone there!"
-msgstr "該處已有棋子！"
-
-#: gogame.py:140
-msgid "Ko violation!"
-msgstr "違法吃子！"
-
-#: gogame.py:150
-msgid "Illegal move."
-msgstr "非法落子。"
-
-#: activity.py:55
+#: activity.py:56
 msgid "Game"
 msgstr "棋局"
 
-#: activity.py:71
+#: activity.py:72
 msgid "Welcome to PlayGo!"
 msgstr "歡迎來下圍棋！"
 
-#: activity.py:107
+#: activity.py:129
 msgid "Pass"
 msgstr "棄權"
 
-#: activity.py:112
+#: activity.py:134
 msgid "Undo"
 msgstr "悔棋"
 
-#: activity.py:139 activity.py:198
+#: activity.py:161 activity.py:220
 msgid "It's not your turn!"
 msgstr "對手回合！"
 
-#: activity.py:164
+#: activity.py:186
 msgid "Opponent passed"
 msgstr "對手棄權"
 
-#: activity.py:263
+#: activity.py:285
 msgid "White's turn"
 msgstr "輪到白方"
 
-#: activity.py:265
+#: activity.py:287
 msgid "Black's turn"
 msgstr "輪到黑方"
 
-#: activity.py:320
+#: activity.py:344
 msgid "Black wins!"
 msgstr "黑方勝！"
 
-#: activity.py:322
+#: activity.py:346
 msgid "White wins!"
 msgstr "白方勝！"
 
-#: activity.py:324
+#: activity.py:348
 msgid "There was a tie!"
 msgstr "和局！"
 
-#: activity.py:325
+#: activity.py:349
 #, python-format
 msgid "Game ended! %s"
 msgstr "遊戲結束！ %s"
 
-#: activity.py:326
+#: activity.py:350
 #, python-format
-msgid "Final score: White %(W)d - Black %(B)d"
+#, python-format, fuzzy
+msgid "Final score: White %(W)g - Black %(B)g"
 msgstr "最後績分： 白方 %(W)d - 黑方 %(B)d"
 
-#: activity.py:349 activity.py:355 activity.py:361
+#: activity.py:375 activity.py:381 activity.py:387
 msgid "AI"
 msgstr "人工智慧"
 
-#: activity.py:349
+#: activity.py:375
 #, python-format
 msgid "GnuGo loading failed!: %s"
 msgstr "GnuGo 讀取失敗！： %s"
 
-#: activity.py:355
+#: activity.py:381
 msgid "PlayGo AI Activated"
 msgstr "下圍棋人工智慧啟動"
 
-#: activity.py:361
+#: activity.py:387
 msgid "PlayGo AI Deactivated"
 msgstr "下圍棋人工智慧停用"
 
-#: activity.py:375
+#: activity.py:401
 #, python-format
-msgid "Score is: White %(W)d - Black %(B)d"
+#, python-format, fuzzy
+msgid "Score is: White %(W)g - Black %(B)g"
 msgstr "得分： 白方 %(W)d - 黑方 %(B)d"
 
-#: activity.py:391
+#: activity.py:458
 msgid "Buddy joined"
 msgstr "好友已加入"
 
-#: activity.py:391
+#: activity.py:458
 #, python-format
 msgid "%s joined"
 msgstr "%s 加入"
 
-#: activity.py:394
+#: activity.py:461
 msgid "Buddy left"
 msgstr "好友已離開"
 
-#: activity.py:394
+#: activity.py:461
 #, python-format
 msgid "%s left"
 msgstr "%s 離開"
@@ -140,3 +130,15 @@ msgstr "與人工智慧對奕"
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
 msgstr "您須要安裝 gnugo 才能與人工智慧對奕"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "該處已有棋子！"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "違法吃子！"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "非法落子。"

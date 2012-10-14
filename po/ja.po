@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2008-09-26 03:33-0300\n"
+"POT-Creation-Date: 2012-06-30 00:32-0400\n"
 "PO-Revision-Date: 2008-10-11 21:41-0400\n"
 "Last-Translator: korakurider <korakurider@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,108 +19,98 @@ msgstr ""
 msgid "PlayGo"
 msgstr "PlayGo"
 
-#: gogame.py:138
-msgid "There already is a stone there!"
-msgstr "そこにはもう石があります!"
-
-#: gogame.py:140
-msgid "Ko violation!"
-msgstr "コウのルールに違反しています!"
-
-#: gogame.py:150
-msgid "Illegal move."
-msgstr "不正な動きです。"
-
-#: activity.py:55
+#: activity.py:56
 msgid "Game"
 msgstr "ゲーム"
 
-#: activity.py:71
+#: activity.py:72
 msgid "Welcome to PlayGo!"
 msgstr "PlayGoへようこそ!"
 
-#: activity.py:107
+#: activity.py:129
 msgid "Pass"
 msgstr "パス"
 
-#: activity.py:112
+#: activity.py:134
 msgid "Undo"
 msgstr "元に戻す"
 
-#: activity.py:139 activity.py:198
+#: activity.py:161 activity.py:220
 msgid "It's not your turn!"
 msgstr "あなたの番じゃないよ!"
 
-#: activity.py:164
+#: activity.py:186
 msgid "Opponent passed"
 msgstr "対戦相手がパスしました"
 
-#: activity.py:263
+#: activity.py:285
 msgid "White's turn"
 msgstr "白の番です"
 
-#: activity.py:265
+#: activity.py:287
 msgid "Black's turn"
 msgstr "黒の番です"
 
-#: activity.py:320
+#: activity.py:344
 msgid "Black wins!"
 msgstr "黒の勝ち！"
 
-#: activity.py:322
+#: activity.py:346
 msgid "White wins!"
 msgstr "白の勝ち！"
 
-#: activity.py:324
+#: activity.py:348
 msgid "There was a tie!"
 msgstr "引き分け！"
 
-#: activity.py:325
+#: activity.py:349
 #, python-format
 msgid "Game ended! %s"
 msgstr "ゲーム終了! %s"
 
-#: activity.py:326
+#: activity.py:350
 #, python-format
-msgid "Final score: White %(W)d - Black %(B)d"
+#, python-format, fuzzy
+msgid "Final score: White %(W)g - Black %(B)g"
 msgstr "最終スコア: 白 %(W)d - 黒 %(B)d"
 
-#: activity.py:349 activity.py:355 activity.py:361
+#: activity.py:375 activity.py:381 activity.py:387
 msgid "AI"
 msgstr "AI"
 
-#: activity.py:349
+#: activity.py:375
 #, python-format
 msgid "GnuGo loading failed!: %s"
 msgstr "GnuGo のロードが失敗! %s"
 
-#: activity.py:355
+#: activity.py:381
 msgid "PlayGo AI Activated"
 msgstr "PlayGo AI 起動"
 
-#: activity.py:361
+#: activity.py:387
 msgid "PlayGo AI Deactivated"
 msgstr "PlayGo AI 停止"
 
-#: activity.py:375
+#: activity.py:401
 #, python-format
-msgid "Score is: White %(W)d - Black %(B)d"
+#, python-format, fuzzy
+msgid "Score is: White %(W)g - Black %(B)g"
 msgstr "スコア: 白 %(W)d - 黒 %(B)d"
 
-#: activity.py:391
+#: activity.py:458
 msgid "Buddy joined"
 msgstr "お友達が参加しました"
 
-#: activity.py:391
+#: activity.py:458
 #, python-format
 msgid "%s joined"
 msgstr "%s が参加しました"
 
-#: activity.py:394
+#: activity.py:461
 msgid "Buddy left"
 msgstr "お友達が抜けました"
 
-#: activity.py:394
+#: activity.py:461
 #, python-format
 msgid "%s left"
 msgstr "%s が抜けました"
@@ -140,3 +130,15 @@ msgstr "PlayGoと対戦!"
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
 msgstr "PlayGoと対戦するには、GnuGoをインストールする必要があります"
+
+#: gogame.py:138
+msgid "There already is a stone there!"
+msgstr "そこにはもう石があります!"
+
+#: gogame.py:140
+msgid "Ko violation!"
+msgstr "コウのルールに違反しています!"
+
+#: gogame.py:150
+msgid "Illegal move."
+msgstr "不正な動きです。"
