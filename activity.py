@@ -202,7 +202,8 @@ class PlayGo(Activity):
                 self.redraw_captures(captures)
 
             self.show_score()
-            self.board.draw_stone(x, y, self.get_currentcolor(), widget)
+            self.board.draw_stone(self.board.context, x, y, self.get_currentcolor(), widget)
+            self.board.queue_draw()
         # Player passed
         else:
             self.pass_count += 1
