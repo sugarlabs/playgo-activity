@@ -46,6 +46,8 @@ class GoBoardWidget(Gtk.DrawingArea):
         self.lastY = -1
         self.territories = None
 
+        self.set_size_request(500, 500)
+
         # Load the board pixmap
         self.BoardPixbuf = GdkPixbuf.Pixbuf.new_from_file("./images/board.gif")
         ##self.BoardPixmap, mask = pixbuf.render_pixmap_and_mask()
@@ -130,21 +132,12 @@ class GoBoardWidget(Gtk.DrawingArea):
                 ctx.fill_preserve()
                 ctx.stroke()
 
-    def do_size_request(self, requisition):
-        """From Widget.py: The do_size_request method Gtk+ is calling
-         on a widget to ask it the widget how large it wishes to be.
-         It's not guaranteed that gtk+ will actually give this size
-         to the widget.  So we will send gtk+ an appropiate minimum size"""
-
-        requisition.height = 500
-        requisition.width = 500
-
     def do_size_allocate(self, allocation):
-        """The do_size_allocate is called by when the actual 
+        """The do_size_allocate is called by when the actual
         size is known and the widget is told how much space
         could actually be allocated Save the allocated space
         self.allocation = allocation."""
-        
+
         logger.debug('Allocating %s x %s for widget', allocation.height, allocation.width)
         self.allocation = allocation
         if self.get_realized():
@@ -154,6 +147,8 @@ class GoBoardWidget(Gtk.DrawingArea):
         """This is where the widget must draw itself."""
 
         self.context = context
+        alloc = self.get_allocation()
+        print("DRAW CB", self.get_size_request(), alloc.width, alloc.height)
 
         #Scale everything
         self.unit = (min(self.allocation.height, self.allocation.width) + 10) / (self.size + 1)
