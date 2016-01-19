@@ -17,37 +17,40 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gtk
 from os.path import join, dirname
-
 from gettext import gettext as _
-from sugar.graphics.toolbutton import ToolButton
-from sugar.graphics.toolcombobox import ToolComboBox
-from sugar.graphics.objectchooser import ObjectChooser
+
+from gi.repository import Gtk
+from gi.repository import GObject
+
+from sugar3.graphics.toolbutton import ToolButton
+from sugar3.graphics.toolcombobox import ToolComboBox
+from sugar3.graphics.objectchooser import ObjectChooser
 import logging
-from gobject import SIGNAL_RUN_FIRST, TYPE_PYOBJECT, TYPE_NONE, TYPE_INT
 
 from gtp import search_for_gnugo
 
 logger = logging.getLogger('PlayGo')
 
-class GameToolbar(gtk.Toolbar):
+
+class GameToolbar(Gtk.Toolbar):
+
     __gtype_name__ = 'GameToolbar'
 
     __gsignals__ = {
-        'game-restart': (SIGNAL_RUN_FIRST, TYPE_NONE, []), 
-        'ai-activated': (SIGNAL_RUN_FIRST, TYPE_NONE, []), 
-        'ai-deactivated': (SIGNAL_RUN_FIRST, TYPE_NONE, []), 
-        'game-board-size': (SIGNAL_RUN_FIRST, TYPE_NONE, [TYPE_INT]), 
+        'game-restart': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, []),
+        'ai-activated': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, []),
+        'ai-deactivated': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, []),
+        'game-board-size': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, [GObject.TYPE_INT]),
     }
     
     def __init__(self, activity):
-        gtk.Toolbar.__init__(self)
+        Gtk.Toolbar.__init__(self)
         self.activity = activity
-        
+
         # Reset Button
         restart_icon = join(dirname(__file__), 'images', 'gtk-refresh.svg')
-        restart_image = gtk.Image()
+        restart_image = Gtk.Image()
         restart_image.set_from_file(restart_icon)
         self._restart_button = ToolButton()
         self._restart_button.set_icon_widget(restart_image)
@@ -57,38 +60,43 @@ class GameToolbar(gtk.Toolbar):
         self._restart_button.show()
         
         # Separator
-        separator = gtk.SeparatorToolItem()
+        separator = Gtk.SeparatorToolItem()
         separator.set_draw(True)
         self.insert(separator, -1)
         
-        self._add_widget(gtk.Label(_('Board size') + ': '))
+        self._add_widget(Gtk.Label(_('Board size') + ': '))
         # Change size combobox
         self._size_combo = ToolComboBox()
         self._sizes = ['19 X 19', '13 X 13', '9 X 9']
+
         for i, f in enumerate(self._sizes):
             self._size_combo.combo.append_item(i, f)
+
         self._size_combo.combo.connect('changed', self._game_size_cb)
         self._add_widget(self._size_combo)
         self._size_combo.combo.set_active(0)
-        
+
         # Separator
-        separator = gtk.SeparatorToolItem()
+        separator = Gtk.SeparatorToolItem()
         separator.set_draw(True)
         self.insert(separator, -1)
-        
+
         # Artificial Intelligence Button
-        self._ai_button = gtk.ToggleToolButton()
+        self._ai_button = Gtk.ToggleToolButton()
+
         if search_for_gnugo():
             self._ai_button.connect('toggled', self._ai_toggled_cb)
             self._ai_button.set_label(_('Play against PlayGo!'))
+
         else:
             self._ai_button.set_label(_('You need to install gnugo to play against PlayGo'))
             self._ai_button.set_sensitive(False)
+
         self.insert(self._ai_button, -1)
         self._ai_button.show()
         
     def _add_widget(self, widget, expand=False):
-        tool_item = gtk.ToolItem()
+        tool_item = Gtk.ToolItem()
         tool_item.set_expand(expand)
         tool_item.add(widget)
         widget.show()
@@ -119,6 +127,7 @@ class GameToolbar(gtk.Toolbar):
     def _ai_toggled_cb(self, widget):
         if widget.get_active():
             self.emit('ai-activated')
+
         else:
             self.emit('ai-deactivated')
         
@@ -127,3 +136,4 @@ class GameToolbar(gtk.Toolbar):
         
     def set_ai_button_state(self, value):
         self._ai_button.set_active(value)
+

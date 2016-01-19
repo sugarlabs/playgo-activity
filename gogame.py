@@ -22,6 +22,7 @@ _logger = logging.getLogger('PlayGo')
 
 from gettext import gettext as _
 
+
 class GoGame:
     """ This class administrates a go board.
         It keeps track of the stones currently on the board in the dictionary self.status,

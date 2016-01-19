@@ -20,14 +20,13 @@
 import logging
 import sugar.logger
 
-from sugar.presence import presenceservice
+from sugar3.presence import presenceservice
 import telepathy
 from dbus.service import method, signal
 # In build 656 Sugar lacks sugartubeconn
-try:
-  from sugar.presence.sugartubeconn import SugarTubeConnection
-except:
-  from sugar.presence.tubeconn import TubeConnection as SugarTubeConnection
+
+from sugar3.presence.sugartubeconn import SugarTubeConnection
+
 from dbus.gobject_service import ExportedGObject
 
 SERVICE = "org.freedesktop.Telepathy.Tube.PlayGo"
@@ -36,8 +35,11 @@ PATH = "/org/freedesktop/Telepathy/Tube/PlayGo"
 
 logger = logging.getLogger('PlayGo')
 
+
 class CollaborationWrapper(ExportedGObject):
+
     ''' A wrapper for the collaboration bureaucracy'''
+
     def __init__(self, activity, buddy_joined_cb, buddy_left_cb, play_cb, undostack, bootstrap):
         self.activity = activity
         self.buddy_joined = buddy_joined_cb

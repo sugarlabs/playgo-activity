@@ -17,19 +17,25 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
-import gtk
-from sugar.graphics import style
+from gi.repository import Gtk
+from gi.repository import Gdk
 
-class InfoPanel(gtk.EventBox):
+from sugar3.graphics import style
+
+class InfoPanel(Gtk.EventBox):
+
     def __init__(self):
-        gtk.EventBox.__init__(self)
-        self.Box = gtk.VBox()
-        self.status_label = gtk.Label()
+        Gtk.EventBox.__init__(self)
+
+        self.Box = Gtk.VBox()
+        self.status_label = Gtk.Label()
         self.Box.pack_start(self.status_label, True, True, 10)
-        self.score_label = gtk.Label()
+
+        self.score_label = Gtk.Label()
         self.Box.pack_start(self.score_label, True, True, 10)
-        self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.color_parse("dark grey"))
+        self.modify_bg(Gtk.StateType.NORMAL, Gdk.Color.parse("dark grey")[1])
         self.add(self.Box)
+
         self.show_all()
 
     def show(self, text):
@@ -37,4 +43,4 @@ class InfoPanel(gtk.EventBox):
 
     def show_score(self,  text):
         self.score_label.set_text(text)
-        
+

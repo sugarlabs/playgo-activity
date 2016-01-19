@@ -19,12 +19,13 @@
 from subprocess import Popen, PIPE
 import logging
 
-from sugar.activity.activity import get_bundle_path
+from sugar3.activity.activity import get_bundle_path
 from os.path import exists, join, abspath
 from os import pathsep, environ
 from string import split
 
 logger = logging.getLogger('PlayGo')
+
 
 def search_for_gnugo():
     paths = split(environ['PATH'], pathsep)
@@ -34,10 +35,14 @@ def search_for_gnugo():
     default_path = join(get_bundle_path(), 'bin', 'gnugo')
     if exists(default_path):
         return abspath(default_path)
+
     return False
 
+
 class gnugo:
+
     ''' A wrapper for talking to gnugo over GTP '''
+
     def __init__(self, boardsize=19, handicap=0, komi=5.5, level=3):
         ''' Start the gnugo subprocess '''
         self.size = boardsize
@@ -126,3 +131,4 @@ class gnugo:
         for i in range(0, self.size+4):
             output = output + self.stdout.readline()
         return output
+
