@@ -7,3 +7,4 @@ icon = activity-go
 activity_version = 5
 host_version = 1
 show_launcher = yes
+repository = https://github.com/sugarlabs/playgo-activity.git
