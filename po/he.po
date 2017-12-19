@@ -7,16 +7,18 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-30 00:32-0400\n"
-"PO-Revision-Date: 2008-12-14 11:08-0500\n"
-"Last-Translator: Zvi Devir <zdevir@gmail.com>\n"
+"PO-Revision-Date: 2016-11-13 13:12+0000\n"
+"Last-Translator: Yaron <sh.yaron@gmail.com>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: he\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Pootle 1.1.0rc2\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1479042729.000000\n"
 
 #: activity/activity.info:2
-#, fuzzy
 msgid "PlayGo"
 msgstr "PlayGo"
 
@@ -26,11 +28,11 @@ msgstr "משחק"
 
 #: activity.py:72
 msgid "Welcome to PlayGo!"
-msgstr "ברוכים הבאים ל-PlayGo!"
+msgstr "ברוך בואך ל־PlayGo!"
 
 #: activity.py:129
 msgid "Pass"
-msgstr "עבור"
+msgstr "דילוג"
 
 #: activity.py:134
 msgid "Undo"
@@ -38,11 +40,11 @@ msgstr "ביטול"
 
 #: activity.py:161 activity.py:220
 msgid "It's not your turn!"
-msgstr "זה אינו התור שלך!"
+msgstr "זה לא התור שלך!"
 
 #: activity.py:186
 msgid "Opponent passed"
-msgstr "יריב עבר"
+msgstr "יריב דילג"
 
 #: activity.py:285
 msgid "White's turn"
@@ -62,7 +64,7 @@ msgstr "הלבן מנצח!"
 
 #: activity.py:348
 msgid "There was a tie!"
-msgstr "תיק\"ו!"
+msgstr "תיקו!"
 
 #: activity.py:349
 #, python-format
@@ -70,10 +72,9 @@ msgid "Game ended! %s"
 msgstr "המשחק הסתיים! %s"
 
 #: activity.py:350
-#, python-format
-#, python-format, fuzzy
+#, python-format, python-format
 msgid "Final score: White %(W)g - Black %(B)g"
-msgstr "ניקוד סופי: לבן %(W)d - שחור %(B)d"
+msgstr "ניקוד סופי: לבן %(W)g - שחור %(B)g"
 
 #: activity.py:375 activity.py:381 activity.py:387
 msgid "AI"
@@ -93,10 +94,9 @@ msgid "PlayGo AI Deactivated"
 msgstr "משחק מחשב הופסק"
 
 #: activity.py:401
-#, python-format
-#, python-format, fuzzy
+#, python-format, python-format
 msgid "Score is: White %(W)g - Black %(B)g"
-msgstr "ניקוד נוכחי: לבן %(W)d - שחור%(B)d"
+msgstr "ניקוד נוכחי: לבן %(W)g - שחור %(B)g"
 
 #: activity.py:458
 msgid "Buddy joined"
@@ -118,7 +118,7 @@ msgstr "%s עזב"
 
 #: gametoolbar.py:55
 msgid "Restart Game"
-msgstr "התחלה משחק מחדש"
+msgstr "התחלת משחק מחדש"
 
 #: gametoolbar.py:64
 msgid "Board size"
@@ -126,7 +126,7 @@ msgstr "גודל לוח"
 
 #: gametoolbar.py:83
 msgid "Play against PlayGo!"
-msgstr "שחק כנגד PlayGo!"
+msgstr "שחקו כנגד PlayGo!"
 
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
@@ -134,7 +134,7 @@ msgstr "יש להתקין את gnugo כדי לשחק נגד PlayGo"
 
 #: gogame.py:138
 msgid "There already is a stone there!"
-msgstr "יש כאן כבר אבן!"
+msgstr "כבר יש כאן אבן!"
 
 #: gogame.py:140
 msgid "Ko violation!"
