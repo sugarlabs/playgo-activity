@@ -2,142 +2,145 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-30 00:32-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2017-04-24 15:07+0000\n"
+"Last-Translator: yurchor <yurchor@ukr.net>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.7.0\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
+"n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1493046464.000000\n"
 
 #: activity/activity.info:2
 msgid "PlayGo"
-msgstr ""
+msgstr "Гра у го"
 
 #: activity.py:56
 msgid "Game"
-msgstr ""
+msgstr "Гра"
 
 #: activity.py:72
 msgid "Welcome to PlayGo!"
-msgstr ""
+msgstr "Вітаємо у Грі у го!"
 
 #: activity.py:129
 msgid "Pass"
-msgstr ""
+msgstr "Пропустити"
 
 #: activity.py:134
 msgid "Undo"
-msgstr ""
+msgstr "Скасувати"
 
 #: activity.py:161 activity.py:220
 msgid "It's not your turn!"
-msgstr ""
+msgstr "Ваш хід!"
 
 #: activity.py:186
 msgid "Opponent passed"
-msgstr ""
+msgstr "Суперник пропустив хід"
 
 #: activity.py:285
 msgid "White's turn"
-msgstr ""
+msgstr "Хід білих"
 
 #: activity.py:287
 msgid "Black's turn"
-msgstr ""
+msgstr "Хід чорних"
 
 #: activity.py:344
 msgid "Black wins!"
-msgstr ""
+msgstr "Чорні виграли!"
 
 #: activity.py:346
 msgid "White wins!"
-msgstr ""
+msgstr "Білі виграли!"
 
 #: activity.py:348
 msgid "There was a tie!"
-msgstr ""
+msgstr "Нічия!"
 
 #: activity.py:349
 #, python-format
 msgid "Game ended! %s"
-msgstr ""
+msgstr "Гру завершено! %s"
 
 #: activity.py:350
 #, python-format
 msgid "Final score: White %(W)g - Black %(B)g"
-msgstr ""
+msgstr "Остаточний результат: Білі %(W)g — Чорні %(B)g"
 
 #: activity.py:375 activity.py:381 activity.py:387
 msgid "AI"
-msgstr ""
+msgstr "ШІ"
 
 #: activity.py:375
 #, python-format
 msgid "GnuGo loading failed!: %s"
-msgstr ""
+msgstr "Не вдалося завантажити GnuGo!: %s"
 
 #: activity.py:381
 msgid "PlayGo AI Activated"
-msgstr ""
+msgstr "Задіяно штучний інтелект Гри у го"
 
 #: activity.py:387
 msgid "PlayGo AI Deactivated"
-msgstr ""
+msgstr "Вимкнено штучний інтелект Гри у го"
 
 #: activity.py:401
 #, python-format
 msgid "Score is: White %(W)g - Black %(B)g"
-msgstr ""
+msgstr "Результат: Білі %(W)g — Чорні %(B)g"
 
 #: activity.py:458
 msgid "Buddy joined"
-msgstr ""
+msgstr "Долучився приятель"
 
 #: activity.py:458
 #, python-format
 msgid "%s joined"
-msgstr ""
+msgstr "Долучився %s"
 
 #: activity.py:461
 msgid "Buddy left"
-msgstr ""
+msgstr "Приятель полишив гру"
 
 #: activity.py:461
 #, python-format
 msgid "%s left"
-msgstr ""
+msgstr "%s полишив гру"
 
 #: gametoolbar.py:55
 msgid "Restart Game"
-msgstr ""
+msgstr "Перезапустити гру"
 
 #: gametoolbar.py:64
 msgid "Board size"
-msgstr ""
+msgstr "Розмір дошки"
 
 #: gametoolbar.py:83
 msgid "Play against PlayGo!"
-msgstr ""
+msgstr "Гра проти Гри у го!"
 
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
-msgstr ""
+msgstr "Щоб грати проти Гри у го, вам слід встановити gnugo"
 
 #: gogame.py:138
 msgid "There already is a stone there!"
-msgstr ""
+msgstr "Тут уже є камінь!"
 
 #: gogame.py:140
 msgid "Ko violation!"
-msgstr ""
+msgstr "Порушення ко!"
 
 #: gogame.py:150
 msgid "Illegal move."
-msgstr ""
+msgstr "Заборонений правилами хід."

@@ -2,19 +2,22 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#, fuzzy
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2012-06-30 00:32-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"PO-Revision-Date: 2017-11-01 21:45+0000\n"
+"Last-Translator: Markus <m.slg@gmx.de>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: de\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Translate Toolkit 1.1.1rc4\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Generator: Pootle 2.5.1.1\n"
+"X-POOTLE-MTIME: 1509572714.000000\n"
 
 #: activity/activity.info:2
 msgid "PlayGo"
@@ -98,46 +101,46 @@ msgstr ""
 
 #: activity.py:458
 msgid "Buddy joined"
-msgstr ""
+msgstr "Partner hinzugekommen"
 
 #: activity.py:458
 #, python-format
 msgid "%s joined"
-msgstr ""
+msgstr "%s hinzugekommen"
 
 #: activity.py:461
 msgid "Buddy left"
-msgstr ""
+msgstr "Partner getrennt"
 
 #: activity.py:461
 #, python-format
 msgid "%s left"
-msgstr ""
+msgstr "%s getrennt"
 
 #: gametoolbar.py:55
 msgid "Restart Game"
-msgstr ""
+msgstr "Spiel neu starten"
 
 #: gametoolbar.py:64
 msgid "Board size"
-msgstr ""
+msgstr "Brettgröße"
 
 #: gametoolbar.py:83
 msgid "Play against PlayGo!"
-msgstr ""
+msgstr "Spiele gegen SpielGo!"
 
 #: gametoolbar.py:85
 msgid "You need to install gnugo to play against PlayGo"
-msgstr ""
+msgstr "Du musst gnugo installieren, um gegen SpielGo spielen zu können"
 
 #: gogame.py:138
 msgid "There already is a stone there!"
-msgstr ""
+msgstr "Dort liegt bereits ein Stein!"
 
 #: gogame.py:140
 msgid "Ko violation!"
-msgstr ""
+msgstr "Ko-Verletzung!"
 
 #: gogame.py:150
 msgid "Illegal move."
-msgstr ""
+msgstr "Verbotener Zug."
