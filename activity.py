@@ -22,7 +22,8 @@ import sugar.logger
 import cPickle
 
 from gettext import gettext as _
-
+import gi
+gi.require_version('Gtk', '3.0')
 from gi.repository import Gtk
 
 from sugar3.activity.activity import Activity
