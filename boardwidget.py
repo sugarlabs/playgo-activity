@@ -148,6 +148,27 @@ class GoBoardWidget(Gtk.DrawingArea):
         for x in status.keys():
             self.draw_stone(ctx, x[0], x[1], status[x], self)
 
+    def draw_scored_territory(self, ctx, x, y, color, widget):
+        x = x + 1
+        y = y + 1
+
+        if color == 'B':
+            ctx.set_source_rgba(0, 0, 0, 1)
+        else:
+            ctx.set_source_rgba(1, 1, 1, 1)
+
+        ctx.set_line_width(4)
+
+        # Horizontal mark
+        ctx.move_to(self.unit * x - self.unit / 4, self.unit * y)
+        ctx.line_to(self.unit * x + self.unit / 4, self.unit * y)
+
+        # Vertical mark
+        ctx.move_to(self.unit * x, self.unit * y - self.unit / 4)
+        ctx.line_to(self.unit * x, self.unit * y + self.unit / 4)
+
+        ctx.stroke()
+
     def draw_scored_territories(self, ctx, territories):
         for color in territories.keys():
             for n in territories[color]:
@@ -172,6 +193,7 @@ class GoBoardWidget(Gtk.DrawingArea):
 
     def redraw_area(self, x, y):
         x, y = self.get_pixel_from_coordinates(x, y)
+        rect = Gdk.Rectangle()
         rect.x = int(x - self.unit / 2)
         rect.y = int(y - self.unit / 2)
         rect.width = int(self.unit)
