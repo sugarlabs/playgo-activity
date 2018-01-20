@@ -87,7 +87,7 @@ class gnugo:
         logger.debug('Sent play by %s at %s to gnugo', color, self._xy_to_coords(x, y))
         output = self.stdout.readline()
         self.stdout.readline()
-        if output[0] == '?':
+        if output and output[0] == '?':
             return False
         return True
     
