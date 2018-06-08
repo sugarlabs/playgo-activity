@@ -20,7 +20,6 @@
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-from sugar3.graphics import style
 
 class InfoPanel(Gtk.EventBox):
 
@@ -43,4 +42,3 @@ class InfoPanel(Gtk.EventBox):
 
     def show_score(self,  text):
         self.score_label.set_text(text)
-

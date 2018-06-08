@@ -25,7 +25,6 @@ from gi.repository import GObject
 
 from sugar3.graphics.toolbutton import ToolButton
 from sugar3.graphics.toolcombobox import ToolComboBox
-from sugar3.graphics.objectchooser import ObjectChooser
 import logging
 
 from gtp import search_for_gnugo
@@ -43,7 +42,7 @@ class GameToolbar(Gtk.Toolbar):
         'ai-deactivated': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, []),
         'game-board-size': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, [GObject.TYPE_INT]),
     }
-    
+
     def __init__(self, activity):
         Gtk.Toolbar.__init__(self)
         self.activity = activity
@@ -58,12 +57,12 @@ class GameToolbar(Gtk.Toolbar):
         self._restart_button.set_tooltip(_('Restart Game'))
         self.insert(self._restart_button, -1)
         self._restart_button.show()
-        
+
         # Separator
         separator = Gtk.SeparatorToolItem()
         separator.set_draw(True)
         self.insert(separator, -1)
-        
+
         self._add_widget(Gtk.Label(_('Board size') + ': '))
         # Change size combobox
         self._size_combo = ToolComboBox()
@@ -94,7 +93,7 @@ class GameToolbar(Gtk.Toolbar):
 
         self.insert(self._ai_button, -1)
         self._ai_button.show()
-        
+
     def _add_widget(self, widget, expand=False):
         tool_item = Gtk.ToolItem()
         tool_item.set_expand(expand)
@@ -102,21 +101,21 @@ class GameToolbar(Gtk.Toolbar):
         widget.show()
         self.insert(tool_item, -1)
         tool_item.show()
-        
+
     def _game_restart_cb(self, widget):
         self._size_combo.set_sensitive(True)
         self.emit('game-restart')
-    
+
     def grey_out_restart(self):
         self._restart_button.set_sensitive(False)
-    
+
     def _game_size_cb(self, widget):
         game_size = int(self._sizes[self._size_combo.combo.get_active()][:2])
         self.emit('game-board-size', game_size)
-        
+
     def grey_out_size_change(self):
         self._size_combo.set_sensitive(False)
-        
+
     def update_toolbar(self, widget, data, grid):
         size = data.get('size')
         self._size_combo.combo.handler_block(self.size_handle_id)
@@ -130,10 +129,9 @@ class GameToolbar(Gtk.Toolbar):
 
         else:
             self.emit('ai-deactivated')
-        
+
     def grey_out_ai(self):
         self._ai_button.set_sensitive(False)
-        
+
     def set_ai_button_state(self, value):
         self._ai_button.set_active(value)
-

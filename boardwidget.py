@@ -32,11 +32,15 @@ logger = logging.getLogger('PlayGo.GoBoardWidget')
 class GoBoardWidget(Gtk.DrawingArea):
     ''' A Go Board Widget '''
 
-    __gsignals__ =  {
-            'insert-requested': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, (GObject.TYPE_INT, GObject.TYPE_INT)),
+    __gsignals__ = {
+            'insert-requested': (
+                                GObject.SIGNAL_RUN_FIRST,
+                                GObject.TYPE_NONE,
+                                (GObject.TYPE_INT, GObject.TYPE_INT)),
         }
 
-    #TODO: this should default to DEFAULT_SIZE, not 19, but this is defined in activity.py not here
+    # TODO: this should default to DEFAULT_SIZE, not 19,
+    # but this is defined in activity.py not here
     def __init__(self, status, size=19):
         Gtk.DrawingArea.__init__(self)
 
@@ -70,20 +74,22 @@ class GoBoardWidget(Gtk.DrawingArea):
         self.context = context
         alloc = self.get_allocation()
 
-        #Scale everything
+        # Scale everything
         self.unit = (min(alloc.height, alloc.width) + 10) / (self.size + 1)
-        self.ScaledBlackPixbuf = self.BlackPixbuf.scale_simple(int(self.unit), int(self.unit), GdkPixbuf.InterpType.BILINEAR)
+        self.ScaledBlackPixbuf = self.BlackPixbuf.scale_simple(
+            int(self.unit),
+            int(self.unit),
+            GdkPixbuf.InterpType.BILINEAR)
         self.ScaledWhitePixbuf = self.WhitePixbuf.scale_simple(int(self.unit), int(self.unit), GdkPixbuf.InterpType.BILINEAR)
-        #Draw the board
+        # Draw the board
         Gdk.cairo_set_source_pixbuf(context, self.BoardPixbuf, 0, 0)
         context.paint()
 
-        ##self.get_window().draw_drawable(self.gc, self.BoardPixmap, 0, 0, 0, 0, self.allocation.width, self.allocation.height)
-        #Draw the lines
+        # Draw the lines
         self.draw_lines(context)
-        #Draw the stones
+        # Draw the stones
         self.draw_stones(context, self.status)
-        #Draw scored terriotires if they exist (end of game)
+        # Draw scored terriotires if they exist (end of game)
         if self.territories:
             self.draw_scored_territories(context, self.territories)
 
@@ -108,21 +114,21 @@ class GoBoardWidget(Gtk.DrawingArea):
         if self.size == 19:
             seq = [4, 10, 16]
 
-        elif self.size == 13 :
+        elif self.size == 13:
             seq = [4, 7, 10]
 
-        elif self.size == 9 :
+        elif self.size == 9:
             seq = [3, 7]
             # set the middle singleton
             ctx.arc(self.unit * 5, self.unit * 5, 3, 0, PI * 2)
             ctx.fill_preserve()
             ctx.stroke()
 
-        else :
+        else:
             seq = []
 
         # stroke in the star points
-        #TODO: adjust size for teeny boards
+        # TODO: adjust size for teeny boards
         for x in seq:
             for y in seq:
                 ctx.arc(self.unit * x, self.unit * y, 3, 0, PI * 2)
@@ -179,8 +185,8 @@ class GoBoardWidget(Gtk.DrawingArea):
         calculate the x and y position on the board given pixel address
         """
 
-        x0 = 0 #self.get_allocation().x
-        y0 = 0 #self.get_allocation().y
+        x0 = 0  # self.get_allocation().x
+        y0 = 0  # self.get_allocation().y
         x = int(((event.x - x0 ) / (self.unit if self.unit > 0 else 1)) - 0.5)
         y = int(((event.y - y0 ) / (self.unit if self.unit > 0 else 1)) - 0.5)
         if x > self.size - 1:

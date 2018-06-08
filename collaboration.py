@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import logging
-import sugar.logger
 
 from sugar3.presence import presenceservice
 import telepathy
@@ -49,9 +48,9 @@ class CollaborationWrapper(ExportedGObject):
         self.bootstrap = bootstrap
         self.world = False
         self.entered = False
-        self.presence_service = presenceservice.get_instance() 
+        self.presence_service = presenceservice.get_instance()
         self.owner = self.presence_service.get_owner()
-        
+
     def _shared_cb(self, activity):
         self.activity.gameToolbar.grey_out_size_change()
         self.activity.gameToolbar.grey_out_restart()
@@ -62,7 +61,7 @@ class CollaborationWrapper(ExportedGObject):
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].OfferDBusTube(
             SERVICE, {})
         self.is_initiator = True
-            
+
     def _joined_cb(self, activity):
         self.activity.gameToolbar.grey_out_size_change()
         self.activity.gameToolbar.grey_out_restart()
@@ -71,11 +70,11 @@ class CollaborationWrapper(ExportedGObject):
         self.activity.board.set_sensitive(False)
         self._sharing_setup()
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
-            reply_handler=self._list_tubes_reply_cb, 
+            reply_handler=self._list_tubes_reply_cb,
             error_handler=self._list_tubes_error_cb)
         self.is_initiator = False
         self.activity.board.set_sensitive(True)
-    
+
     def _sharing_setup(self):
         if self.activity._shared_activity is None:
             logger.error('Failed to share or join activity')
@@ -94,70 +93,81 @@ class CollaborationWrapper(ExportedGObject):
         # Optional - included for example:
         # Find out who's already in the shared activity:
         for buddy in self.activity._shared_activity.get_joined_buddies():
-            logger.debug('Buddy %s is already in the activity',
-                               buddy.props.nick)
-                               
+            logger.debug(
+                        'Buddy %s is already in the activity',
+                        buddy.props.nick)
+
     def participant_change_cb(self, added, removed):
         logger.debug('Tube: Added participants: %r', added)
         logger.debug('Tube: Removed participants: %r', removed)
         for handle, bus_name in added:
             buddy = self._get_buddy(handle)
             if buddy is not None:
-                logger.debug('Tube: Handle %u (Buddy %s) was added',
-                                   handle, buddy.props.nick)
+                logger.debug(
+                            'Tube: Handle %u (Buddy %s) was added',
+                            handle, buddy.props.nick)
         for handle in removed:
             buddy = self._get_buddy(handle)
             if buddy is not None:
                 logger.debug('Buddy %s was removed' % buddy.props.nick)
         if not self.entered:
             if self.is_initiator:
-                logger.debug("I'm initiating the tube, will "
+                logger.debug(
+                    "I'm initiating the tube, will "
                     "watch for hellos.")
                 self.add_hello_handler()
             else:
                 logger.debug('Hello, everyone! What did I miss?')
                 self.Hello()
         self.entered = True
-        
-        
+
     # This is sent to all participants whenever we join an activity
     @signal(dbus_interface=IFACE, signature='')
     def Hello(self):
         """Say Hello to whoever else is in the tube."""
         logger.debug('I said Hello.')
-    
+
     # This is called by whoever receives our Hello signal
     # This method receives the current game state and puts us in sync
-    # with the rest of the participants. 
+    # with the rest of the participants.
     # The current game state is represented by the game object
     @method(dbus_interface=IFACE, in_signature='a(ii)si', out_signature='')
     def World(self, undostack, taken_color, size):
         """To be called on the incoming XO after they Hello."""
         if not self.world:
-            logger.debug('Somebody called World and sent me undostack: %s',
-                                undostack)
+            logger.debug(
+                        'Somebody called World and sent me undostack: %s',
+                        undostack)
             self.activity.board_size_change(None, size)
             self.bootstrap(list(undostack))
             self.activity.set_player_color(self.activity.invert_color(taken_color))
-            #self.players = players
+            # self.players = players
             # now I can World others
             self.add_hello_handler()
         else:
             self.world = True
             logger.debug("I've already been welcomed, doing nothing")
-    
+
     @signal(dbus_interface=IFACE, signature='ii')
     def Play(self, x, y):
         """Say Hello to whoever else is in the tube."""
         logger.debug('Signaling players of stone placement at:%s x %s.', x, y)
-       
+
     def add_hello_handler(self):
         logger.debug('Adding hello handler.')
-        self.tube.add_signal_receiver(self.hello_signal_cb, 'Hello', IFACE,
-            path=PATH, sender_keyword='sender')
-        self.tube.add_signal_receiver(self.play_signal_cb, 'Play', IFACE,
-            path=PATH, sender_keyword='sender')
-            
+        self.tube.add_signal_receiver(
+            self.hello_signal_cb,
+            'Hello',
+            IFACE,
+            path=PATH,
+            sender_keyword='sender')
+        self.tube.add_signal_receiver(
+            self.play_signal_cb,
+            'Play',
+            IFACE,
+            path=PATH,
+            sender_keyword='sender')
+
     def hello_signal_cb(self, sender=None):
         """Somebody Helloed me. World them."""
         if sender == self.tube.get_unique_name():
@@ -170,12 +180,13 @@ class CollaborationWrapper(ExportedGObject):
         for pos, color, captures in self.undostack:
             strippedstack.append(pos)
         # FIXME: A spectator needs to send the color that was taken, not its own
-        self.tube.get_object(sender, PATH).World(strippedstack, 
-                                                 self.activity.get_playercolor(), 
-                                                 self.activity.size, 
-                                                 dbus_interface=IFACE)
+        self.tube.get_object(sender, PATH).World(
+                                                strippedstack,
+                                                self.activity.get_playercolor(),
+                                                self.activity.size,
+                                                dbus_interface=IFACE)
         self.activity.board.set_sensitive(True)
-        
+
     def play_signal_cb(self, x, y, sender=None):
         """Somebody placed a stone. """
         if sender == self.tube.get_unique_name():
@@ -187,31 +198,32 @@ class CollaborationWrapper(ExportedGObject):
 
     def _list_tubes_error_cb(self, e):
         logger.error('ListTubes() failed: %s', e)
-            
+
     def _list_tubes_reply_cb(self, tubes):
         for tube_info in tubes:
             self._new_tube_cb(*tube_info)
-            
+
     def _new_tube_cb(self, id, initiator, type, service, params, state):
         logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
                      'params=%r state=%d', id, initiator, type, service,
                      params, state)
         if (type == telepathy.TUBE_TYPE_DBUS and
-            service == SERVICE):
+                service == SERVICE):
             if state == telepathy.TUBE_STATE_LOCAL_PENDING:
                 self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
-            self.tube = SugarTubeConnection(self.conn,
-                self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
-                id, group_iface=self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP])
+            self.tube = SugarTubeConnection(
+                    self.conn,
+                    self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
+                    id, group_iface=self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP])
             super(CollaborationWrapper, self).__init__(self.tube, PATH)
             self.tube.watch_participants(self.participant_change_cb)
 
-    def _buddy_joined_cb (self, activity, buddy):
+    def _buddy_joined_cb(self, activity, buddy):
         """Called when a buddy joins the shared activity. """
         logger.debug('Buddy %s joined', buddy.props.nick)
         self.buddy_joined(buddy)
 
-    def _buddy_left_cb (self, activity, buddy):
+    def _buddy_left_cb(self, activity, buddy):
         """Called when a buddy leaves the shared activity. """
         self.buddy_left(buddy)
 
@@ -234,4 +246,3 @@ class CollaborationWrapper(ExportedGObject):
             assert handle != 0
         return self.presence_service.get_buddy_by_telepathy_handle(
             self.conn.service_name, self.conn.object_path, handle)
-
