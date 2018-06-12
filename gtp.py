@@ -51,9 +51,20 @@ class gnugo:
         if self.path:
             logger.debug('Found gnugo at %s', self.path)
             try:
-                self.gnugo = Popen([self.path, '--mode', 'gtp', '--boardsize', str(boardsize),
-                                  '--handicap', str(handicap), '--komi', str(komi), '--level', str(level)],
-                                  stdout=PIPE, stdin=PIPE)
+                self.gnugo = Popen([
+                    self.path,
+                    '--mode',
+                    'gtp',
+                    '--boardsize',
+                    str(boardsize),
+                    '--handicap',
+                    str(handicap),
+                    '--komi',
+                    str(komi),
+                    '--level',
+                    str(level)],
+                    stdout=PIPE,
+                    stdin=PIPE)
             except OSError, data:
                 logger.error('Could not start gnugo subprocess: %s', data)
                 raise
@@ -70,10 +81,14 @@ class gnugo:
         self.stdin.flush()
 
     def _xy_to_coords(self, x, y):
-        return dict(zip(range(25), 'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
+        return dict(
+            zip(range(25),
+                'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
 
     def _coords_to_xy(self, coords):
-        return int(dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(25)))[coords[0]]), self.size - int(coords[1:])
+        return int(
+            dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(25)))[coords[0]]),
+        self.size - int(coords[1:])
 
     def short_to_long_colors(self, short_color):
         if short_color == 'B':
@@ -84,7 +99,10 @@ class gnugo:
         color = self.short_to_long_colors(color)
         self.stdin.write('play %s %s\n' % (color, self._xy_to_coords(x, y)))
         self.stdin.flush()
-        logger.debug('Sent play by %s at %s to gnugo', color, self._xy_to_coords(x, y))
+        logger.debug(
+            'Sent play by %s at %s to gnugo',
+            color,
+            self._xy_to_coords(x, y))
         output = self.stdout.readline()
         self.stdout.readline()
         if output and output[0] == '?':

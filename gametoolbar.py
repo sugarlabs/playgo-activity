@@ -37,10 +37,19 @@ class GameToolbar(Gtk.Toolbar):
     __gtype_name__ = 'GameToolbar'
 
     __gsignals__ = {
-        'game-restart': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, []),
-        'ai-activated': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, []),
-        'ai-deactivated': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, []),
-        'game-board-size': (GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE, [GObject.TYPE_INT]),
+        'game-restart': (
+                        GObject.SIGNAL_RUN_FIRST,
+                        GObject.TYPE_NONE, []),
+        'ai-activated': (
+                        GObject.SIGNAL_RUN_FIRST,
+                        GObject.TYPE_NONE, []),
+        'ai-deactivated': (
+                          GObject.SIGNAL_RUN_FIRST,
+                          GObject.TYPE_NONE, []),
+        'game-board-size': (
+                           GObject.SIGNAL_RUN_FIRST,
+                           GObject.TYPE_NONE,
+                           [GObject.TYPE_INT]),
     }
 
     def __init__(self, activity):
@@ -88,7 +97,8 @@ class GameToolbar(Gtk.Toolbar):
             self._ai_button.set_label(_('Play against PlayGo!'))
 
         else:
-            self._ai_button.set_label(_('You need to install gnugo to play against PlayGo'))
+            self._ai_button.set_label(
+                _('You need to install gnugo to play against PlayGo'))
             self._ai_button.set_sensitive(False)
 
         self.insert(self._ai_button, -1)

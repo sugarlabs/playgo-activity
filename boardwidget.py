@@ -80,7 +80,10 @@ class GoBoardWidget(Gtk.DrawingArea):
             int(self.unit),
             int(self.unit),
             GdkPixbuf.InterpType.BILINEAR)
-        self.ScaledWhitePixbuf = self.WhitePixbuf.scale_simple(int(self.unit), int(self.unit), GdkPixbuf.InterpType.BILINEAR)
+        self.ScaledWhitePixbuf =\
+            self.WhitePixbuf.scale_simple(int(self.unit),
+                int(self.unit),
+                    GdkPixbuf.InterpType.BILINEAR)
         # Draw the board
         Gdk.cairo_set_source_pixbuf(context, self.BoardPixbuf, 0, 0)
         context.paint()
@@ -144,9 +147,17 @@ class GoBoardWidget(Gtk.DrawingArea):
         y = y + 1
 
         if color == 'B':
-            Gdk.cairo_set_source_pixbuf(ctx, self.ScaledBlackPixbuf, self.unit * x - self.unit / 2, self.unit * y - self.unit / 2)
+            Gdk.cairo_set_source_pixbuf(
+                ctx,
+                self.ScaledBlackPixbuf,
+                self.unit * x - self.unit / 2,
+                self.unit * y - self.unit / 2)
         else:
-            Gdk.cairo_set_source_pixbuf(ctx, self.ScaledWhitePixbuf, self.unit * x - self.unit / 2, self.unit * y - self.unit / 2)
+            Gdk.cairo_set_source_pixbuf(
+                ctx,
+                self.ScaledWhitePixbuf,
+                self.unit * x - self.unit / 2,
+                self.unit * y - self.unit / 2)
 
         ctx.paint()
 
@@ -187,8 +198,8 @@ class GoBoardWidget(Gtk.DrawingArea):
 
         x0 = 0  # self.get_allocation().x
         y0 = 0  # self.get_allocation().y
-        x = int(((event.x - x0 ) / (self.unit if self.unit > 0 else 1)) - 0.5)
-        y = int(((event.y - y0 ) / (self.unit if self.unit > 0 else 1)) - 0.5)
+        x = int(((event.x - x0) / (self.unit if self.unit > 0 else 1)) - 0.5)
+        y = int(((event.y - y0) / (self.unit if self.unit > 0 else 1)) - 0.5)
         if x > self.size - 1:
             x = self.size - 1
 
@@ -228,7 +239,7 @@ class GoBoardWidget(Gtk.DrawingArea):
         else:
             ctx.set_source_rgba(1, 1, 1, .5)
 
-        ctx.arc(self.lastX, self.lastY, self.unit / 2 -4, 0, 2 * PI)
+        ctx.arc(self.lastX, self.lastY, self.unit / 2 - 4, 0, 2 * PI)
         ctx.fill_preserve()
         ctx.stroke()
         del ctx

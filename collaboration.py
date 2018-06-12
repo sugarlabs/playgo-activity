@@ -39,7 +39,8 @@ class CollaborationWrapper(ExportedGObject):
 
     ''' A wrapper for the collaboration bureaucracy'''
 
-    def __init__(self, activity, buddy_joined_cb, buddy_left_cb, play_cb, undostack, bootstrap):
+    def __init__(self, activity, buddy_joined_cb,
+                 buddy_left_cb, play_cb, undostack, bootstrap):
         self.activity = activity
         self.buddy_joined = buddy_joined_cb
         self.buddy_left = buddy_left_cb
@@ -87,8 +88,12 @@ class CollaborationWrapper(ExportedGObject):
         self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal(
             'NewTube', self._new_tube_cb)
 
-        self.activity._shared_activity.connect('buddy-joined', self._buddy_joined_cb)
-        self.activity._shared_activity.connect('buddy-left', self._buddy_left_cb)
+        self.activity._shared_activity.connect(
+            'buddy-joined',
+            self._buddy_joined_cb)
+        self.activity._shared_activity.connect(
+            'buddy-left',
+            self._buddy_left_cb)
 
         # Optional - included for example:
         # Find out who's already in the shared activity:
@@ -140,7 +145,8 @@ class CollaborationWrapper(ExportedGObject):
                         undostack)
             self.activity.board_size_change(None, size)
             self.bootstrap(list(undostack))
-            self.activity.set_player_color(self.activity.invert_color(taken_color))
+            self.activity.set_player_color(
+                self.activity.invert_color(taken_color))
             # self.players = players
             # now I can World others
             self.add_hello_handler()
@@ -179,12 +185,13 @@ class CollaborationWrapper(ExportedGObject):
         strippedstack = []
         for pos, color, captures in self.undostack:
             strippedstack.append(pos)
-        # FIXME: A spectator needs to send the color that was taken, not its own
+        # FIXME: A spectator needs to send the color
+        # that was taken, not its own
         self.tube.get_object(sender, PATH).World(
-                                                strippedstack,
-                                                self.activity.get_playercolor(),
-                                                self.activity.size,
-                                                dbus_interface=IFACE)
+            strippedstack,
+            self.activity.get_playercolor(),
+            self.activity.size,
+            dbus_interface=IFACE)
         self.activity.board.set_sensitive(True)
 
     def play_signal_cb(self, x, y, sender=None):
@@ -210,11 +217,14 @@ class CollaborationWrapper(ExportedGObject):
         if (type == telepathy.TUBE_TYPE_DBUS and
                 service == SERVICE):
             if state == telepathy.TUBE_STATE_LOCAL_PENDING:
-                self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
+                self.tubes_chan[
+                    telepathy.CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
             self.tube = SugarTubeConnection(
                     self.conn,
                     self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
-                    id, group_iface=self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP])
+                    id,
+                    group_iface=self.text_chan[
+                        telepathy.CHANNEL_INTERFACE_GROUP])
             super(CollaborationWrapper, self).__init__(self.tube, PATH)
             self.tube.watch_participants(self.participant_change_cb)
 
@@ -236,7 +246,8 @@ class CollaborationWrapper(ExportedGObject):
         if my_csh == cs_handle:
             handle = self.conn.GetSelfHandle()
             logger.debug('CS handle %u belongs to me, %u', cs_handle, handle)
-        elif group.GetGroupFlags() & telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
+        elif group.GetGroupFlags() &\
+                telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
             handle = group.GetHandleOwners([cs_handle])[0]
             logger.debug('CS handle %u belongs to %u', cs_handle, handle)
         else:

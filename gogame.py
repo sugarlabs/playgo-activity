@@ -45,7 +45,8 @@ class GoGame:
         self.score[color] = self.score[color] + 1
 
     def neighbors(self, x):
-        """ Returns the coordinates of the 4 (resp. 3 resp. 2 at the side 1 in the corner) intersections
+        """ Returns the coordinates of the 4
+            (resp. 3 resp. 2 at the side 1 in the corner) intersections
             adjacent to the given one. """
         if x[0] == 0:
             l0 = [1]
@@ -61,13 +62,13 @@ class GoGame:
         else:
             l1 = [x[1]-1, x[1]+1]
 
-        l = []
+        neighbors_list = []
         for i in l0:
-            l.append((i, x[1]))
+            neighbors_list.append((i, x[1]))
         for j in l1:
-            l.append((x[0], j))
+            neighbors_list.append((x[0], j))
 
-        return l
+        return neighbors_list
 
     def is_occupied(self, x, y):
         return (x, y) in self.status.keys()
@@ -92,23 +93,27 @@ class GoGame:
                 for x in captures:
                     del self.status[x]   # remove captured stones, if any
                     self.increase_score(color)
-            self.undostack.append((pos, color, captures))  # remember move + captured stones for easy undo
+            # remember move + captured stones for easy undo
+            self.undostack.append((pos, color, captures))
             return captures
         else:
             return 0
 
     def get_captures(self,  pos,  color):
-        """Returns a list of captured stones resulting from placing a color stone at pos """
+        """Returns a list of captured stones resulting
+           from placing a color stone at pos """
         c = []  # captured stones
 
         for x in self.neighbors(pos):
-            if x in self.status.keys() and self.status[x] == self.invert(color):
+            if x in self.status.keys() and\
+                    self.status[x] == self.invert(color):
                 c = c + self.hasNoLibExcP(x, self.invert(color), pos)
 
         if c:
             captures = []
             for x in c:
-                if not(x in captures): captures.append(x)
+                if not(x in captures):
+                    captures.append(x)
             return captures
 
         return 0
@@ -116,8 +121,8 @@ class GoGame:
     def checkKo(self,  pos, color):
         ''' Check if a move by color at pos would be a basic Ko infraction '''
         # Basically what we need to check, is if the current play would undo
-        # all that was done by the last entry in undostack (capture what was placed
-        # and place what was captured).
+        # all that was done by the last entry in undostack
+        # (capture what was placed and place what was captured).
         if self.undostack:
             lastpos,  lastcolor,  lastcaptures = self.undostack[-1]
             currentcaptures = self.get_captures(pos, color)
@@ -132,7 +137,8 @@ class GoGame:
         if pos in self.status.keys():
             return 0
 
-        # If the play at pos would leave that stone without liberties, we have two possibilities:
+        # If the play at pos would leave that stone without liberties,
+        # we have two possibilities:
         # 1- It's a capturing move
         # 2- It's an illegal move
         if self.hasNoLibExcP(pos, color):
@@ -141,16 +147,19 @@ class GoGame:
                 return 1
             # It didnt, so I guess it's illegal
             return 0
-        else: return not self.checkKo(pos, color)
+        else:
+            return not self.checkKo(pos, color)
 
     def illegal(self, x, y, color):
-        """ Check if a play by color at pos would be an illigal move, and return pretty errors"""
+        """ Check if a play by color at pos would be an illigal move,
+            and return pretty errors"""
         if (x, y) in self.status.keys():
             return _('There already is a stone there!')
         if self.checkKo((x, y), color):
             return _('Ko violation!')
 
-        # If the play at pos would leave that stone without liberties, we have two possibilities:
+        # If the play at pos would leave that stone without liberties,
+        # we have two possibilities:
         # 1- It's a capturing move
         # 2- It's an illegal move
         if self.hasNoLibExcP((x, y), color):
@@ -159,42 +168,55 @@ class GoGame:
                 return False
             # It didnt, so I guess it's illegal
             return _('Illegal move.')
-        else: return False
+        else:
+            return False
 
     def hasNoLibExcP(self, pos, color, exc=None):
-        """ This function checks if the string (=solidly connected) of stones containing
-            the stone at pos has a liberty (resp. has a liberty besides that at exc).
-            If no liberties are found, a list of all stones in the string is returned.
+        """ This function checks if the string (=solidly connected) of stones
+            containing the stone at pos has a liberty
+            (resp. has a liberty besides that at exc).
+            If no liberties are found, a list of all stones in the string is
+            returned.
 
-            The algorithm is a non-recursive  implementation of a simple flood-filling:
-            starting from the stone at pos, the main while-loop looks at the intersections
-            directly adjacent to the stones found so far, for liberties or other stones that belong
-            to the string. Then it looks at the neighbors of those newly found stones, and so
-            on, until it finds a liberty, or until it doesn't find any new stones belonging
-            to the string, which means that there are no liberties.
+            The algorithm is a non-recursive  implementation of a simple
+            flood-filling: starting from the stone at pos, the main while-loop
+            looks at the intersections directly adjacent to the stones found so
+            far, for liberties or other stones that belong to the string.
+            Then it looks at the neighbors of those newly found stones, and so
+            on, until it finds a liberty, or until it doesn't find any new
+            stones belonging to the string, which means that there are no
+            liberties.
             Once a liberty is found, the function returns immediately. """
 
-        st = []             # in the end, this list will contain all stones solidly connected to the
-                            # one at pos, if this string has no liberties
-        newlyFound = [pos]  # in the while loop, we will look at the neighbors of stones in newlyFound
+        # in the end, this list will contain all stones solidly connected to
+        # the one at pos, if this string has no liberties in the while loop,
+        # we will look at the neighbors of stones in newlyFound
+        st = []
+
+        newlyFound = [pos]
         foundNew = 1
 
         while foundNew:
             foundNew = 0
-            n = []  # this will contain the stones found in this iteration of the loop
+            # this will contain the stones found in this iteration of the loop
+            n = []
             for x in newlyFound:
                 for y in self.neighbors(x):
-                    if not(y in self.status.keys()) and y != exc and y != pos:    # found a liberty
+                    if not(y in self.status.keys()) and\
+                            y != exc and y != pos:    # found a liberty
                         return []
+                    # found another stone of same color
                     elif y in self.status.keys() and self.status[y] == color \
-                            and not(y in newlyFound) and not y in st:  # found another stone of same color
+                            and not(y in newlyFound) and not(y in st):
                         n.append(y)
                         foundNew = 1
 
             st[:0] = newlyFound
             newlyFound = n
 
-        return st     # no liberties found, return list of all stones connected to the original one
+        # no liberties found, return list of all stones
+        # connected to the original one
+        return st
 
     def get_territories(self):
         def get_group(self, first_element, color):
@@ -204,7 +226,7 @@ class GoGame:
                     if x in self.status.keys():
                         if self.status[x] != color:
                             return None
-                    elif not x in current_group:
+                    elif not(x in current_group):
                         current_group.append(x)
             return set(current_group)
 
@@ -232,8 +254,10 @@ class GoGame:
                 return False
 
     def invert(self, color):
-        if color == 'B': return 'W'
-        else: return 'B'
+        if color == 'B':
+            return 'W'
+        else:
+            return 'B'
 
     def get_status(self):
         return self.status
