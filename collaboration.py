@@ -17,10 +17,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+import gi
+gi.require_version("TelepathyGLib", "0.12")
 import logging
 
+from gi.repository import TelepathyGLib
+
 from sugar3.presence import presenceservice
-import telepathy
 from dbus.service import method, signal
 # In build 656 Sugar lacks sugartubeconn
 
@@ -59,7 +62,7 @@ class CollaborationWrapper(ExportedGObject):
         self.activity.undo_button.hide()
         self.activity.board.set_sensitive(False)
         self._sharing_setup()
-        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].OfferDBusTube(
+        self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].OfferDBusTube(
             SERVICE, {})
         self.is_initiator = True
 
@@ -70,7 +73,7 @@ class CollaborationWrapper(ExportedGObject):
         self.activity.undo_button.hide()
         self.activity.board.set_sensitive(False)
         self._sharing_setup()
-        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].ListTubes(
+        self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].ListTubes(
             reply_handler=self._list_tubes_reply_cb,
             error_handler=self._list_tubes_error_cb)
         self.is_initiator = False
@@ -85,8 +88,9 @@ class CollaborationWrapper(ExportedGObject):
         self.tubes_chan = self.activity._shared_activity.telepathy_tubes_chan
         self.text_chan = self.activity._shared_activity.telepathy_text_chan
 
-        self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES].connect_to_signal(
-            'NewTube', self._new_tube_cb)
+        self.tubes_chan[
+            TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].connect_to_signal(
+                'NewTube', self._new_tube_cb)
 
         self.activity._shared_activity.connect(
             'buddy-joined',
@@ -214,17 +218,17 @@ class CollaborationWrapper(ExportedGObject):
         logger.debug('New tube: ID=%d initator=%d type=%d service=%s '
                      'params=%r state=%d', id, initiator, type, service,
                      params, state)
-        if (type == telepathy.TUBE_TYPE_DBUS and
+        if (type == TelepathyGLib.TubeType.DBUS and
                 service == SERVICE):
-            if state == telepathy.TUBE_STATE_LOCAL_PENDING:
+            if state == TelepathyGLib.TubeState.LOCAL_PENDING:
                 self.tubes_chan[
-                    telepathy.CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
+                    TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES].AcceptDBusTube(id)
             self.tube = SugarTubeConnection(
-                    self.conn,
-                    self.tubes_chan[telepathy.CHANNEL_TYPE_TUBES],
-                    id,
-                    group_iface=self.text_chan[
-                        telepathy.CHANNEL_INTERFACE_GROUP])
+                self.conn,
+                self.tubes_chan[TelepathyGLib.IFACE_CHANNEL_TYPE_TUBES],
+                id,
+                group_iface=self.text_chan[
+                    TelepathyGLib.IFACE_CHANNEL_INTERFACE_GROUP])
             super(CollaborationWrapper, self).__init__(self.tube, PATH)
             self.tube.watch_participants(self.participant_change_cb)
 
@@ -240,14 +244,14 @@ class CollaborationWrapper(ExportedGObject):
     def _get_buddy(self, cs_handle):
         """Get a Buddy from a channel specific handle."""
         logger.debug('Trying to find owner of handle %u...', cs_handle)
-        group = self.text_chan[telepathy.CHANNEL_INTERFACE_GROUP]
+        group = self.text_chan[TelepathyGLib.IFACE_CHANNEL_INTERFACE_GROUP]
         my_csh = group.GetSelfHandle()
         logger.debug('My handle in that group is %u', my_csh)
         if my_csh == cs_handle:
             handle = self.conn.GetSelfHandle()
             logger.debug('CS handle %u belongs to me, %u', cs_handle, handle)
         elif group.GetGroupFlags() &\
-                telepathy.CHANNEL_GROUP_FLAG_CHANNEL_SPECIFIC_HANDLES:
+                TelepathyGLib.ChannelGroupFlags.CHANNEL_SPECIFIC_HANDLES:
             handle = group.GetHandleOwners([cs_handle])[0]
             logger.debug('CS handle %u belongs to %u', cs_handle, handle)
         else:
