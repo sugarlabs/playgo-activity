@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright 2007-2008 One Laptop Per Child
 # Copyright 2008 Andrés Ambrois <andresambrois@gmail.com>
 #
@@ -47,13 +47,15 @@ class gnugo:
         ''' Start the gnugo subprocess '''
         self.size = boardsize
         self.path = search_for_gnugo()
-        
+
         if self.path:
             logger.debug('Found gnugo at %s', self.path)
-            try: 
-                self.gnugo = Popen([self.path, '--mode', 'gtp', '--boardsize', str(boardsize),
-                                    '--handicap', str(handicap), '--komi', str(komi), '--level', str(level) ], 
-                                    stdout=PIPE, stdin=PIPE)
+            try:
+                self.gnugo = Popen([
+                    self.path,
+                    '--mode', 'gtp', '--boardsize', str(boardsize),
+                    '--handicap', str(handicap), '--komi', str(komi),
+                    '--level', str(level)], stdout=PIPE, stdin=PIPE)
             except OSError, data:
                 logger.error('Could not start gnugo subprocess: %s', data)
                 raise
@@ -63,34 +65,39 @@ class gnugo:
                 self.stdout = self.gnugo.stdout
         else:
             logger.error('Could not find gnugo')
-    
+
     def __del__(self):
         logger.debug('Closing gnugo')
         self.stdin.write('quit \n')
         self.stdin.flush()
-    
+
     def _xy_to_coords(self, x, y):
-        return dict(zip(range(25), 'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
-        
+        return dict(
+            zip(range(25),
+                'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
+
     def _coords_to_xy(self, coords):
-        return int(dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(25)))[coords[0]]), self.size - int(coords[1:])
-        
+        return int(
+            dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(25)))[coords[0]]),
+        self.size - int(coords[1:])
+
     def short_to_long_colors(self, short_color):
         if short_color == 'B':
             return 'black'
         return 'white'
-    
+
     def make_play(self, color, x, y):
         color = self.short_to_long_colors(color)
         self.stdin.write('play %s %s\n' % (color, self._xy_to_coords(x, y)))
         self.stdin.flush()
-        logger.debug('Sent play by %s at %s to gnugo', color, self._xy_to_coords(x, y))
+        logger.debug(
+            'Sent play by %s at %s to gnugo', color, self._xy_to_coords(x, y))
         output = self.stdout.readline()
         self.stdout.readline()
         if output and output[0] == '?':
             return False
         return True
-    
+
     def get_move(self, color):
         color = self.short_to_long_colors(color)
         self.stdin.write('kgs-genmove_cleanup %s\n' % color)
@@ -117,18 +124,17 @@ class gnugo:
         self.stdin.flush()
         self.stdout.readline()
         self.stdout.readline()
-        
+
     def clear(self):
         self.stdin.write('clear_board\n')
         self.stdin.flush()
         self.stdout.readline()
         self.stdout.readline()
-        
+
     def dump_board(self):
         self.stdin.write('showboard\n')
         self.stdin.flush()
         output = ''
-        for i in range(0, self.size+4):
+        for i in range(0, self.size + 4):
             output = output + self.stdout.readline()
         return output
-

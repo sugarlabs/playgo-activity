@@ -1,4 +1,4 @@
-# -*- coding: UTF-8 -*-
+# -*- coding: utf-8 -*-
 # Copyright 2007-2008 One Laptop Per Child
 # Copyright 2007 Gerard J. Cerchio <www.circlesoft.com>
 # Copyright 2008 Andrés Ambrois <andresambrois@gmail.com>
@@ -20,7 +20,6 @@
 from gi.repository import Gtk
 from gi.repository import Gdk
 
-from sugar3.graphics import style
 
 class InfoPanel(Gtk.EventBox):
 
@@ -41,6 +40,5 @@ class InfoPanel(Gtk.EventBox):
     def show(self, text):
         self.status_label.set_text(text)
 
-    def show_score(self,  text):
+    def show_score(self, text):
         self.score_label.set_text(text)
-
