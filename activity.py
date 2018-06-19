@@ -18,7 +18,6 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import logging
-import sugar.logger
 import cPickle
 
 from gettext import gettext as _
@@ -32,7 +31,6 @@ from sugar3.activity.widgets import ActivityToolbarButton
 from sugar3.graphics.toolbarbox import ToolbarBox
 from sugar3.graphics.alert import NotifyAlert
 from sugar3.graphics.toolbarbox import ToolbarButton
-##from sugar3._sugarext import KeyGrabber
 
 from gametoolbar import GameToolbar
 from gogame import GoGame
@@ -71,7 +69,9 @@ class PlayGo(Activity):
         self.gameToolbar.connect('game-board-size', self.board_size_change)
         self.gameToolbar.connect('ai-activated', self.ai_activated_cb)
         self.gameToolbar.connect('ai-deactivated', self.ai_deactivated_cb)
-        toolbarbox.toolbar.insert(ToolbarButton(page=self.gameToolbar, icon_name='txt'), -1)
+        toolbarbox.toolbar.insert(
+            ToolbarButton(page=self.gameToolbar, icon_name='txt'),
+            -1)
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
@@ -102,32 +102,22 @@ class PlayGo(Activity):
 
         # Set keypad actions
         self._key_actions = {
-            'KP_Up'     : 'move_up',
-            'KP_Right'  : 'move_right',
-            'KP_Down'   : 'move_down',
-            'KP_Left'   : 'move_left',
-            'KP_Home'   : 'place_stone',
-            'KP_Next'   : 'undo',
-            'KP_End'    : 'pass' }
+            'KP_Up': 'move_up',
+            'KP_Right': 'move_right',
+            'KP_Down': 'move_down',
+            'KP_Left': 'move_left',
+            'KP_Home': 'place_stone',
+            'KP_Next': 'undo',
+            'KP_End': 'pass'}
 
-        ##self._key_grabber = KeyGrabber()
-        ##self._key_grabber.connect('key-pressed',
-        ##                          self._key_pressed_cb)
-
-        # New KeyGrabber API change (ticket #7999)
-        ##try:
-        ##    self._key_grabber.grab_keys(self._key_actions.keys())
-        ##except:
-        ##    for key in self._key_actions.keys():
-        ##        self._key_grabber.grab(key)
-
-        #Set up collaboration
-        self.collaboration = CollaborationWrapper(self, 
-                                                  self.buddy_joined, 
-                                                  self.buddy_left, 
-                                                  self.Play, 
-                                                  self.game.undostack, 
-                                                  self.bootstrap)
+        # Set up collaboration
+        self.collaboration = CollaborationWrapper(
+            self,
+            self.buddy_joined,
+            self.buddy_left,
+            self.Play,
+            self.game.undostack,
+            self.bootstrap)
 
         self.connect('shared', self.collaboration._shared_cb)
         if self.get_shared_activity():
@@ -138,7 +128,9 @@ class PlayGo(Activity):
                 self.collaboration._joined_cb()
 
     def set_up_ui(self):
-        self.board = boardwidget.GoBoardWidget(self.game.get_status(), self.size)
+        self.board = boardwidget.GoBoardWidget(
+            self.game.get_status(),
+            self.size)
         self.board.connect('motion-notify-event', self.board_motion_cb)
         self.board.connect('insert-requested', self.insert_cb)
 
@@ -150,14 +142,14 @@ class PlayGo(Activity):
 
         self.buttons_box = Gtk.HBox()
         self.buttons_alignment = Gtk.Alignment.new(0.5, 1, 0.5, 1)
-        #Pass button
+        # Pass button
         self.pass_button = Gtk.Button(_('Pass'))
-        self.pass_button.connect("clicked",  self.pass_cb)
-        self.buttons_box.pack_start(self.pass_button,  True,  True, 10)
+        self.pass_button.connect("clicked", self.pass_cb)
+        self.buttons_box.pack_start(self.pass_button, True, True, 10)
 
-        #Undo button
+        # Undo button
         self.undo_button = Gtk.Button(_('Undo'))
-        self.undo_button.connect("clicked",  self.undo_cb)
+        self.undo_button.connect("clicked", self.undo_cb)
         self.buttons_box.pack_start(self.undo_button, True, True, 10)
 
         self.buttons_alignment.add(self.buttons_box)
@@ -170,22 +162,22 @@ class PlayGo(Activity):
         self.show_all()
 
     def insert_cb(self, widget, x, y, announce=True, ai_play=False):
-        ''' The insert function. It makes the play and manages turn changing
-            stone drawing, etc. 
-            
-        Parameters x and y are the coordinates of the play ((0,0) is top left), 
+        '''The insert function. It makes the play and manages turn changing
+           stone drawing, etc.
+
+        Parameters x and y are the coordinates of the play ((0,0) is top left),
         widget points to the widget that emitted the signal connected to this
-        function, announce is True when we need to announce this play to 
-        other people collaborating, and ai_play is True when this is called 
-        by the AI, so we know not to ask for an AI play again '''
-        
+        function, announce is True when we need to announce this play to
+        other people collaborating, and ai_play is True when this is called
+        by the AI, so we know not to ask for an AI play again'''
+
         # Check if it's our turn only if it's a local play (announce is True)
-        # Calls by other players will always be out of turn for us. 
+        # Calls by other players will always be out of turn for us.
         if announce and self.get_currentcolor() != self.get_playercolor():
             logger.debug('Play at %s x %s was out-of-turn!', x, y)
             self.infopanel.show(_('It\'s not your turn!'))
             return False
-        # Make the play only if it wasn't a pass move. 
+        # Make the play only if it wasn't a pass move.
         if x != -1:
             self.pass_count = 0
             error = self.game.illegal(x, y, self.get_currentcolor())
@@ -203,7 +195,12 @@ class PlayGo(Activity):
                 self.redraw_captures(captures)
 
             self.show_score()
-            self.board.draw_stone(self.board.context, x, y, self.get_currentcolor(), widget)
+            self.board.draw_stone(
+                self.board.context,
+                x,
+                y,
+                self.get_currentcolor(),
+                widget)
             self.board.queue_draw()
         # Player passed
         else:
@@ -221,8 +218,9 @@ class PlayGo(Activity):
         # If we are playing a local game with AI turned off, change the color
         if not self.get_shared() and not self.ai_activated:
             self.change_player_color()
-        # Else, if the AI is on, and this wasn't played by it, request a play by it. 
-        elif self.ai_activated: 
+        # Else, if the AI is on, and this wasn't played by it,
+        # request a play by it.
+        elif self.ai_activated:
             self.change_player_color()
             if not ai_play:
                 self.play_ai()
@@ -231,7 +229,7 @@ class PlayGo(Activity):
         if self.game.undo():
             self.board.queue_draw()
             # If playing against AI undo twice
-            if self.ai_activated: 
+            if self.ai_activated:
                 self.ai.undo()
                 self.game.undo()
                 self.ai.undo()
@@ -244,7 +242,7 @@ class PlayGo(Activity):
             self.show_score()
 
     def pass_cb(self, widget=None, data=None):
-        if self.get_shared(): 
+        if self.get_shared():
             if self.get_currentcolor() == self.get_playercolor():
                 self.pass_count += 1
                 self.collaboration.Play(-1, -1)
@@ -296,26 +294,31 @@ class PlayGo(Activity):
             logger.debug('The game we are loading is shared!')
             self.PlayerColor = self.metadata.get('our-color', 'B')
         if self.size != self.metadata.get('size', DEFAULT_SIZE):
-            self.board_size_change(None, int(self.metadata.get('size', DEFAULT_SIZE)))
+            self.board_size_change(
+                None,
+                int(self.metadata.get('size', DEFAULT_SIZE)))
 
         self.bootstrap(newstack)
 
         if self.metadata.get('ai', None) == 'True':
             self.gameToolbar._size_combo.set_sensitive(False)
-            self.gameToolbar._ai_button.set_active(True) # This triggers the 'toggled' signal too
+            # This triggers the 'toggled' signal too
+            self.gameToolbar._ai_button.set_active(True)
 
     def board_motion_cb(self, widget, event):
         x, y = self.board.get_mouse_event_xy(event)
         if x == self.lastX and y == self.lastY:
             return
 
-        if not self.game.is_occupied(x, y) and self.game.legal((x, y), self.get_playercolor()):
+        if not self.game.is_occupied(x, y)\
+                and self.game.legal((x, y), self.get_playercolor()):
             self.board.draw_ghost_stone(x, y, self.get_playercolor())
             self.lastX = x
             self.lastY = y
 
     def invert_color(self, color):
-        if color == 'B': return 'W'
+        if color == 'B':
+            return 'W'
         return 'B'
 
     def get_currentcolor(self):
@@ -344,12 +347,19 @@ class PlayGo(Activity):
             self.board.redraw_area(x[0], x[1])
 
     def bootstrap(self, plays):
-        ''' Take our game to the state it would have if @plays were manually played'''
+        ''' Take our game to the state it would have if
+            @plays were manually played'''
         logger.debug('Bootstraping...')
-        self.board.queue_draw() # HACK: Looks like read_file is called before the board is exposed
+        # HACK: Looks like read_file is called before the board is exposed
+        self.board.queue_draw()
         for pos in plays:
-            logger.debug('Playing at %s with color %s', pos, self.get_currentcolor())
-            captures = self.game.play((pos[0], pos[1]), self.get_currentcolor())
+            logger.debug(
+                'Playing at %s with color %s',
+                pos,
+                self.get_currentcolor())
+            captures = self.game.play(
+                (pos[0], pos[1]),
+                self.get_currentcolor())
             if captures:
                 self.redraw_captures(captures)
 
@@ -383,8 +393,11 @@ class PlayGo(Activity):
         territories = self.game.get_territories()
         self.board.territories = territories
 
-        final_score = {'B':(len(territories['B']) - self.game.get_score()['W']),
-                                'W':(len(territories['W']) - self.game.get_score()['B'] + self.komi)}
+        final_score = {
+            'B': (len(territories['B']) - self.game.get_score()['W']),
+            'W': (
+                len(territories['W']) -
+                self.game.get_score()['B'] + self.komi)}
 
         if final_score['B'] > final_score['W']:
             winner_string = _('Black wins!')
@@ -396,7 +409,8 @@ class PlayGo(Activity):
             winner_string = _('There was a tie!')
 
         self.infopanel.show(_('Game ended! %s' % winner_string))
-        self.infopanel.show_score(_('Final score: White %(W)g - Black %(B)g' % final_score))        
+        self.infopanel.show_score(
+            _('Final score: White %(W)g - Black %(B)g' % final_score))
 
     def board_size_change(self, widget, size):
         self.lastY = -1
@@ -409,7 +423,9 @@ class PlayGo(Activity):
         self.game = GoGame(size)
         self.board_aspect.remove(self.board)
         del self.board
-        self.board = boardwidget.GoBoardWidget(self.game.get_status(), int(size))
+        self.board = boardwidget.GoBoardWidget(
+            self.game.get_status(),
+            int(size))
         self.board_aspect.add(self.board)
         self.board.connect('motion-notify-event', self.board_motion_cb)
         self.board.connect('insert-requested', self.insert_cb)
@@ -447,10 +463,10 @@ class PlayGo(Activity):
             x, y = self.ai.get_move(self.get_currentcolor())
             logger.debug('Got play %s x %s from AI', x, y)
             self.insert_cb(None, x, y, ai_play=True)
-            #logger.debug('Dumping board: %s', self.ai.dump_board())
 
     def show_score(self):
-        self.infopanel.show_score(_("Score is: White %(W)g - Black %(B)g" % self.game.get_score()))
+        self.infopanel.show_score(
+            _("Score is: White %(W)g - Black %(B)g" % self.game.get_score()))
 
     def _alert(self, title, text=None):
         alert = NotifyAlert(timeout=5)
@@ -468,7 +484,7 @@ class PlayGo(Activity):
         key = grabber.get_key(keycode, state)
         logging.debug("Key pressed: %s", key)
         action = self._key_actions[key]
-        method = getattr(self,  'handle_' + action)
+        method = getattr(self, 'handle_' + action)
         method()
 
     def handle_move_up(self):
@@ -494,8 +510,8 @@ class PlayGo(Activity):
 
     def move_ghost_stone(self, deltaX=0, deltaY=0):
         if self.lastX < 0:
-            self.lastX = int(self.size/2)
-            self.lastY = int(self.size/2)
+            self.lastX = int(self.size / 2)
+            self.lastY = int(self.size / 2)
         x = self.lastX + deltaX
         y = self.lastY + deltaY
         if x < 0 or x > self.size - 1 or y < 0 or y > self.size - 1:
@@ -514,8 +530,8 @@ class PlayGo(Activity):
 
     def Play(self, x, y, sender=None):
         ''' Called when a stone was placed at x,y by sender'''
-        # Discard a pass move received in our turn. Do it here for extra security
+        # Discard a pass move received in our turn.
+        # Do it here for extra security
         if x == -1 and self.get_currentcolor() == self.get_playercolor():
             return
         self.insert_cb(None, x, y, False)
-
