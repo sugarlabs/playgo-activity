@@ -33,11 +33,11 @@ class GoBoardWidget(Gtk.DrawingArea):
     ''' A Go Board Widget '''
 
     __gsignals__ = {
-            'insert-requested': (
-                                GObject.SIGNAL_RUN_FIRST,
-                                GObject.TYPE_NONE,
-                                (GObject.TYPE_INT, GObject.TYPE_INT)),
-        }
+        'insert-requested': (
+            GObject.SIGNAL_RUN_FIRST,
+            GObject.TYPE_NONE,
+            (GObject.TYPE_INT, GObject.TYPE_INT)),
+    }
 
     # TODO: this should default to DEFAULT_SIZE, not 19,
     # but this is defined in activity.py not here
@@ -81,9 +81,10 @@ class GoBoardWidget(Gtk.DrawingArea):
             int(self.unit),
             GdkPixbuf.InterpType.BILINEAR)
         self.ScaledWhitePixbuf =\
-            self.WhitePixbuf.scale_simple(int(self.unit),
+            self.WhitePixbuf.scale_simple(
                 int(self.unit),
-                    GdkPixbuf.InterpType.BILINEAR)
+                int(self.unit),
+                GdkPixbuf.InterpType.BILINEAR)
         # Draw the board
         Gdk.cairo_set_source_pixbuf(context, self.BoardPixbuf, 0, 0)
         context.paint()

@@ -112,12 +112,12 @@ class PlayGo(Activity):
 
         # Set up collaboration
         self.collaboration = CollaborationWrapper(
-                                                  self,
-                                                  self.buddy_joined,
-                                                  self.buddy_left,
-                                                  self.Play,
-                                                  self.game.undostack,
-                                                  self.bootstrap)
+            self,
+            self.buddy_joined,
+            self.buddy_left,
+            self.Play,
+            self.game.undostack,
+            self.bootstrap)
 
         self.connect('shared', self.collaboration._shared_cb)
         if self.get_shared_activity():
@@ -144,12 +144,12 @@ class PlayGo(Activity):
         self.buttons_alignment = Gtk.Alignment.new(0.5, 1, 0.5, 1)
         # Pass button
         self.pass_button = Gtk.Button(_('Pass'))
-        self.pass_button.connect("clicked",  self.pass_cb)
-        self.buttons_box.pack_start(self.pass_button,  True,  True, 10)
+        self.pass_button.connect("clicked", self.pass_cb)
+        self.buttons_box.pack_start(self.pass_button, True, True, 10)
 
         # Undo button
         self.undo_button = Gtk.Button(_('Undo'))
-        self.undo_button.connect("clicked",  self.undo_cb)
+        self.undo_button.connect("clicked", self.undo_cb)
         self.buttons_box.pack_start(self.undo_button, True, True, 10)
 
         self.buttons_alignment.add(self.buttons_box)
@@ -196,11 +196,11 @@ class PlayGo(Activity):
 
             self.show_score()
             self.board.draw_stone(
-                                 self.board.context,
-                                 x,
-                                 y,
-                                 self.get_currentcolor(),
-                                 widget)
+                self.board.context,
+                x,
+                y,
+                self.get_currentcolor(),
+                widget)
             self.board.queue_draw()
         # Player passed
         else:
@@ -396,8 +396,8 @@ class PlayGo(Activity):
         final_score = {
             'B': (len(territories['B']) - self.game.get_score()['W']),
             'W': (
-                 len(territories['W']) -
-                 self.game.get_score()['B'] + self.komi)}
+                len(territories['W']) -
+                self.game.get_score()['B'] + self.komi)}
 
         if final_score['B'] > final_score['W']:
             winner_string = _('Black wins!')
@@ -424,8 +424,8 @@ class PlayGo(Activity):
         self.board_aspect.remove(self.board)
         del self.board
         self.board = boardwidget.GoBoardWidget(
-                                              self.game.get_status(),
-                                              int(size))
+            self.game.get_status(),
+            int(size))
         self.board_aspect.add(self.board)
         self.board.connect('motion-notify-event', self.board_motion_cb)
         self.board.connect('insert-requested', self.insert_cb)
@@ -484,7 +484,7 @@ class PlayGo(Activity):
         key = grabber.get_key(keycode, state)
         logging.debug("Key pressed: %s", key)
         action = self._key_actions[key]
-        method = getattr(self,  'handle_' + action)
+        method = getattr(self, 'handle_' + action)
         method()
 
     def handle_move_up(self):
@@ -510,8 +510,8 @@ class PlayGo(Activity):
 
     def move_ghost_stone(self, deltaX=0, deltaY=0):
         if self.lastX < 0:
-            self.lastX = int(self.size/2)
-            self.lastY = int(self.size/2)
+            self.lastX = int(self.size / 2)
+            self.lastY = int(self.size / 2)
         x = self.lastX + deltaX
         y = self.lastY + deltaY
         if x < 0 or x > self.size - 1 or y < 0 or y > self.size - 1:

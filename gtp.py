@@ -146,6 +146,6 @@ class gnugo:
         self.stdin.write('showboard\n')
         self.stdin.flush()
         output = ''
-        for i in range(0, self.size+4):
+        for i in range(0, self.size + 4):
             output = output + self.stdout.readline()
         return output

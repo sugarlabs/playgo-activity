@@ -38,18 +38,18 @@ class GameToolbar(Gtk.Toolbar):
 
     __gsignals__ = {
         'game-restart': (
-                        GObject.SIGNAL_RUN_FIRST,
-                        GObject.TYPE_NONE, []),
+            GObject.SIGNAL_RUN_FIRST,
+            GObject.TYPE_NONE, []),
         'ai-activated': (
-                        GObject.SIGNAL_RUN_FIRST,
-                        GObject.TYPE_NONE, []),
+            GObject.SIGNAL_RUN_FIRST,
+            GObject.TYPE_NONE, []),
         'ai-deactivated': (
-                          GObject.SIGNAL_RUN_FIRST,
-                          GObject.TYPE_NONE, []),
+            GObject.SIGNAL_RUN_FIRST,
+            GObject.TYPE_NONE, []),
         'game-board-size': (
-                           GObject.SIGNAL_RUN_FIRST,
-                           GObject.TYPE_NONE,
-                           [GObject.TYPE_INT]),
+            GObject.SIGNAL_RUN_FIRST,
+            GObject.TYPE_NONE,
+            [GObject.TYPE_INT]),
     }
 
     def __init__(self, activity):
@@ -129,7 +129,7 @@ class GameToolbar(Gtk.Toolbar):
     def update_toolbar(self, widget, data, grid):
         size = data.get('size')
         self._size_combo.combo.handler_block(self.size_handle_id)
-        size_index = self._sizes.index(size+' X '+size)
+        size_index = self._sizes.index(size + ' X ' + size)
         self._size_combo.combo.set_active(int(size_index))
         self._size_combo.combo.handler_unblock(self.size_handle_id)
 

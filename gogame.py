@@ -35,7 +35,7 @@ class GoGame:
         self.size = boardSize
         self.status = {}
         self.undostack = []
-        self.score = {'B': 0,  'W': 0}
+        self.score = {'B': 0, 'W': 0}
         _logger.setLevel(logging.DEBUG)
 
     def get_score(self):
@@ -50,17 +50,17 @@ class GoGame:
             adjacent to the given one. """
         if x[0] == 0:
             l0 = [1]
-        elif x[0] == self.size-1:
-            l0 = [self.size-2]
+        elif x[0] == self.size - 1:
+            l0 = [self.size - 2]
         else:
-            l0 = [x[0]-1, x[0]+1]
+            l0 = [x[0] - 1, x[0] + 1]
 
         if x[1] == 0:
             l1 = [1]
-        elif x[1] == self.size-1:
-            l1 = [self.size-2]
+        elif x[1] == self.size - 1:
+            l1 = [self.size - 2]
         else:
-            l1 = [x[1]-1, x[1]+1]
+            l1 = [x[1] - 1, x[1] + 1]
 
         neighbors_list = []
         for i in l0:
@@ -99,7 +99,7 @@ class GoGame:
         else:
             return 0
 
-    def get_captures(self,  pos,  color):
+    def get_captures(self, pos, color):
         """Returns a list of captured stones resulting
            from placing a color stone at pos """
         c = []  # captured stones
@@ -118,13 +118,13 @@ class GoGame:
 
         return 0
 
-    def checkKo(self,  pos, color):
+    def checkKo(self, pos, color):
         ''' Check if a move by color at pos would be a basic Ko infraction '''
         # Basically what we need to check, is if the current play would undo
         # all that was done by the last entry in undostack
         # (capture what was placed and place what was captured).
         if self.undostack:
-            lastpos,  lastcolor,  lastcaptures = self.undostack[-1]
+            lastpos, lastcolor, lastcaptures = self.undostack[-1]
             currentcaptures = self.get_captures(pos, color)
             if lastcaptures != 0 and currentcaptures != 0:
                 if lastcolor != color and lastcaptures[0] == pos\

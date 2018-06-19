@@ -103,8 +103,8 @@ class CollaborationWrapper(ExportedGObject):
         # Find out who's already in the shared activity:
         for buddy in self.activity._shared_activity.get_joined_buddies():
             logger.debug(
-                        'Buddy %s is already in the activity',
-                        buddy.props.nick)
+                'Buddy %s is already in the activity',
+                buddy.props.nick)
 
     def participant_change_cb(self, added, removed):
         logger.debug('Tube: Added participants: %r', added)
@@ -113,8 +113,8 @@ class CollaborationWrapper(ExportedGObject):
             buddy = self._get_buddy(handle)
             if buddy is not None:
                 logger.debug(
-                            'Tube: Handle %u (Buddy %s) was added',
-                            handle, buddy.props.nick)
+                    'Tube: Handle %u (Buddy %s) was added',
+                    handle, buddy.props.nick)
         for handle in removed:
             buddy = self._get_buddy(handle)
             if buddy is not None:
@@ -145,8 +145,8 @@ class CollaborationWrapper(ExportedGObject):
         """To be called on the incoming XO after they Hello."""
         if not self.world:
             logger.debug(
-                        'Somebody called World and sent me undostack: %s',
-                        undostack)
+                'Somebody called World and sent me undostack: %s',
+                undostack)
             self.activity.board_size_change(None, size)
             self.bootstrap(list(undostack))
             self.activity.set_player_color(
