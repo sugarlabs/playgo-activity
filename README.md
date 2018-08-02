@@ -17,3 +17,8 @@ PlayGo is part of the Sugar desktop.  Please refer to;
 * [How to Get Sugar on sugarlabs.org](https://sugarlabs.org/),
 * [How to use Sugar](https://help.sugarlabs.org/),
 * [How to use PlayGo](https://help.sugarlabs.org/playgo.html)
+
+Who wrote it?
+=============
+
+PlayGo activity for the OLPC, is copyright One Laptop Per Child, Gerard J. Cerchio, (www.circlesoft.com) and Andrés Ambrois (aa) andresambrois@gmail.com, and released under the GNU GPLv2+.  See source files for details.
