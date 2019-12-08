@@ -22,7 +22,6 @@ import logging
 from sugar3.activity.activity import get_bundle_path
 from os.path import exists, join, abspath
 from os import pathsep, environ
-#from string import split
 
 logger = logging.getLogger('PlayGo')
 
