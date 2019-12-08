@@ -24,12 +24,13 @@ import logging
 from gi.repository import TelepathyGLib
 
 from sugar3.presence import presenceservice
+# Install dbus using sudo <package installer> install python3-dbus 
 from dbus.service import method, signal
 # In build 656 Sugar lacks sugartubeconn
 
 from sugar3.presence.sugartubeconn import SugarTubeConnection
 
-from dbus.gobject_service import ExportedGObject
+from dbus.gi_service import ExportedGObject
 
 SERVICE = "org.freedesktop.Telepathy.Tube.PlayGo"
 IFACE = SERVICE

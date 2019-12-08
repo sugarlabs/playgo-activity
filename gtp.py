@@ -22,13 +22,13 @@ import logging
 from sugar3.activity.activity import get_bundle_path
 from os.path import exists, join, abspath
 from os import pathsep, environ
-from string import split
+#from string import split
 
 logger = logging.getLogger('PlayGo')
 
 
 def search_for_gnugo():
-    paths = split(environ['PATH'], pathsep)
+    paths = environ['PATH'].split(pathsep)
     for path in paths:
         if exists(join(path, 'gnugo')):
             return abspath(join(path, 'gnugo'))
@@ -56,7 +56,7 @@ class gnugo:
                     '--mode', 'gtp', '--boardsize', str(boardsize),
                     '--handicap', str(handicap), '--komi', str(komi),
                     '--level', str(level)], stdout=PIPE, stdin=PIPE)
-            except OSError, data:
+            except OSError as data:
                 logger.error('Could not start gnugo subprocess: %s', data)
                 raise
             else:
@@ -73,12 +73,12 @@ class gnugo:
 
     def _xy_to_coords(self, x, y):
         return dict(
-            zip(range(25),
-                'ABCDEFGHJKLMNOPQRSTUVWXYZ'))[x] + str(self.size - y)
+            list(zip(list(range(25)),
+                'ABCDEFGHJKLMNOPQRSTUVWXYZ')))[x] + str(self.size - y)
 
     def _coords_to_xy(self, coords):
         return int(
-            dict(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', range(25)))[coords[0]]),
+            dict(list(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', list(range(25)))))[coords[0]]),
         self.size - int(coords[1:])
 
     def short_to_long_colors(self, short_color):

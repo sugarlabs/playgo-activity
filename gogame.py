@@ -71,7 +71,7 @@ class GoGame:
         return neighbors_list
 
     def is_occupied(self, x, y):
-        return (x, y) in self.status.keys()
+        return (x, y) in list(self.status.keys())
 
     def clear(self):
         """ Clear the board """
@@ -83,7 +83,7 @@ class GoGame:
         """ This plays a color=black/white stone at pos, if that is a legal move
             and deletes stones captured by that move.
             It returns 1 if the move has been played, 0 if not. """
-        if pos in self.status.keys():  # check if empty
+        if pos in list(self.status.keys()):  # check if empty
             return 0
 
         if self.legal(pos, color):  # legal move?
@@ -105,7 +105,7 @@ class GoGame:
         c = []  # captured stones
 
         for x in self.neighbors(pos):
-            if x in self.status.keys() and\
+            if x in list(self.status.keys()) and\
                     self.status[x] == self.invert(color):
                 c = c + self.hasNoLibExcP(x, self.invert(color), pos)
 
@@ -134,7 +134,7 @@ class GoGame:
 
     def legal(self, pos, color):
         """ Check if a play by color at pos would be a legal move. """
-        if pos in self.status.keys():
+        if pos in list(self.status.keys()):
             return 0
 
         # If the play at pos would leave that stone without liberties,
@@ -153,7 +153,7 @@ class GoGame:
     def illegal(self, x, y, color):
         """ Check if a play by color at pos would be an illigal move,
             and return pretty errors"""
-        if (x, y) in self.status.keys():
+        if (x, y) in list(self.status.keys()):
             return _('There already is a stone there!')
         if self.checkKo((x, y), color):
             return _('Ko violation!')
@@ -202,11 +202,11 @@ class GoGame:
             n = []
             for x in newlyFound:
                 for y in self.neighbors(x):
-                    if not(y in self.status.keys()) and\
+                    if not(y in list(self.status.keys())) and\
                             y != exc and y != pos:    # found a liberty
                         return []
                     # found another stone of same color
-                    elif y in self.status.keys() and self.status[y] == color \
+                    elif y in list(self.status.keys()) and self.status[y] == color \
                             and not(y in newlyFound) and not(y in st):
                         n.append(y)
                         foundNew = 1
@@ -223,7 +223,7 @@ class GoGame:
             current_group = [first_element]
             for current_element in current_group:
                 for x in self.neighbors(current_element):
-                    if x in self.status.keys():
+                    if x in list(self.status.keys()):
                         if self.status[x] != color:
                             return None
                     elif not(x in current_group):
@@ -231,9 +231,9 @@ class GoGame:
             return set(current_group)
 
         groups = {'B': set(), 'W': set()}
-        for x in self.status.keys():
+        for x in list(self.status.keys()):
             for n in self.neighbors(x):
-                if not(n in self.status.keys()):
+                if not(n in list(self.status.keys())):
                     new_group = get_group(self, n, self.status[x])
                     if new_group:
                         groups[self.status[x]] |= new_group
