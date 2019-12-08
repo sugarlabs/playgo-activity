@@ -260,10 +260,12 @@ class PlayGo(Activity):
         for pos, color, captures in undostack:
             strippedstack.append(pos)
 
-        f = open(file_path, 'w')
-
+        f = open(file_path, 'wb') # It should have support for bytes too
+	
         try:
             pickle.dump(strippedstack, f, pickle.HIGHEST_PROTOCOL)
+        except ErrorCode as e:
+            print("Error ", e, " occured") # Errors should not be left silenced :)
         finally:
             f.close()
 
