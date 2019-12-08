@@ -2,7 +2,7 @@
 name = PlayGo
 license = GPLv2+
 bundle_id = org.laptop.PlayGo
-exec = sugar-activity activity.PlayGo
+exec = sugar-activity3 activity.PlayGo
 icon = activity-go
 activity_version = 5
 host_version = 1
