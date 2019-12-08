@@ -206,8 +206,9 @@ class GoGame:
                             y != exc and y != pos:    # found a liberty
                         return []
                     # found another stone of same color
-                    elif y in list(self.status.keys()) and self.status[y] == color \
-                            and not(y in newlyFound) and not(y in st):
+                    elif y in list(self.status.keys()) and \
+                            self.status[y] == color and \
+                            not(y in newlyFound) and not(y in st):
                         n.append(y)
                         foundNew = 1
 

@@ -73,11 +73,12 @@ class gnugo:
     def _xy_to_coords(self, x, y):
         return dict(
             list(zip(list(range(25)),
-                'ABCDEFGHJKLMNOPQRSTUVWXYZ')))[x] + str(self.size - y)
+                 'ABCDEFGHJKLMNOPQRSTUVWXYZ')))[x] + str(self.size - y)
 
     def _coords_to_xy(self, coords):
         return int(
-            dict(list(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ', list(range(25)))))[coords[0]]),
+            dict(list(zip('ABCDEFGHJKLMNOPQRSTUVWXYZ',
+                          list(range(25)))))[coords[0]]),
         self.size - int(coords[1:])
 
     def short_to_long_colors(self, short_color):

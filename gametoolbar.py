@@ -39,9 +39,11 @@ class GameToolbar(Gtk.Toolbar):
     __gsignals__ = {
         'game-restart': (GObject.SignalFlags.RUN_FIRST, GObject.TYPE_NONE, []),
         'ai-activated': (GObject.SignalFlags.RUN_FIRST, GObject.TYPE_NONE, []),
-        'ai-deactivated': (GObject.SignalFlags.RUN_FIRST, GObject.TYPE_NONE, []),
+        'ai-deactivated': (
+            GObject.SignalFlags.RUN_FIRST, GObject.TYPE_NONE, []),
         'game-board-size': (
-            GObject.SignalFlags.RUN_FIRST, GObject.TYPE_NONE, [GObject.TYPE_INT]),
+            GObject.SignalFlags.RUN_FIRST, GObject.TYPE_NONE,
+            [GObject.TYPE_INT]),
     }
 
     def __init__(self, activity):
