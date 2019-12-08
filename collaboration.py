@@ -24,7 +24,6 @@ import logging
 from gi.repository import TelepathyGLib
 
 from sugar3.presence import presenceservice
-# Install dbus using sudo <package installer> install python3-dbus 
 from dbus.service import method, signal
 # In build 656 Sugar lacks sugartubeconn
 
