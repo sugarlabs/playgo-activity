@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 import logging
-import cPickle
+import pickle
 
 from gettext import gettext as _
 import gi
@@ -260,10 +260,12 @@ class PlayGo(Activity):
         for pos, color, captures in undostack:
             strippedstack.append(pos)
 
-        f = open(file_path, 'w')
+        f = open(file_path, 'wb')
 
         try:
-            cPickle.dump(strippedstack, f, cPickle.HIGHEST_PROTOCOL)
+            pickle.dump(strippedstack, f, pickle.HIGHEST_PROTOCOL)
+        except Exception as e:
+            print("Error ", e, " occured")
         finally:
             f.close()
 
@@ -276,7 +278,7 @@ class PlayGo(Activity):
         logger.debug('Reading file: %s', file_path)
         f = open(file_path, 'r')
         try:
-            newstack = cPickle.load(f)
+            newstack = pickle.load(f)
         finally:
             f.close()
 
@@ -422,7 +424,7 @@ class PlayGo(Activity):
     def ai_activated_cb(self, widget=None):
         try:
             self.ai = gnugo(boardsize=self.size)
-        except Exception, e:
+        except Exception as e:
             self._alert(_('AI'), _('GnuGo loading failed!: %s' % e))
             self.gameToolbar.set_ai_button_state(False)
 

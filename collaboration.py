@@ -29,7 +29,7 @@ from dbus.service import method, signal
 
 from sugar3.presence.sugartubeconn import SugarTubeConnection
 
-from dbus.gobject_service import ExportedGObject
+from dbus.gi_service import ExportedGObject
 
 SERVICE = "org.freedesktop.Telepathy.Tube.PlayGo"
 IFACE = SERVICE

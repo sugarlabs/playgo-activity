@@ -34,7 +34,7 @@ class GoBoardWidget(Gtk.DrawingArea):
 
     __gsignals__ = {
         'insert-requested': (
-            GObject.SIGNAL_RUN_FIRST, GObject.TYPE_NONE,
+            GObject.SignalFlags.RUN_FIRST, GObject.TYPE_NONE,
             (GObject.TYPE_INT, GObject.TYPE_INT)),
     }
 
@@ -97,12 +97,12 @@ class GoBoardWidget(Gtk.DrawingArea):
         ctx.set_source_rgba(0, 0, 0, 1)
 
         # Horizontal lines
-        for i in xrange(1, self.size + 1):
+        for i in range(1, self.size + 1):
             ctx.move_to(self.unit, i * self.unit)
             ctx.line_to(self.size * self.unit, i * self.unit)
 
         # Vertical lines
-        for i in xrange(1, self.size + 1):
+        for i in range(1, self.size + 1):
             ctx.move_to(i * self.unit, self.unit)
             ctx.line_to(i * self.unit, self.size * self.unit)
 
@@ -149,7 +149,7 @@ class GoBoardWidget(Gtk.DrawingArea):
         ctx.paint()
 
     def draw_stones(self, ctx, status):
-        for x in status.keys():
+        for x in list(status.keys()):
             self.draw_stone(ctx, x[0], x[1], status[x], self)
 
     def draw_scored_territory(self, ctx, x, y, color, widget):
@@ -174,7 +174,7 @@ class GoBoardWidget(Gtk.DrawingArea):
         ctx.stroke()
 
     def draw_scored_territories(self, ctx, territories):
-        for color in territories.keys():
+        for color in list(territories.keys()):
             for n in territories[color]:
                 self.draw_scored_territory(ctx, n[0], n[1], color, self)
 
