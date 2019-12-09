@@ -264,7 +264,7 @@ class PlayGo(Activity):
 
         try:
             pickle.dump(strippedstack, f, pickle.HIGHEST_PROTOCOL)
-        except ErrorCode as e:
+        except Exception as e:
             print("Error ", e, " occured")
         finally:
             f.close()
