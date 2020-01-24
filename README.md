@@ -12,7 +12,7 @@ The Sugar version has several modes of play: two people on the same computer, tw
 How to use?
 ===========
 
-PlayGo is part of the Sugar desktop.  Please refer to;
+PlayGo is not part of the Sugar desktop, but can be added.  Please refer to;
 
 * [How to Get Sugar on sugarlabs.org](https://sugarlabs.org/),
 * [How to use Sugar](https://help.sugarlabs.org/),
