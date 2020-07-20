@@ -1,3 +1,21 @@
+6
+
+* Python3 version
+  - Fix Collaboration in old builds (Andres Ambrois)
+  - Adding languages (Pootle translation push)
+  - Add support for gamepad keys (Andres Ambrois)
+  - Port to GTK+3 (Cristian Garcia)
+  - Fixing draw problem (Cristian Garcia)
+  - Add license and repository metadata (Shivam Chadha)
+  - translate.sugarlabs.org synchronisation (Yash Agrawal, Jui Pradhan)
+  - Regenerate POT file (Yash Agrawal, Jui Pradhan)
+  - Fix PyGIWarnings (Yash Agarwal)
+  - Fix NameError (Rahul Bothra)
+  - Port Telepathy static bindings to TelepathyGLib (Ibiam Chihurumnaya)
+  - Flake8 fixes (Ibiam Chihurumnaya)
+  - Update README (rdrsadhu, James Cameron)
+  - Port to python3 (Srevin Saju)
+
 5
 
 4
