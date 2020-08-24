@@ -209,7 +209,7 @@ class GoBoardWidget(Gtk.DrawingArea):
         if x == self.lastX and y == self.lastY:
             return
 
-        if self.lastX is not -1:
+        if self.lastX != -1:
             rect = Gdk.Rectangle()
             rect.x = int(self.lastX - self.unit / 2)
             rect.y = int(self.lastY - self.unit / 2)
@@ -221,7 +221,7 @@ class GoBoardWidget(Gtk.DrawingArea):
         self.lastY = y
 
         ctx = self.context
-        if color is 'B':
+        if color == 'B':
             ctx.set_source_rgba(0, 0, 0, .5)
         else:
             ctx.set_source_rgba(1, 1, 1, .5)
