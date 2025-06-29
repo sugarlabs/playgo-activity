@@ -1,0 +1,139 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-07-20 10:21+0530\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: fil\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: activity/activity.info:2
+msgid "PlayGo"
+msgstr ""
+
+#: activity.py:95
+msgid "Welcome to PlayGo!"
+msgstr ""
+
+#: activity.py:140
+msgid "Pass"
+msgstr ""
+
+#: activity.py:145
+msgid "Undo"
+msgstr ""
+
+#: activity.py:172 activity.py:240
+msgid "It's not your turn!"
+msgstr ""
+
+#: activity.py:203
+msgid "Opponent passed"
+msgstr ""
+
+#: activity.py:321
+msgid "White's turn"
+msgstr ""
+
+#: activity.py:323
+msgid "Black's turn"
+msgstr ""
+
+#: activity.py:391
+msgid "Black wins!"
+msgstr ""
+
+#: activity.py:394
+msgid "White wins!"
+msgstr ""
+
+#: activity.py:397
+msgid "There was a tie!"
+msgstr ""
+
+#: activity.py:399
+#, python-format
+msgid "Game ended! %s"
+msgstr ""
+
+#: activity.py:401
+#, python-format
+msgid "Final score: White %(W)g - Black %(B)g"
+msgstr ""
+
+#: activity.py:428 activity.py:436 activity.py:442
+msgid "AI"
+msgstr ""
+
+#: activity.py:428
+#, python-format
+msgid "GnuGo loading failed!: %s"
+msgstr ""
+
+#: activity.py:436
+msgid "PlayGo AI Activated"
+msgstr ""
+
+#: activity.py:442
+msgid "PlayGo AI Deactivated"
+msgstr ""
+
+#: activity.py:456
+#, python-format
+msgid "Score is: White %(W)g - Black %(B)g"
+msgstr ""
+
+#: activity.py:513
+msgid "Buddy joined"
+msgstr ""
+
+#: activity.py:513
+#, python-format
+msgid "%s joined"
+msgstr ""
+
+#: activity.py:516
+msgid "Buddy left"
+msgstr ""
+
+#: activity.py:516
+#, python-format
+msgid "%s left"
+msgstr ""
+
+#: gametoolbar.py:60
+msgid "Restart Game"
+msgstr ""
+
+#: gametoolbar.py:69
+msgid "Board size"
+msgstr ""
+
+#: gametoolbar.py:91
+msgid "Play against PlayGo!"
+msgstr ""
+
+#: gametoolbar.py:95
+msgid "You need to install gnugo to play against PlayGo"
+msgstr ""
+
+#: gogame.py:157
+msgid "There already is a stone there!"
+msgstr ""
+
+#: gogame.py:159
+msgid "Ko violation!"
+msgstr ""
+
+#: gogame.py:170
+msgid "Illegal move."
+msgstr ""
