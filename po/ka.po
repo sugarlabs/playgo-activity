@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-20 10:21+0530\n"
-"PO-Revision-Date: 2026-04-01 08:11+0000\n"
+"PO-Revision-Date: 2026-05-19 07:09+0000\n"
 "Last-Translator: NF <rkavt@smartprojects.ge>\n"
 "Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
 "sugar-activities/playgo/ka/>\n"
@@ -33,7 +33,7 @@ msgstr ""
 
 #: activity.py:145
 msgid "Undo"
-msgstr ""
+msgstr "გაუქმება"
 
 #: activity.py:172 activity.py:240
 msgid "It's not your turn!"
