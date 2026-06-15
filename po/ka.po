@@ -8,7 +8,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-07-20 10:21+0530\n"
-"PO-Revision-Date: 2026-05-19 07:09+0000\n"
+"PO-Revision-Date: 2026-06-15 16:05+0000\n"
 "Last-Translator: NF <rkavt@smartprojects.ge>\n"
 "Language-Team: Georgian <http://weblate.sugarlabs.org/projects/"
 "sugar-activities/playgo/ka/>\n"
@@ -21,7 +21,7 @@ msgstr ""
 
 #: activity/activity.info:2
 msgid "PlayGo"
-msgstr ""
+msgstr "PlayGo"
 
 #: activity.py:95
 msgid "Welcome to PlayGo!"
@@ -29,7 +29,7 @@ msgstr ""
 
 #: activity.py:140
 msgid "Pass"
-msgstr ""
+msgstr "გავლა"
 
 #: activity.py:145
 msgid "Undo"
@@ -75,7 +75,7 @@ msgstr ""
 
 #: activity.py:428 activity.py:436 activity.py:442
 msgid "AI"
-msgstr ""
+msgstr "ხი"
 
 #: activity.py:428
 #, python-format
